@@ -563,17 +563,6 @@
       .hero-stats { gap: 24px; }
       .certs-row { flex-direction: column; }
     }
-
-    .invisible-link {
-        /* This removes the underline */
-        text-decoration: none; 
-        
-        /* This makes the text inherit the color of the parent/div */
-        color: inherit; 
-        
-        /* Ensures the link behaves like a block for the div inside */
-        display: block; 
-      }
   </style>
 </head>
 <body>
@@ -677,7 +666,6 @@
       <button class="filter-btn" onclick="filterProjects('env', this)">Environmental</button>
     </div>
     <div class="projects-grid fade-in">
-    <a href="wildlife-pipeline/">
       <div class="project-card featured" data-category="ds gis env">
         <div class="project-header"><div class="project-icon">🔥</div><span class="badge-wip">⬤ In Progress</span></div>
         <div class="project-name">Real-Time Wildfire Detection Pipeline</div>
@@ -701,7 +689,6 @@
         </div>
         <div class="project-links"><a href="#" class="project-link disabled">⬤ Repo coming soon</a><a href="#" class="project-link disabled">⬤ Live demo coming soon</a></div>
       </div>
-    </a> 
       <div class="project-card" data-category="ds trans">
         <div class="project-header"><div class="project-icon">🚘</div><span class="badge-wip">⬤ In Progress</span></div>
         <div class="project-name">Autonomous Fleet Telemetry Data Platform</div>
