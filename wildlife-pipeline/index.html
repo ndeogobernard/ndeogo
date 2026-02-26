@@ -1,1 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Technical Documentation</title>
 
+    <!-- Link to your main stylesheet so theme stays consistent -->
+    <link rel="stylesheet" href="../styles.css">
+
+    <style>
+        /* Uses your global theme variables */
+        :root {
+            --primary: var(--primary, #2563eb);
+            --secondary: var(--secondary, #1e293b);
+            --background: var(--background, #0f172a);
+            --surface: var(--surface, #111827);
+            --text: var(--text, #e5e7eb);
+            --text-muted: var(--text-muted, #9ca3af);
+            --border: var(--border, #374151);
+        }
+
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            padding: 40px 20px;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .back-button:hover {
+            text-decoration: underline;
+        }
+
+        .project-header {
+            margin-bottom: 30px;
+        }
+
+        .project-title {
+            font-size: 2.5rem;
+            margin: 0;
+        }
+
+        .project-subtitle {
+            color: var(--text-muted);
+            margin-top: 5px;
+        }
+
+        .section {
+            margin-top: 40px;
+            padding: 25px;
+            background: var(--surface);
+            border-radius: 10px;
+            border: 1px solid var(--border);
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+
+        .code-block {
+            background: #020617;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            border: 1px solid var(--border);
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+
+        .tag {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 4px 10px;
+            margin: 4px 4px 0 0;
+            border-radius: 6px;
+            font-size: 0.8rem;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+        }
+
+        .info-card {
+            background: var(--background);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .info-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .info-value {
+            font-weight: 500;
+        }
+
+        footer {
+            margin-top: 50px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <a href="../index.html" class="back-button">← Back to Projects</a>
+
+    <!-- PROJECT HEADER -->
+    <div class="project-header">
+        <h1 class="project-title">Project Name</h1>
+        <p class="project-subtitle">
+            Short one-sentence technical summary of the project.
+        </p>
+
+        <div>
+            <span class="tag">React</span>
+            <span class="tag">Node.js</span>
+            <span class="tag">MongoDB</span>
+            <span class="tag">AWS</span>
+        </div>
+    </div>
+
+
+    <!-- PROJECT INFO -->
+    <div class="section">
+        <div class="section-title">Project Information</div>
+
+        <div class="info-grid">
+            <div class="info-card">
+                <div class="info-label">Status</div>
+                <div class="info-value">Completed</div>
+            </div>
+
+            <div class="info-card">
+                <div class="info-label">Start Date</div>
+                <div class="info-value">Jan 2026</div>
+            </div>
+
+            <div class="info-card">
+                <div class="info-label">End Date</div>
+                <div class="info-value">Feb 2026</div>
+            </div>
+
+            <div class="info-card">
+                <div class="info-label">Role</div>
+                <div class="info-value">Full Stack Developer</div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- OVERVIEW -->
+    <div class="section">
+        <div class="section-title">Overview</div>
+
+        <p>
+            Explain what the project does. Describe its purpose, the problem it solves,
+            and why it exists. Focus on technical reasoning, not marketing language.
+        </p>
+
+        <p>
+            Include architectural decisions, constraints, and performance goals.
+        </p>
+    </div>
+
+
+    <!-- SYSTEM ARCHITECTURE -->
+    <div class="section">
+        <div class="section-title">System Architecture</div>
+
+        <p>
+            Describe frontend, backend, database, APIs, and infrastructure.
+        </p>
+
+        <div class="code-block">
+Frontend (React)
+   ↓
+Backend API (Node.js / Express)
+   ↓
+Database (MongoDB)
+   ↓
+Cloud Storage (AWS S3)
+        </div>
+    </div>
+
+
+    <!-- FEATURES -->
+    <div class="section">
+        <div class="section-title">Core Features</div>
+
+        <ul>
+            <li>User authentication (JWT)</li>
+            <li>REST API integration</li>
+            <li>Real-time data updates</li>
+            <li>Responsive UI</li>
+            <li>Cloud deployment</li>
+        </ul>
+    </div>
+
+
+    <!-- DATABASE DESIGN -->
+    <div class="section">
+        <div class="section-title">Database Design</div>
+
+        <div class="code-block">
+User {
+  id: string
+  email: string
+  passwordHash: string
+  createdAt: date
+}
+        </div>
+    </div>
+
+
+    <!-- API DESIGN -->
+    <div class="section">
+        <div class="section-title">API Endpoints</div>
+
+        <div class="code-block">
+GET    /api/projects
+POST   /api/projects
+GET    /api/projects/:id
+PUT    /api/projects/:id
+DELETE /api/projects/:id
+        </div>
+    </div>
+
+
+    <!-- IMPLEMENTATION DETAILS -->
+    <div class="section">
+        <div class="section-title">Implementation Details</div>
+
+        <ul>
+            <li>Explain key algorithms used</li>
+            <li>Explain performance optimizations</li>
+            <li>Explain technical challenges and solutions</li>
+        </ul>
+
+    </div>
+
+
+    <!-- DEPLOYMENT -->
+    <div class="section">
+        <div class="section-title">Deployment</div>
+
+        <div class="code-block">
+Frontend: Vercel
+Backend: AWS EC2
+Database: MongoDB Atlas
+CI/CD: GitHub Actions
+        </div>
+    </div>
+
+
+    <!-- FUTURE IMPROVEMENTS -->
+    <div class="section">
+        <div class="section-title">Future Improvements</div>
+
+        <ul>
+            <li>Add caching layer</li>
+            <li>Improve performance</li>
+            <li>Add automated tests</li>
+        </ul>
+    </div>
+
+
+    <!-- LINKS -->
+    <div class="section">
+        <div class="section-title">Links</div>
+
+        <p>
+            GitHub: <a href="#" style="color: var(--primary)">View Repository</a>
+        </p>
+
+        <p>
+            Live Demo: <a href="#" style="color: var(--primary)">View Live</a>
+        </p>
+    </div>
+
+
+    <footer>
+        Technical Documentation Template
+    </footer>
+
+</div>
+
+</body>
+</html>
