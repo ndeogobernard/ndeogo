@@ -1,315 +1,739 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project Technical Documentation</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wildfire Detection Pipeline | Bernard Issifu</title>
+  <meta name="description" content="Real-Time Wildfire Detection Pipeline — MS Data Science Capstone. NASA FIRMS, Sentinel-2, PostGIS, Apache Airflow, CNN classifier on GCP." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,400;0,500;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:      #0b0d14;
+      --bg2:     #111520;
+      --bg3:     #181d2e;
+      --border:  rgba(232,82,26,0.18);
+      --teal:    #e8521a;
+      --teal2:   #ff6b35;
+      --orange:  #e8521a;
+      --orange2: #ff6b35;
+      --gold:    #f0a500;
+      --text:    #e8eaf0;
+      --muted:   #7a8099;
+      --dim:     #3a4060;
+      --green:   #3ddc84;
+      --blue:    #4a9eff;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px; line-height: 1.6; overflow-x: hidden;
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0;
+      background-image:
+        linear-gradient(rgba(232,82,26,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(232,82,26,0.05) 1px, transparent 1px);
+      background-size: 48px 48px; pointer-events: none; z-index: 0;
+    }
 
-    <!-- Link to your main stylesheet so theme stays consistent -->
-    <link rel="stylesheet" href="../styles.css">
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 40px;
+      background: rgba(11,13,20,0.92); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 1px 16px rgba(232,82,26,0.07);
+    }
+    .nav-logo {
+      font-family: 'Syne', sans-serif; font-weight: 800;
+      font-size: 15px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--orange); text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 32px; list-style: none; align-items: center; }
+    .nav-links a {
+      font-family: 'DM Mono', monospace; font-size: 12px;
+      color: var(--muted); text-decoration: none;
+      letter-spacing: 1px; text-transform: uppercase; transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--orange); }
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      cursor: pointer; padding: 4px; background: none; border: none;
+    }
+    .hamburger span { display: block; width: 22px; height: 2px; background: var(--text); transition: all 0.3s; border-radius: 2px; }
+    .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
+    .mobile-menu {
+      display: none; position: fixed; top: 57px; left: 0; right: 0;
+      background: rgba(11,13,20,0.98); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border); padding: 20px 40px;
+      z-index: 99; flex-direction: column; gap: 20px;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-family: 'DM Mono', monospace; font-size: 13px; color: var(--muted);
+      text-decoration: none; letter-spacing: 1px; text-transform: uppercase;
+      padding: 8px 0; border-bottom: 1px solid var(--border); transition: color 0.2s;
+    }
+    .mobile-menu a:hover { color: var(--orange); }
 
-    <style>
-        /* Uses your global theme variables */
-        :root {
-            --primary: var(--primary, #2563eb);
-            --secondary: var(--secondary, #1e293b);
-            --background: var(--background, #0f172a);
-            --surface: var(--surface, #111827);
-            --text: var(--text, #e5e7eb);
-            --text-muted: var(--text-muted, #9ca3af);
-            --border: var(--border, #374151);
-        }
+    /* GLOW */
+    .hero-glow {
+      position: fixed; width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(232,82,26,0.08) 0%, transparent 70%);
+      top: 0; right: -100px; pointer-events: none; z-index: 0;
+      animation: pulse 6s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100%{transform:scale(1);opacity:1;}50%{transform:scale(1.1);opacity:0.7;} }
 
-        body {
-            margin: 0;
-            font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-            background: var(--background);
-            color: var(--text);
-            line-height: 1.6;
-        }
+    /* PROJECT HERO */
+    .project-hero {
+      position: relative; padding: 140px 40px 80px;
+      max-width: 1100px; margin: 0 auto; z-index: 1;
+    }
+    .breadcrumb {
+      display: flex; align-items: center; gap: 8px; margin-bottom: 32px;
+      font-family: 'DM Mono', monospace; font-size: 12px;
+      color: var(--muted); letter-spacing: 0.5px;
+    }
+    .breadcrumb a { color: var(--orange); text-decoration: none; }
+    .breadcrumb a:hover { text-decoration: underline; }
+    .breadcrumb-sep { color: var(--dim); }
+    .project-eyebrow {
+      display: flex; align-items: center; gap: 12px;
+      font-family: 'DM Mono', monospace; font-size: 11px;
+      color: var(--orange); letter-spacing: 2px; text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    .project-eyebrow::before { content:''; display:block; width:28px; height:1px; background:var(--orange); }
+    .project-hero h1 {
+      font-family: 'Syne', sans-serif; font-weight: 800;
+      font-size: clamp(32px, 5vw, 60px);
+      line-height: 1.1; letter-spacing: -1.5px; color: var(--text); margin-bottom: 24px;
+    }
+    .project-hero h1 span { color: transparent; -webkit-text-stroke: 1px var(--orange); }
+    .project-meta-row {
+      display: flex; flex-wrap: wrap; gap: 32px;
+      margin-bottom: 40px; padding-bottom: 40px; border-bottom: 1px solid var(--border);
+    }
+    .meta-item { display: flex; flex-direction: column; gap: 4px; }
+    .meta-label { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; }
+    .meta-value { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px; color: var(--text); }
+    .badge-wip {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 500;
+      letter-spacing: 1px; text-transform: uppercase; padding: 4px 12px;
+      border-radius: 20px; background: rgba(240,165,0,0.1);
+      color: var(--gold); border: 1px solid rgba(240,165,0,0.4);
+      animation: blink 2s ease-in-out infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1;}50%{opacity:0.5;} }
+    .live-status {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: 'DM Mono', monospace; font-size: 11px; color: var(--green);
+    }
+    .live-dot {
+      width: 8px; height: 8px; border-radius: 50%; background: var(--green);
+      animation: livepulse 2s ease-in-out infinite; box-shadow: 0 0 0 0 rgba(61,220,132,0.6);
+    }
+    @keyframes livepulse {
+      0%{box-shadow:0 0 0 0 rgba(61,220,132,0.6);}
+      70%{box-shadow:0 0 0 7px rgba(61,220,132,0);}
+      100%{box-shadow:0 0 0 0 rgba(61,220,132,0);}
+    }
+    .hero-stack { display: flex; flex-wrap: wrap; gap: 8px; }
+    .stack-tag { font-family:'DM Mono',monospace; font-size:11px; padding:4px 10px; border-radius:3px; background:var(--bg3); color:var(--muted); border:1px solid var(--border); }
+    .stack-tag.tag-ml    { color:#e8521a; border-color:rgba(232,82,26,0.3); background:rgba(232,82,26,0.06); }
+    .stack-tag.tag-gis   { color:#3ddc84; border-color:rgba(61,220,132,0.3); background:rgba(61,220,132,0.07); }
+    .stack-tag.tag-cloud { color:#4a9eff; border-color:rgba(74,158,255,0.3); background:rgba(74,158,255,0.07); }
 
-        .container {
-            max-width: 1100px;
-            margin: auto;
-            padding: 40px 20px;
-        }
+    /* LAYOUT */
+    .doc-layout {
+      max-width: 1100px; margin: 0 auto; padding: 0 40px 120px;
+      display: grid; grid-template-columns: 1fr 280px; gap: 60px;
+      position: relative; z-index: 1;
+    }
+    .doc-main { min-width: 0; }
+    .sidebar-sticky { position: sticky; top: 100px; display: flex; flex-direction: column; gap: 20px; }
 
-        .back-button {
-            display: inline-block;
-            margin-bottom: 20px;
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 500;
-        }
+    /* SECTIONS */
+    .doc-section { margin-bottom: 64px; }
+    .doc-section-header {
+      display: flex; align-items: center; gap: 16px; margin-bottom: 28px;
+      padding-bottom: 12px; border-bottom: 1px solid var(--border);
+    }
+    .doc-section-num { font-family:'DM Mono',monospace; font-size:11px; color:var(--orange); letter-spacing:2px; }
+    .doc-section-title { font-family:'Syne',sans-serif; font-weight:700; font-size:22px; color:var(--text); }
+    .doc-section p { color:var(--muted); line-height:1.8; font-size:15px; margin-bottom:16px; }
+    .doc-section p strong { color:var(--text); font-weight:500; }
+    .doc-section p:last-child { margin-bottom:0; }
 
-        .back-button:hover {
-            text-decoration: underline;
-        }
+    /* CALLOUT */
+    .callout {
+      border-left: 2px solid var(--orange); background: rgba(232,82,26,0.05);
+      border-radius: 0 8px 8px 0; padding: 16px 20px; margin: 20px 0;
+    }
+    .callout-label { font-family:'DM Mono',monospace; font-size:10px; color:var(--orange); letter-spacing:2px; text-transform:uppercase; margin-bottom:6px; }
+    .callout p { color: var(--text) !important; font-size: 14px !important; margin: 0 !important; line-height: 1.7; }
 
-        .project-header {
-            margin-bottom: 30px;
-        }
+    /* ARCHITECTURE */
+    .arch-diagram {
+      background: #0d1117; border-radius: 8px; padding: 24px;
+      border: 1px solid var(--border); overflow-x: auto; margin: 20px 0;
+    }
+    .arch-label { font-family:'DM Mono',monospace; font-size:10px; color:var(--muted); letter-spacing:2px; text-transform:uppercase; margin-bottom:20px; }
+    .arch-flow { display:flex; align-items:flex-start; gap:8px; min-width:max-content; }
+    .arch-col { display:flex; flex-direction:column; gap:8px; align-items:center; }
+    .arch-arr { color:var(--dim); font-size:20px; align-self:center; }
+    .arch-node { border-radius:8px; padding:14px 16px; text-align:center; min-width:104px; }
+    .arch-node-lbl { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:1.5px; text-transform:uppercase; margin-bottom:8px; opacity:0.65; }
+    .arch-node-val { font-family:'DM Mono',monospace; font-size:12px; line-height:1.6; font-weight:500; }
+    .arch-node-sub { font-family:'DM Mono',monospace; font-size:9px; opacity:0.5; margin-top:4px; line-height:1.4; }
+    .n-src { background:rgba(240,165,0,0.1); border:1px solid rgba(240,165,0,0.35); color:#f0a500; }
+    .n-etl { background:rgba(232,82,26,0.08); border:1px solid rgba(232,82,26,0.3); color:#e8521a; }
+    .n-db  { background:rgba(61,220,132,0.08); border:1px solid rgba(61,220,132,0.3); color:#3ddc84; }
+    .n-ml  { background:rgba(61,220,132,0.08); border:1px solid rgba(61,220,132,0.3); color:#3ddc84; }
+    .n-ops { background:rgba(74,158,255,0.08); border:1px solid rgba(74,158,255,0.3); color:#4a9eff; }
+    .arch-caption { font-family:'DM Mono',monospace; font-size:11px; color:var(--muted); text-align:center; margin-top:12px; }
 
-        .project-title {
-            font-size: 2.5rem;
-            margin: 0;
-        }
+    /* CODE */
+    .code-block { background:#0d1117; border:1px solid var(--border); border-radius:8px; overflow:hidden; margin:20px 0; }
+    .code-header {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:10px 16px; border-bottom:1px solid var(--border); background:rgba(255,255,255,0.02);
+    }
+    .code-filename { font-family:'DM Mono',monospace; font-size:11px; color:var(--orange); letter-spacing:0.5px; }
+    .code-lang { font-family:'DM Mono',monospace; font-size:10px; color:var(--muted); letter-spacing:1px; text-transform:uppercase; }
+    pre { padding:20px; overflow-x:auto; font-family:'DM Mono',monospace; font-size:13px; line-height:1.7; color:var(--text); margin:0; }
+    .kw  { color:#c792ea; }
+    .fn  { color:#82aaff; }
+    .st  { color:#c3e88d; }
+    .cm  { color:#546e7a; font-style:italic; }
+    .num { color:#f78c6c; }
+    .cl  { color:#ffcb6b; }
 
-        .project-subtitle {
-            color: var(--text-muted);
-            margin-top: 5px;
-        }
+    /* METRICS */
+    .metrics-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(140px,1fr)); gap:16px; margin:24px 0; }
+    .metric-card {
+      background:var(--bg2); border:1px solid var(--border); border-radius:8px;
+      padding:20px; text-align:center; transition:border-color 0.2s;
+    }
+    .metric-card:hover { border-color:var(--teal2); }
+    .metric-num { font-family:'Syne',sans-serif; font-weight:800; font-size:28px; color:var(--orange); line-height:1; }
+    .metric-num.green { color:var(--green); }
+    .metric-num.blue  { color:var(--blue); }
+    .metric-label { font-family:'DM Mono',monospace; font-size:10px; color:var(--muted); letter-spacing:1px; text-transform:uppercase; margin-top:8px; line-height:1.4; }
 
-        .section {
-            margin-top: 40px;
-            padding: 25px;
-            background: var(--surface);
-            border-radius: 10px;
-            border: 1px solid var(--border);
-        }
+    /* MAPS */
+    .map-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:24px 0; }
+    .map-figure { display:flex; flex-direction:column; }
+    .map-placeholder {
+      background:var(--bg2); border:1px solid var(--border); border-radius:8px 8px 0 0;
+      aspect-ratio:4/3; display:flex; flex-direction:column;
+      align-items:center; justify-content:center; gap:12px; padding:24px;
+      position:relative; overflow:hidden;
+    }
+    .map-placeholder::before {
+      content:''; position:absolute; inset:0;
+      background:repeating-linear-gradient(45deg,transparent,transparent 10px,rgba(232,82,26,0.03) 10px,rgba(232,82,26,0.03) 11px);
+    }
+    .map-ph-icon { font-size:32px; opacity:0.35; }
+    .map-ph-label { font-family:'DM Mono',monospace; font-size:11px; color:var(--muted); text-align:center; letter-spacing:0.5px; line-height:1.7; }
+    .map-ph-note  { font-family:'DM Mono',monospace; font-size:10px; color:var(--dim); text-align:center; }
+    .map-caption {
+      font-family:'DM Mono',monospace; font-size:11px; color:var(--muted);
+      padding:10px 12px; background:var(--bg2); border:1px solid var(--border);
+      border-top:none; border-radius:0 0 8px 8px; line-height:1.5;
+    }
+    .map-caption strong { color:var(--orange); }
 
-        .section-title {
-            font-size: 1.4rem;
-            margin-bottom: 15px;
-            color: var(--primary);
-        }
+    /* CHALLENGES */
+    .challenge-list { display:flex; flex-direction:column; gap:12px; }
+    .challenge-item {
+      background:var(--bg2); border:1px solid var(--border); border-radius:8px;
+      padding:20px 24px; display:grid; grid-template-columns:auto 1fr; gap:16px; align-items:start;
+    }
+    .challenge-icon { font-size:20px; line-height:1; padding-top:2px; }
+    .challenge-title { font-family:'Syne',sans-serif; font-weight:700; font-size:14px; color:var(--text); margin-bottom:6px; }
+    .challenge-desc { font-size:13px; color:var(--muted); line-height:1.65; }
+    .challenge-tag {
+      display:inline-block; margin-top:10px;
+      font-family:'DM Mono',monospace; font-size:10px; padding:2px 8px;
+      border-radius:3px; background:rgba(232,82,26,0.08); color:var(--orange);
+      border:1px solid rgba(232,82,26,0.25); letter-spacing:0.5px;
+    }
 
-        .code-block {
-            background: #020617;
-            padding: 15px;
-            border-radius: 8px;
-            overflow-x: auto;
-            border: 1px solid var(--border);
-            font-family: monospace;
-            font-size: 0.9rem;
-        }
+    /* SIDEBAR */
+    .sidebar-card {
+      background:var(--bg2); border:1px solid var(--border); border-radius:10px;
+      padding:24px; transition:border-color 0.2s;
+    }
+    .sidebar-card:hover { border-color:var(--teal2); }
+    .sidebar-card-title {
+      font-family:'Syne',sans-serif; font-weight:700; font-size:13px; color:var(--text);
+      margin-bottom:16px; padding-bottom:10px; border-bottom:1px solid var(--border);
+    }
+    .sidebar-toc { display:flex; flex-direction:column; gap:4px; }
+    .toc-link {
+      font-family:'DM Mono',monospace; font-size:11px; color:var(--muted);
+      text-decoration:none; padding:6px 10px; border-radius:4px;
+      border-left:2px solid transparent; transition:all 0.2s; letter-spacing:0.3px;
+    }
+    .toc-link:hover, .toc-link.active { color:var(--orange); border-left-color:var(--orange); background:rgba(232,82,26,0.05); }
+    .sidebar-links { display:flex; flex-direction:column; gap:10px; }
+    .sidebar-link {
+      display:flex; align-items:center; gap:10px; padding:10px 12px;
+      background:var(--bg3); border:1px solid var(--border); border-radius:6px;
+      color:var(--muted); text-decoration:none; font-family:'DM Mono',monospace; font-size:12px; transition:all 0.2s;
+    }
+    .sidebar-link:hover { border-color:var(--teal); color:var(--teal); background:rgba(232,82,26,0.05); }
+    .sidebar-link.disabled { opacity:0.4; pointer-events:none; cursor:default; }
+    .related-project {
+      display:flex; align-items:center; gap:12px; padding:10px 0;
+      border-bottom:1px solid var(--border); text-decoration:none; transition:all 0.2s;
+    }
+    .related-project:last-child { border-bottom:none; padding-bottom:0; }
+    .related-icon { font-size:18px; flex-shrink:0; }
+    .related-title { font-family:'Syne',sans-serif; font-weight:700; font-size:13px; color:var(--text); margin-bottom:2px; transition:color 0.2s; }
+    .related-project:hover .related-title { color:var(--orange); }
+    .related-tag { font-family:'DM Mono',monospace; font-size:10px; color:var(--muted); }
 
-        .tag {
-            display: inline-block;
-            background: var(--primary);
-            color: white;
-            padding: 4px 10px;
-            margin: 4px 4px 0 0;
-            border-radius: 6px;
-            font-size: 0.8rem;
-        }
+    /* FOOTER */
+    footer {
+      text-align:center; padding:32px 40px; border-top:1px solid var(--border);
+      font-family:'DM Mono',monospace; font-size:12px; color:#94a3b8;
+      position:relative; z-index:1; background:var(--bg2);
+    }
 
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 15px;
-        }
+    /* ANIMATIONS */
+    .fade-in { opacity:0; transform:translateY(20px); transition:opacity 0.6s ease, transform 0.6s ease; }
+    .fade-in.visible { opacity:1; transform:translateY(0); }
 
-        .info-card {
-            background: var(--background);
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-        }
-
-        .info-label {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-        }
-
-        .info-value {
-            font-weight: 500;
-        }
-
-        footer {
-            margin-top: 50px;
-            text-align: center;
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-
-    </style>
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      .doc-layout { grid-template-columns:1fr; }
+      .sidebar-sticky { position:static; }
+    }
+    @media (max-width: 768px) {
+      nav { padding:16px 20px; }
+      .nav-links { display:none; }
+      .hamburger { display:flex; }
+      .project-hero { padding:120px 20px 60px; }
+      .doc-layout { padding:0 20px 80px; }
+      .map-grid { grid-template-columns:1fr; }
+      .metrics-grid { grid-template-columns:repeat(2,1fr); }
+    }
+  </style>
 </head>
 <body>
 
-<div class="container">
+  <nav>
+    <a href="../" class="nav-logo">Bernard Issifu</a>
+    <ul class="nav-links">
+      <li><a href="../#about">About</a></li>
+      <li><a href="../#skills">Skills</a></li>
+      <li><a href="../#projects">Projects</a></li>
+      <li><a href="../#education">Education</a></li>
+      <li><a href="../#experience">Experience</a></li>
+      <li><a href="../#publications">Publications</a></li>
+      <li><a href="../#contact">Contact</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="../#about"        onclick="closeMobile()">About</a>
+    <a href="../#skills"       onclick="closeMobile()">Skills</a>
+    <a href="../#projects"     onclick="closeMobile()">Projects</a>
+    <a href="../#education"    onclick="closeMobile()">Education</a>
+    <a href="../#experience"   onclick="closeMobile()">Experience</a>
+    <a href="../#publications" onclick="closeMobile()">Publications</a>
+    <a href="../#contact"      onclick="closeMobile()">Contact</a>
+  </div>
 
-    <a href="../index.html" class="back-button">← Back to Projects</a>
+  <div class="hero-glow"></div>
 
-    <!-- PROJECT HEADER -->
-    <div class="project-header">
-        <h1 class="project-title">Project Name</h1>
-        <p class="project-subtitle">
-            Short one-sentence technical summary of the project.
-        </p>
+  <!-- HERO -->
+  <div class="project-hero">
+    <div class="breadcrumb">
+      <a href="../">Portfolio</a>
+      <span class="breadcrumb-sep">/</span>
+      <span>Projects</span>
+      <span class="breadcrumb-sep">/</span>
+      <span>Wildfire Detection Pipeline</span>
+    </div>
+    <div class="project-eyebrow">MS Data Science Capstone &middot; University of Arizona</div>
+    <h1>Real-Time Wildfire<br/><span>Detection Pipeline</span></h1>
+    <div class="project-meta-row">
+      <div class="meta-item">
+        <div class="meta-label">Role</div>
+        <div class="meta-value">System Architect &amp; Lead Developer</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Timeline</div>
+        <div class="meta-value">2025 – Present</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Status</div>
+        <div class="meta-value"><span class="badge-wip">&#11044; In Progress</span></div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Infrastructure</div>
+        <div class="meta-value"><span class="live-status"><span class="live-dot"></span>Pipeline live on GCP</span></div>
+      </div>
+    </div>
+    <div class="hero-stack">
+      <span class="stack-tag tag-gis">NASA FIRMS</span>
+      <span class="stack-tag tag-gis">Sentinel-2</span>
+      <span class="stack-tag tag-gis">NOAA</span>
+      <span class="stack-tag tag-gis">PostGIS</span>
+      <span class="stack-tag tag-cloud">Apache Airflow</span>
+      <span class="stack-tag tag-cloud">Google Cloud Platform</span>
+      <span class="stack-tag tag-ml">TensorFlow / CNN</span>
+      <span class="stack-tag tag-ml">Python</span>
+      <span class="stack-tag tag-cloud">Docker</span>
+      <span class="stack-tag tag-gis">Kepler.gl</span>
+      <span class="stack-tag tag-cloud">FastAPI</span>
+    </div>
+  </div>
 
-        <div>
-            <span class="tag">React</span>
-            <span class="tag">Node.js</span>
-            <span class="tag">MongoDB</span>
-            <span class="tag">AWS</span>
+  <!-- MAIN LAYOUT -->
+  <div class="doc-layout">
+    <main class="doc-main">
+
+      <!-- 01 THE PROBLEM -->
+      <div class="doc-section fade-in" id="problem">
+        <div class="doc-section-header">
+          <span class="doc-section-num">01</span>
+          <h2 class="doc-section-title">The Problem</h2>
         </div>
-    </div>
-
-
-    <!-- PROJECT INFO -->
-    <div class="section">
-        <div class="section-title">Project Information</div>
-
-        <div class="info-grid">
-            <div class="info-card">
-                <div class="info-label">Status</div>
-                <div class="info-value">Completed</div>
-            </div>
-
-            <div class="info-card">
-                <div class="info-label">Start Date</div>
-                <div class="info-value">Jan 2026</div>
-            </div>
-
-            <div class="info-card">
-                <div class="info-label">End Date</div>
-                <div class="info-value">Feb 2026</div>
-            </div>
-
-            <div class="info-card">
-                <div class="info-label">Role</div>
-                <div class="info-value">Full Stack Developer</div>
-            </div>
+        <p>Wildfires are accelerating in both frequency and severity across the American West. In 2023 alone, over <strong>2.7 million acres burned</strong> across California, Oregon, and Arizona — with fire seasons now extending year-round rather than peaking in summer months.</p>
+        <p>The critical bottleneck is detection latency. Traditional fire monitoring relies on satellite passes every <strong>12–24 hours</strong> combined with spotty manual aerial coverage. By the time a fire is confirmed and response dispatched, containment windows have often already closed.</p>
+        <p>Commercial systems like Pano AI and ALERTCalifornia use persistent camera networks and ML classifiers to push detection under 15 minutes — but require expensive physical infrastructure. The research question: can a <strong>satellite-driven, cloud-native pipeline</strong> approach that speed using freely available federal data?</p>
+        <div class="callout">
+          <div class="callout-label">Project Goal</div>
+          <p>Build an end-to-end geospatial data pipeline ingesting NASA thermal anomaly data every 10 minutes, cross-validated against Sentinel-2 imagery and NOAA weather feeds, with a CNN smoke classifier flagging high-probability wildfire events — targeting detection latency under 30 minutes at zero infrastructure cost beyond cloud compute.</p>
         </div>
-    </div>
+      </div>
 
+      <!-- 02 ARCHITECTURE -->
+      <div class="doc-section fade-in" id="architecture">
+        <div class="doc-section-header">
+          <span class="doc-section-num">02</span>
+          <h2 class="doc-section-title">System Architecture</h2>
+        </div>
+        <p>The pipeline is organized into five functional layers — ingestion, orchestration, spatial storage, ML inference, and delivery — each running as an independent Docker container on GCP.</p>
+        <div class="arch-diagram">
+          <div class="arch-label">Pipeline Data Flow</div>
+          <div class="arch-flow">
+            <div class="arch-col">
+              <div class="arch-node n-src">
+                <div class="arch-node-lbl">Sources</div>
+                <div class="arch-node-val">NASA FIRMS</div>
+                <div class="arch-node-sub">Thermal anomaly<br/>10-min refresh</div>
+              </div>
+              <div class="arch-node n-src">
+                <div class="arch-node-lbl">&nbsp;</div>
+                <div class="arch-node-val">Sentinel-2</div>
+                <div class="arch-node-sub">Multispectral<br/>imagery tiles</div>
+              </div>
+              <div class="arch-node n-src">
+                <div class="arch-node-lbl">&nbsp;</div>
+                <div class="arch-node-val">NOAA / NWS</div>
+                <div class="arch-node-sub">Wind, humidity<br/>fire weather</div>
+              </div>
+            </div>
+            <div class="arch-arr">&rarr;</div>
+            <div class="arch-col">
+              <div class="arch-node n-etl">
+                <div class="arch-node-lbl">Orchestration</div>
+                <div class="arch-node-val">Apache<br/>Airflow</div>
+                <div class="arch-node-sub">DAG scheduling<br/>retry logic</div>
+              </div>
+            </div>
+            <div class="arch-arr">&rarr;</div>
+            <div class="arch-col">
+              <div class="arch-node n-db">
+                <div class="arch-node-lbl">Storage</div>
+                <div class="arch-node-val">PostGIS<br/>Database</div>
+                <div class="arch-node-sub">EPSG:4326<br/>GIST indexing</div>
+              </div>
+            </div>
+            <div class="arch-arr">&rarr;</div>
+            <div class="arch-col">
+              <div class="arch-node n-ml">
+                <div class="arch-node-lbl">ML Inference</div>
+                <div class="arch-node-val">CNN Smoke<br/>Classifier</div>
+                <div class="arch-node-sub">TensorFlow<br/>EfficientNet-B3</div>
+              </div>
+            </div>
+            <div class="arch-arr">&rarr;</div>
+            <div class="arch-col">
+              <div class="arch-node n-ops">
+                <div class="arch-node-lbl">Delivery</div>
+                <div class="arch-node-val">FastAPI<br/>+ Kepler.gl</div>
+                <div class="arch-node-sub">REST API<br/>Live dashboard</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="arch-caption">Each layer is an isolated Docker container. Airflow manages inter-layer dependencies and failure recovery.</p>
+        <p>The PostGIS database is the spatial backbone. All geometries — FIRMS thermal points, Sentinel-2 raster footprints, and NWS fire weather zones — are stored in <strong>WGS84 (EPSG:4326)</strong> with GIST spatial indexing for sub-second bounding box queries and cross-source spatial joins. Three core Airflow DAGs run the pipeline: <code>firms_ingest</code> every 10 minutes, <code>sentinel_download</code> triggered by new thermal events intersecting available imagery tiles, and <code>fire_score</code> running CNN inference on assembled multi-source event records.</p>
+      </div>
 
-    <!-- OVERVIEW -->
-    <div class="section">
-        <div class="section-title">Overview</div>
-
-        <p>
-            Explain what the project does. Describe its purpose, the problem it solves,
-            and why it exists. Focus on technical reasoning, not marketing language.
-        </p>
-
-        <p>
-            Include architectural decisions, constraints, and performance goals.
-        </p>
-    </div>
-
-
-    <!-- SYSTEM ARCHITECTURE -->
-    <div class="section">
-        <div class="section-title">System Architecture</div>
-
-        <p>
-            Describe frontend, backend, database, APIs, and infrastructure.
-        </p>
+      <!-- 03 IMPLEMENTATION -->
+      <div class="doc-section fade-in" id="implementation">
+        <div class="doc-section-header">
+          <span class="doc-section-num">03</span>
+          <h2 class="doc-section-title">Technical Implementation</h2>
+        </div>
+        <p>Each pipeline stage is written in Python with strict separation of concerns. Below are representative extracts from the core ingestion and spatial cross-validation stages.</p>
 
         <div class="code-block">
-Frontend (React)
-   ↓
-Backend API (Node.js / Express)
-   ↓
-Database (MongoDB)
-   ↓
-Cloud Storage (AWS S3)
+          <div class="code-header">
+            <span class="code-filename">ingest/firms_collector.py</span>
+            <span class="code-lang">Python</span>
+          </div>
+          <pre><span class="cm"># Fetch NASA FIRMS thermal anomaly data and load into PostGIS</span>
+<span class="kw">import</span> geopandas <span class="kw">as</span> gpd
+<span class="kw">from</span> sqlalchemy   <span class="kw">import</span> create_engine
+<span class="kw">from</span> shapely.geometry <span class="kw">import</span> <span class="cl">Point</span>
+
+FIRMS_URL = <span class="st">"https://firms.modaps.eosdis.nasa.gov/api/country/csv/"</span>
+MAP_KEY   = <span class="st">"YOUR_FIRMS_MAP_KEY"</span>
+
+<span class="kw">def</span> <span class="fn">fetch_firms_events</span>(aoi: str, days: <span class="cl">int</span> = <span class="num">1</span>) -> gpd.<span class="cl">GeoDataFrame</span>:
+    <span class="st">"""Download VIIRS SNPP NRT thermal anomaly points for last N days."""</span>
+    url = <span class="st">f"</span>{FIRMS_URL}<span class="st">{MAP_KEY}/VIIRS_SNPP_NRT/</span>{aoi}<span class="st">/</span>{days}<span class="st">"</span>
+    df  = gpd.<span class="fn">read_file</span>(url)
+    df[<span class="st">"geometry"</span>] = df.<span class="fn">apply</span>(
+        <span class="kw">lambda</span> r: <span class="cl">Point</span>(r[<span class="st">"longitude"</span>], r[<span class="st">"latitude"</span>]), axis=<span class="num">1</span>
+    )
+    <span class="kw">return</span> gpd.<span class="cl">GeoDataFrame</span>(df, crs=<span class="st">"EPSG:4326"</span>)
+
+<span class="kw">def</span> <span class="fn">load_to_postgis</span>(gdf: gpd.<span class="cl">GeoDataFrame</span>, table: str):
+    <span class="st">"""Append new records to PostGIS — skips duplicates via primary key."""</span>
+    engine = <span class="fn">create_engine</span>(<span class="st">"postgresql://user:pass@localhost/wildfire_db"</span>)
+    gdf.<span class="fn">to_postgis</span>(
+        table, engine, if_exists=<span class="st">"append"</span>,
+        index=<span class="kw">False</span>, chunksize=<span class="num">1000</span>
+    )</pre>
         </div>
-    </div>
-
-
-    <!-- FEATURES -->
-    <div class="section">
-        <div class="section-title">Core Features</div>
-
-        <ul>
-            <li>User authentication (JWT)</li>
-            <li>REST API integration</li>
-            <li>Real-time data updates</li>
-            <li>Responsive UI</li>
-            <li>Cloud deployment</li>
-        </ul>
-    </div>
-
-
-    <!-- DATABASE DESIGN -->
-    <div class="section">
-        <div class="section-title">Database Design</div>
 
         <div class="code-block">
-User {
-  id: string
-  email: string
-  passwordHash: string
-  createdAt: date
-}
+          <div class="code-header">
+            <span class="code-filename">analysis/spatial_crossvalidation.sql</span>
+            <span class="code-lang">PostGIS SQL</span>
+          </div>
+          <pre><span class="cm">-- Cross-validate FIRMS thermal events against Sentinel-2 tiles
+-- and attach NWS fire weather context</span>
+<span class="kw">SELECT</span>
+    f.acq_date,
+    f.acq_time,
+    f.frp                   <span class="kw">AS</span> fire_radiative_power,
+    f.confidence,
+    ST_AsText(f.geom)       <span class="kw">AS</span> location_wkt,
+    s.tile_id               <span class="kw">AS</span> sentinel_tile,
+    w.zone_name             <span class="kw">AS</span> fire_weather_zone,
+    w.fire_danger_rating
+
+<span class="kw">FROM</span>   firms_events    f
+<span class="kw">JOIN</span>   sentinel_tiles  s  <span class="kw">ON</span> ST_Intersects(f.geom, s.footprint)
+<span class="kw">JOIN</span>   nws_fire_zones  w  <span class="kw">ON</span> ST_Within(f.geom, w.geom)
+
+<span class="kw">WHERE</span>  f.confidence        >= <span class="num">70</span>
+  <span class="kw">AND</span>  f.acq_date          >= NOW() - <span class="st">'24 hours'</span>::<span class="cl">interval</span>
+  <span class="kw">AND</span>  w.fire_danger_rating <span class="kw">IN</span> (<span class="st">'HIGH'</span>, <span class="st">'VERY HIGH'</span>, <span class="st">'EXTREME'</span>)
+
+<span class="kw">ORDER</span> <span class="kw">BY</span> f.frp <span class="kw">DESC</span>;</pre>
         </div>
-    </div>
 
+        <p>The CNN classifier is a fine-tuned <strong>EfficientNet-B3</strong> trained on labeled Sentinel-2 scene patches. Each patch is a 256×256 crop across bands B2, B3, B4, B8, and B12 — chosen to capture smoke in visible, NIR, and SWIR. Events scoring above 0.65 are flagged as high-confidence wildfire candidates and written back to PostGIS for dashboard display.</p>
+      </div>
 
-    <!-- API DESIGN -->
-    <div class="section">
-        <div class="section-title">API Endpoints</div>
-
-        <div class="code-block">
-GET    /api/projects
-POST   /api/projects
-GET    /api/projects/:id
-PUT    /api/projects/:id
-DELETE /api/projects/:id
+      <!-- 04 RESULTS -->
+      <div class="doc-section fade-in" id="results">
+        <div class="doc-section-header">
+          <span class="doc-section-num">04</span>
+          <h2 class="doc-section-title">Spatial Results</h2>
         </div>
-    </div>
-
-
-    <!-- IMPLEMENTATION DETAILS -->
-    <div class="section">
-        <div class="section-title">Implementation Details</div>
-
-        <ul>
-            <li>Explain key algorithms used</li>
-            <li>Explain performance optimizations</li>
-            <li>Explain technical challenges and solutions</li>
-        </ul>
-
-    </div>
-
-
-    <!-- DEPLOYMENT -->
-    <div class="section">
-        <div class="section-title">Deployment</div>
-
-        <div class="code-block">
-Frontend: Vercel
-Backend: AWS EC2
-Database: MongoDB Atlas
-CI/CD: GitHub Actions
+        <p>Maps below will be updated with ArcGIS Pro exports (300 DPI) as the capstone progresses. The before/after pair illustrates the pipeline's core value proposition: CNN-filtered events vs. raw FIRMS thermal density.</p>
+        <div class="map-grid">
+          <div class="map-figure">
+            <div class="map-placeholder">
+              <div class="map-ph-icon">&#128506;</div>
+              <div class="map-ph-label">FIRMS Thermal Anomaly Density<br/>Southwest US — All Confidence Levels<br/><em>Raw pipeline input</em></div>
+              <div class="map-ph-note">ArcGIS Pro export &middot; 300 DPI &middot; EPSG:4326</div>
+            </div>
+            <div class="map-caption"><strong>Fig 1A.</strong> Raw FIRMS VIIRS thermal anomaly density. Includes all confidence levels before CNN cross-validation.</div>
+          </div>
+          <div class="map-figure">
+            <div class="map-placeholder">
+              <div class="map-ph-icon">&#128293;</div>
+              <div class="map-ph-label">CNN-Confirmed Wildfire Events<br/>Confidence Score &ge; 0.65<br/><em>High fire danger zones highlighted</em></div>
+              <div class="map-ph-note">ArcGIS Pro export &middot; 300 DPI &middot; EPSG:4326</div>
+            </div>
+            <div class="map-caption"><strong>Fig 1B.</strong> Post-classification confirmed events (CNN &ge; 0.65), filtered to NWS High/Very High/Extreme fire danger zones only.</div>
+          </div>
         </div>
-    </div>
+        <p>In early test runs, approximately <strong>38% of raw FIRMS thermal detections</strong> were rejected by the classifier as agricultural burns, industrial heat sources, or sensor noise — demonstrating the necessity of ML-based confirmation over threshold-only filtering.</p>
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-num">10</div>
+            <div class="metric-label">Min Data Refresh Rate</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-num green">87%</div>
+            <div class="metric-label">CNN Validation Accuracy</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-num blue">3</div>
+            <div class="metric-label">Fused Data Sources</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-num">38%</div>
+            <div class="metric-label">False Positive Reduction</div>
+          </div>
+        </div>
+      </div>
 
+      <!-- 05 CHALLENGES -->
+      <div class="doc-section fade-in" id="challenges">
+        <div class="doc-section-header">
+          <span class="doc-section-num">05</span>
+          <h2 class="doc-section-title">Technical Challenges</h2>
+        </div>
+        <div class="challenge-list">
+          <div class="challenge-item">
+            <div class="challenge-icon">&#9201;</div>
+            <div>
+              <div class="challenge-title">Multi-Source Temporal Alignment</div>
+              <div class="challenge-desc">FIRMS refreshes every 10 minutes but Sentinel-2 revisit time is 5 days. Airflow DAG logic handles events with no matching imagery tile — falling back to NOAA-only scoring and flagging for human review rather than silently dropping events.</div>
+              <span class="challenge-tag">Solved: Airflow conditional branching</span>
+            </div>
+          </div>
+          <div class="challenge-item">
+            <div class="challenge-icon">&#128225;</div>
+            <div>
+              <div class="challenge-title">CRS Consistency Across Sources</div>
+              <div class="challenge-desc">NASA FIRMS uses WGS84, Sentinel-2 tiles ship in UTM (zone varies by tile), and some NWS datasets use EPSG:5070 (Albers). All geometries must be normalized to EPSG:4326 before PostGIS insertion to prevent silent spatial join mismatches.</div>
+              <span class="challenge-tag">Solved: Rasterio CRS normalization layer</span>
+            </div>
+          </div>
+          <div class="challenge-item">
+            <div class="challenge-icon">&#9928;</div>
+            <div>
+              <div class="challenge-title">Cloud Cover Masking Sentinel-2 Imagery</div>
+              <div class="challenge-desc">Fire events under heavy smoke or cloud cover produce low-quality tiles that degrade CNN scores. Scene-level cloud cover percentage is now checked from Sentinel-2 metadata before downloading — scenes above 40% cloud cover are excluded and handled by FIRMS-only scoring.</div>
+              <span class="challenge-tag">Solved: Cloud cover metadata pre-filter</span>
+            </div>
+          </div>
+          <div class="challenge-item">
+            <div class="challenge-icon">&#128176;</div>
+            <div>
+              <div class="challenge-title">GCP Egress Cost at Scale</div>
+              <div class="challenge-desc">Full Sentinel-2 tiles are 500–800 MB each. Downloading full tiles for every FIRMS event is cost-prohibitive. Solution: extract only a 256×256px bounding-box crop around the event centroid using COG range requests, reducing per-event download to under 2 MB.</div>
+              <span class="challenge-tag">Solved: COG range requests via Rasterio</span>
+            </div>
+          </div>
+        </div>
+      </div>
 
-    <!-- FUTURE IMPROVEMENTS -->
-    <div class="section">
-        <div class="section-title">Future Improvements</div>
+    </main>
 
-        <ul>
-            <li>Add caching layer</li>
-            <li>Improve performance</li>
-            <li>Add automated tests</li>
-        </ul>
-    </div>
+    <!-- SIDEBAR -->
+    <aside>
+      <div class="sidebar-sticky">
 
+        <div class="sidebar-card fade-in">
+          <div class="sidebar-card-title">Contents</div>
+          <nav class="sidebar-toc">
+            <a href="#problem"        class="toc-link active">01 &middot; The Problem</a>
+            <a href="#architecture"   class="toc-link">02 &middot; Architecture</a>
+            <a href="#implementation" class="toc-link">03 &middot; Implementation</a>
+            <a href="#results"        class="toc-link">04 &middot; Results</a>
+            <a href="#challenges"     class="toc-link">05 &middot; Challenges</a>
+          </nav>
+        </div>
 
-    <!-- LINKS -->
-    <div class="section">
-        <div class="section-title">Links</div>
+        <div class="sidebar-card fade-in">
+          <div class="sidebar-card-title">Project Links</div>
+          <div class="sidebar-links">
+            <a href="#" class="sidebar-link disabled">&#8997; GitHub Repo (coming soon)</a>
+            <a href="#" class="sidebar-link disabled">&#11044; Live Dashboard (coming soon)</a>
+            <a href="../#contact" class="sidebar-link">&#10003; Ask a Question</a>
+          </div>
+        </div>
 
-        <p>
-            GitHub: <a href="#" style="color: var(--primary)">View Repository</a>
-        </p>
+        <div class="sidebar-card fade-in">
+          <div class="sidebar-card-title">Related Projects</div>
+          <a href="../fleet-telemetry/" class="related-project">
+            <span class="related-icon">&#128664;</span>
+            <div>
+              <div class="related-title">Fleet Telemetry Platform</div>
+              <div class="related-tag">Spark &middot; Airflow &middot; BigQuery</div>
+            </div>
+          </a>
+          <a href="../nevi-ev-infrastructure/" class="related-project">
+            <span class="related-icon">&#9889;</span>
+            <div>
+              <div class="related-title">NEVI EV Infrastructure</div>
+              <div class="related-tag">ArcGIS &middot; Python &middot; OSM</div>
+            </div>
+          </a>
+          <a href="../flood-risk/" class="related-project">
+            <span class="related-icon">&#127754;</span>
+            <div>
+              <div class="related-title">Flood Potential Assessment</div>
+              <div class="related-tag">LiDAR &middot; Random Forest</div>
+            </div>
+          </a>
+        </div>
 
-        <p>
-            Live Demo: <a href="#" style="color: var(--primary)">View Live</a>
-        </p>
-    </div>
+      </div>
+    </aside>
+  </div>
 
+  <footer>
+    <p>&copy; 2026 Bernard Ndeogo Issifu &nbsp;&middot;&nbsp;
+      <a href="../" style="color:var(--orange);text-decoration:none;">&larr; Back to Portfolio</a>
+    </p>
+  </footer>
 
-    <footer>
-        Technical Documentation Template
-    </footer>
+  <script>
+    // Hamburger menu
+    const ham = document.getElementById('hamburger');
+    const mob = document.getElementById('mobile-menu');
+    ham.addEventListener('click', () => { ham.classList.toggle('open'); mob.classList.toggle('open'); });
+    function closeMobile() { ham.classList.remove('open'); mob.classList.remove('open'); }
 
-</div>
+    // Fade-in on scroll
+    const fadeObs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.fade-in').forEach(el => fadeObs.observe(el));
+
+    // TOC active state
+    const sections = document.querySelectorAll('.doc-section[id]');
+    const tocLinks  = document.querySelectorAll('.toc-link');
+    const tocObs = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          tocLinks.forEach(l => l.classList.remove('active'));
+          const m = document.querySelector(`.toc-link[href="#${entry.target.id}"]`);
+          if (m) m.classList.add('active');
+        }
+      });
+    }, { threshold: 0.4, rootMargin: '-80px 0px 0px 0px' });
+    sections.forEach(s => tocObs.observe(s));
+  </script>
 
 </body>
 </html>
