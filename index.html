@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bernard Ndeogo Issifu | Geospatial Data Scientist</title>
+  <meta name="description" content="Bernard Ndeogo Issifu — Geospatial Data Scientist. GISP Certified. Columbus, OH." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --space:     #080f1e;
+      --navy:      #0b1729;
+      --navy2:     #0f2040;
+      --navy3:     #162847;
+      --esa-blue:  #005EB8;
+      --esa-sky:   #00A9E0;
+      --esa-light: #4fc3f7;
+      --white:     #ffffff;
+      --off-white: #e8eef5;
+      --silver:    #a8b8cc;
+      --dim:       #4a6080;
+      --border:    rgba(0,94,184,0.2);
+      --border2:   rgba(255,255,255,0.08);
+      --green:     #00e676;
+      --amber:     #ffab40;
+      --card-bg:   #0d1e35;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--space);
+      color: var(--white);
+      font-family: 'Outfit', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        radial-gradient(1px 1px at 15% 20%, rgba(255,255,255,0.25) 0%, transparent 100%),
+        radial-gradient(1px 1px at 35% 65%, rgba(255,255,255,0.15) 0%, transparent 100%),
+        radial-gradient(1px 1px at 60% 15%, rgba(255,255,255,0.2) 0%, transparent 100%),
+        radial-gradient(1px 1px at 80% 45%, rgba(255,255,255,0.15) 0%, transparent 100%),
+        radial-gradient(1px 1px at 90% 75%, rgba(255,255,255,0.2) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 50% 88%, rgba(255,255,255,0.18) 0%, transparent 100%),
+        radial-gradient(1px 1px at 25% 90%, rgba(255,255,255,0.12) 0%, transparent 100%);
+      pointer-events: none; z-index: 0;
+    }
+    #scroll-progress {
+      position: fixed; top: 0; left: 0; height: 3px;
+      background: linear-gradient(90deg, var(--esa-blue), var(--esa-sky), var(--esa-light));
+      width: 0%; z-index: 200; transition: width 0.1s linear;
+    }
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 48px; height: 60px;
+      background: rgba(8,15,30,0.95); backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border2);
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 12px;
+      font-size: 13px; font-weight: 600; color: var(--white); text-decoration: none;
+    }
+    .nav-logo-dot {
+      width: 8px; height: 8px; border-radius: 50%; background: var(--esa-sky);
+      box-shadow: 0 0 8px var(--esa-sky);
+      animation: orbitpulse 3s ease-in-out infinite;
+    }
+    @keyframes orbitpulse {
+      0%, 100% { box-shadow: 0 0 6px var(--esa-sky); }
+      50% { box-shadow: 0 0 16px var(--esa-sky), 0 0 30px rgba(0,169,224,0.3); }
+    }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a {
+      font-size: 12px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase;
+      color: var(--silver); text-decoration: none; transition: color 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--esa-sky); }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+    .hamburger span { display: block; width: 22px; height: 1.5px; background: var(--silver); transition: all 0.3s; }
+    .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(4.5px,4.5px); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(4.5px,-4.5px); }
+    .mobile-menu {
+      display: none; position: fixed; top: 60px; left: 0; right: 0;
+      background: rgba(8,15,30,0.98); backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border2);
+      padding: 24px 48px; z-index: 99; flex-direction: column;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-size: 12px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase;
+      color: var(--silver); text-decoration: none; padding: 14px 0;
+      border-bottom: 1px solid var(--border2); transition: color 0.2s;
+    }
+    .mobile-menu a:hover { color: var(--esa-sky); }
+
+    /* HERO */
+    .hero {
+      position: relative; min-height: 100vh;
+      display: flex; align-items: flex-end;
+      overflow: hidden; z-index: 1;
+    }
+    .hero-visual {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 70% 40%, rgba(0,94,184,0.18) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 50% at 75% 35%, rgba(0,169,224,0.1) 0%, transparent 50%),
+        linear-gradient(180deg, var(--space) 0%, var(--navy) 50%, var(--space) 100%);
+    }
+    .hero-visual::before {
+      content: ''; position: absolute; right: 5%; top: 5%;
+      width: 55vw; height: 55vw; max-width: 700px; max-height: 700px;
+      border: 1px solid rgba(0,169,224,0.12); border-radius: 50%;
+    }
+    .hero-visual::after {
+      content: ''; position: absolute; right: 10%; top: 12%;
+      width: 40vw; height: 40vw; max-width: 520px; max-height: 520px;
+      border: 1px solid rgba(0,94,184,0.18); border-radius: 50%;
+    }
+    .hero-sat {
+      position: absolute; right: 22%; top: 22%;
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--esa-sky);
+      box-shadow: 0 0 16px var(--esa-sky), 0 0 40px rgba(0,169,224,0.4);
+      animation: orbit 12s linear infinite;
+    }
+    @keyframes orbit {
+      from { transform: rotate(0deg) translateX(240px) rotate(0deg); }
+      to   { transform: rotate(360deg) translateX(240px) rotate(-360deg); }
+    }
+    .hero-content { position: relative; z-index: 2; padding: 120px 48px 80px; max-width: 820px; }
+    .hero-eyebrow {
+      display: flex; align-items: center; gap: 12px;
+      font-size: 11px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--esa-sky); margin-bottom: 28px;
+    }
+    .hero-eyebrow::before { content: ''; display: block; width: 32px; height: 2px; background: var(--esa-sky); }
+    .hero h1 { font-size: clamp(46px,6.5vw,88px); font-weight: 800; line-height: 1; letter-spacing: -2px; margin-bottom: 12px; }
+    .hero h1 .name { display: block; color: var(--white); }
+    .hero h1 .role { display: block; color: transparent; -webkit-text-stroke: 1.5px var(--esa-blue); opacity: 0.7; }
+    .hero-tagline { font-size: 18px; font-weight: 300; color: var(--silver); line-height: 1.7; max-width: 580px; margin: 28px 0 44px; }
+    .hero-tagline strong { color: var(--white); font-weight: 600; }
+    .hero-cta { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 64px; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 13px 26px; font-family: 'Outfit', sans-serif;
+      font-size: 12px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+      text-decoration: none; transition: all 0.22s; cursor: pointer; border: none;
+    }
+    .btn svg { width: 14px; height: 14px; transition: transform 0.2s; }
+    .btn:hover svg { transform: translateX(4px); }
+    .btn-primary { background: var(--esa-blue); color: var(--white); }
+    .btn-primary:hover { background: #0072d9; }
+    .btn-outline { background: transparent; color: var(--white); border: 1px solid rgba(255,255,255,0.25); }
+    .btn-outline:hover { border-color: var(--esa-sky); color: var(--esa-sky); }
+    .btn-ghost { background: transparent; color: var(--silver); border: 1px solid var(--border2); }
+    .btn-ghost:hover { border-color: var(--dim); color: var(--white); }
+    .hero-databand { display: flex; gap: 0; border-top: 1px solid var(--border2); padding-top: 32px; flex-wrap: wrap; }
+    .databand-item { flex: 1; min-width: 140px; padding: 0 36px 0 0; border-right: 1px solid var(--border2); margin-right: 36px; }
+    .databand-item:last-child { border-right: none; margin-right: 0; }
+    .databand-num { font-size: 40px; font-weight: 800; color: var(--esa-sky); line-height: 1; margin-bottom: 4px; }
+    .databand-label { font-size: 11px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; color: var(--silver); }
+
+    /* SECTIONS */
+    .section-wrap { position: relative; z-index: 1; padding: 100px 48px; max-width: 1200px; margin: 0 auto; }
+    .section-alt-wrap { background: var(--navy); }
+    .section-header { margin-bottom: 56px; }
+    .section-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--esa-sky); margin-bottom: 12px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .section-label::before { content: ''; display: block; width: 24px; height: 2px; background: var(--esa-sky); }
+    .section-title { font-size: clamp(30px,4vw,48px); font-weight: 800; letter-spacing: -1px; color: var(--white); line-height: 1.1; }
+    .section-desc { font-size: 16px; color: var(--silver); margin-top: 12px; max-width: 620px; line-height: 1.7; }
+
+    /* ABOUT */
+    .about-grid { display: grid; grid-template-columns: 3fr 2fr; gap: 80px; align-items: start; }
+    .about-text p { font-size: 17px; color: var(--off-white); line-height: 1.8; margin-bottom: 20px; font-weight: 300; }
+    .about-text p strong { color: var(--white); font-weight: 600; }
+    .about-text p em { color: var(--esa-sky); font-style: normal; font-weight: 500; }
+    .info-panel { background: var(--card-bg); border: 1px solid var(--border); border-top: 3px solid var(--esa-blue); }
+    .info-panel-header { padding: 16px 24px; border-bottom: 1px solid var(--border2); font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--esa-sky); }
+    .info-panel-item { display: flex; align-items: flex-start; gap: 16px; padding: 20px 24px; border-bottom: 1px solid var(--border2); transition: background 0.2s; }
+    .info-panel-item:last-child { border-bottom: none; }
+    .info-panel-item:hover { background: rgba(0,94,184,0.07); }
+    .info-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+    .info-title { font-size: 13px; font-weight: 700; color: var(--white); margin-bottom: 4px; }
+    .info-body { font-size: 12px; color: var(--silver); line-height: 1.55; }
+
+    /* SKILLS */
+    .skills-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; }
+    .skill-card { background: var(--card-bg); border-top: 3px solid var(--esa-blue); padding: 28px 24px; transition: border-color 0.2s, background 0.2s; }
+    .skill-card:hover { border-color: var(--esa-sky); background: var(--navy3); }
+    .skill-card-title { font-size: 13px; font-weight: 700; color: var(--white); margin-bottom: 4px; }
+    .skill-card-status { font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 18px; }
+    .status-production { color: var(--esa-sky); }
+    .status-building { color: var(--amber); }
+    .status-domain { color: #b0c4de; }
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .skill-tag { font-size: 11px; font-weight: 500; padding: 4px 9px; background: rgba(255,255,255,0.05); border: 1px solid var(--border2); color: var(--silver); }
+    .skill-tag.core { background: rgba(0,94,184,0.15); border-color: rgba(0,94,184,0.4); color: var(--esa-light); }
+
+    /* PROJECTS */
+    .filter-bar { display: flex; gap: 0; margin-bottom: 40px; flex-wrap: wrap; }
+    .filter-btn {
+      padding: 10px 20px; font-family: 'Outfit', sans-serif;
+      font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+      background: transparent; color: var(--silver);
+      border: 1px solid var(--border2); border-right: none;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .filter-bar .filter-btn:last-child { border-right: 1px solid var(--border2); }
+    .filter-btn:hover, .filter-btn.active { background: var(--esa-blue); color: var(--white); border-color: var(--esa-blue); }
+    .projects-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+    .project-card {
+      background: var(--card-bg); padding: 36px;
+      display: flex; flex-direction: column; gap: 14px;
+      border-top: 3px solid transparent; transition: border-color 0.2s, background 0.2s;
+    }
+    .project-card:hover { border-color: var(--esa-sky); background: var(--navy3); }
+    .project-card.featured { grid-column: span 2; border-color: var(--esa-blue); background: linear-gradient(135deg, var(--navy2), var(--navy3)); }
+    .project-card.hidden { display: none; }
+    .project-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 4px 10px; width: fit-content; }
+    .badge-wip { background: rgba(255,171,64,0.12); border: 1px solid rgba(255,171,64,0.35); color: var(--amber); }
+    .badge-done { background: rgba(0,230,118,0.1); border: 1px solid rgba(0,230,118,0.3); color: var(--green); }
+    .badge-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; animation: blink 2s ease-in-out infinite; }
+    .badge-done .badge-dot { animation: none; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.4} }
+    .project-name { font-size: 20px; font-weight: 700; color: var(--white); letter-spacing: -0.3px; line-height: 1.2; }
+    .project-desc { font-size: 14px; color: var(--silver); line-height: 1.7; flex: 1; }
+    .arch-box { background: rgba(0,0,0,0.25); border: 1px solid var(--border2); padding: 18px 20px; overflow-x: auto; }
+    .arch-flow { display: flex; align-items: center; gap: 8px; min-width: max-content; }
+    .arch-node { background: var(--navy); border: 1px solid var(--border); padding: 10px 14px; text-align: center; min-width: 80px; }
+    .arch-node-label { font-family: 'JetBrains Mono',monospace; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--dim); margin-bottom: 5px; }
+    .arch-node-value { font-family: 'JetBrains Mono',monospace; font-size: 10px; color: var(--esa-light); line-height: 1.4; }
+    .arch-arrow { color: var(--dim); font-size: 14px; }
+    .live-badge { display: inline-flex; align-items: center; gap: 8px; font-family: 'JetBrains Mono',monospace; font-size: 10px; color: var(--green); }
+    .live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); animation: livepulse 2.5s ease-in-out infinite; }
+    @keyframes livepulse { 0%{box-shadow:0 0 0 0 rgba(0,230,118,0.5)} 70%{box-shadow:0 0 0 8px rgba(0,230,118,0)} 100%{box-shadow:0 0 0 0 rgba(0,230,118,0)} }
+    .project-stack { display: flex; flex-wrap: wrap; gap: 5px; }
+    .stack-tag { font-size: 10px; font-weight: 500; padding: 3px 8px; background: rgba(0,94,184,0.12); border: 1px solid rgba(0,94,184,0.3); color: var(--esa-light); }
+    .project-links { display: flex; gap: 16px; }
+    .plink { font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--esa-sky); text-decoration: none; display: flex; align-items: center; gap: 6px; transition: gap 0.2s; }
+    .plink:hover { gap: 10px; }
+    .plink.disabled { color: var(--dim); pointer-events: none; }
+
+    /* EDUCATION */
+    .certs-row { display: flex; gap: 2px; flex-wrap: wrap; margin-bottom: 56px; }
+    .cert-card { flex: 1; min-width: 220px; background: var(--card-bg); border: 1px solid var(--border2); border-top: 3px solid var(--esa-blue); padding: 22px 24px; display: flex; align-items: center; gap: 14px; transition: border-color 0.2s; }
+    .cert-card:hover { border-color: var(--esa-sky); }
+    .cert-icon { font-size: 22px; }
+    .cert-name { font-size: 14px; font-weight: 700; color: var(--white); margin-bottom: 3px; }
+    .cert-issuer { font-size: 11px; color: var(--esa-sky); font-weight: 500; }
+    .edu-timeline { display: flex; flex-direction: column; }
+    .edu-item { display: grid; grid-template-columns: 160px 1fr; gap: 0 40px; }
+    .edu-year { font-family: 'JetBrains Mono',monospace; font-size: 11px; color: var(--dim); padding-top: 5px; text-align: right; }
+    .edu-body { border-left: 1px solid var(--border2); padding: 0 0 44px 32px; position: relative; }
+    .edu-body::before { content: ''; position: absolute; left: -5px; top: 7px; width: 9px; height: 9px; border-radius: 50%; background: var(--esa-blue); border: 2px solid var(--space); box-shadow: 0 0 8px var(--esa-sky); }
+    .edu-degree { font-size: 18px; font-weight: 700; color: var(--white); margin-bottom: 4px; }
+    .edu-school { font-size: 13px; color: var(--esa-sky); font-weight: 500; margin-bottom: 10px; }
+    .edu-detail { font-size: 14px; color: var(--silver); line-height: 1.65; }
+
+    /* EXPERIENCE */
+    .exp-list { display: flex; flex-direction: column; gap: 2px; }
+    .exp-card { background: var(--card-bg); padding: 32px 36px; display: grid; grid-template-columns: 1fr auto; gap: 6px 32px; border-left: 3px solid transparent; transition: border-color 0.2s, background 0.2s; }
+    .exp-card:hover { border-color: var(--esa-sky); background: var(--navy3); }
+    .exp-title { font-size: 18px; font-weight: 700; color: var(--white); margin-bottom: 2px; }
+    .exp-company { font-size: 13px; color: var(--esa-sky); font-weight: 500; }
+    .exp-period { font-family: 'JetBrains Mono',monospace; font-size: 11px; color: var(--dim); text-align: right; white-space: nowrap; }
+    .exp-desc { grid-column: span 2; font-size: 14px; color: var(--silver); line-height: 1.75; margin-top: 14px; }
+    .exp-desc ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .exp-desc ul li { padding-left: 20px; position: relative; }
+    .exp-desc ul li::before { content: '→'; position: absolute; left: 0; color: var(--esa-blue); font-size: 12px; }
+    .exp-tags { grid-column: span 2; display: flex; flex-wrap: wrap; gap: 5px; margin-top: 14px; }
+    .exp-tag { font-size: 10px; font-weight: 500; padding: 3px 9px; background: rgba(255,255,255,0.04); border: 1px solid var(--border2); color: var(--silver); }
+
+    /* PUBLICATIONS */
+    .pub-list { display: flex; flex-direction: column; gap: 2px; }
+    .pub-card { background: var(--card-bg); padding: 28px 36px; display: grid; grid-template-columns: 70px 1fr auto; gap: 0 28px; border-left: 3px solid transparent; transition: border-color 0.2s, background 0.2s; }
+    .pub-card:hover { border-color: var(--esa-blue); background: var(--navy3); }
+    .pub-year { font-family: 'JetBrains Mono',monospace; font-size: 11px; color: var(--dim); padding-top: 3px; }
+    .pub-type { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--esa-sky); margin-bottom: 4px; }
+    .pub-venue { font-size: 12px; color: var(--silver); font-style: italic; margin-bottom: 8px; }
+    .pub-desc { font-size: 14px; color: var(--off-white); line-height: 1.65; }
+    .pub-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 10px; }
+    .pub-tag { font-size: 10px; padding: 2px 7px; background: rgba(255,255,255,0.04); border: 1px solid var(--border2); color: var(--silver); }
+    .pub-link-col { display: flex; align-items: flex-start; padding-top: 2px; }
+    .pub-link { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--esa-sky); text-decoration: none; border: 1px solid rgba(0,169,224,0.3); padding: 6px 12px; white-space: nowrap; transition: all 0.2s; }
+    .pub-link:hover { background: rgba(0,94,184,0.2); border-color: var(--esa-sky); }
+
+    /* CONTACT */
+    .contact-band { background: var(--navy); position: relative; z-index: 1; overflow: hidden; }
+    .contact-band::before { content: ''; position: absolute; top: -200px; right: -200px; width: 600px; height: 600px; background: radial-gradient(circle, rgba(0,94,184,0.12) 0%, transparent 60%); pointer-events: none; }
+    .contact-inner { max-width: 1200px; margin: 0 auto; padding: 100px 48px; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .contact-headline { font-size: clamp(36px,5vw,60px); font-weight: 800; letter-spacing: -1.5px; line-height: 1.05; color: var(--white); }
+    .contact-headline span { color: var(--esa-sky); }
+    .contact-sub { font-size: 17px; font-weight: 300; color: var(--silver); line-height: 1.7; margin-top: 20px; }
+    .contact-targets { margin-top: 14px; font-size: 12px; font-weight: 500; letter-spacing: 1px; color: var(--dim); }
+    .contact-targets em { color: var(--esa-sky); font-style: normal; }
+    .contact-links { display: flex; flex-direction: column; gap: 2px; }
+    .contact-link { display: flex; align-items: center; gap: 20px; padding: 22px 28px; background: var(--card-bg); border: 1px solid var(--border2); border-left: 3px solid transparent; color: var(--white); text-decoration: none; transition: all 0.2s; }
+    .contact-link:hover { border-left-color: var(--esa-sky); background: var(--navy3); }
+    .contact-link-icon { font-size: 18px; width: 28px; text-align: center; color: var(--esa-sky); }
+    .contact-link-title { font-size: 13px; font-weight: 700; color: var(--white); }
+    .contact-link-sub { font-size: 11px; color: var(--dim); margin-top: 2px; font-family: 'JetBrains Mono',monospace; }
+    .contact-link-arrow { margin-left: auto; font-size: 18px; color: var(--dim); transition: all 0.2s; }
+    .contact-link:hover .contact-link-arrow { color: var(--esa-sky); transform: translateX(4px); }
+
+    footer { background: var(--space); padding: 28px 48px; border-top: 1px solid var(--border2); display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 1; }
+    .footer-logo { font-size: 13px; font-weight: 700; color: var(--silver); }
+    .footer-meta { font-family: 'JetBrains Mono',monospace; font-size: 10px; color: var(--dim); letter-spacing: 1px; }
+
+    .fade-in { opacity: 0; transform: translateY(24px); transition: opacity 0.65s ease, transform 0.65s ease; }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 900px) {
+      nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .section-wrap { padding: 60px 20px; }
+      .hero-content { padding: 100px 20px 60px; }
+      .hero-databand { gap: 24px; }
+      .databand-item { border-right: none; margin-right: 0; padding-right: 0; min-width: 120px; }
+      .about-grid { grid-template-columns: 1fr; gap: 40px; }
+      .skills-grid { grid-template-columns: 1fr 1fr; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .project-card.featured { grid-column: span 1; }
+      .edu-item { grid-template-columns: 1fr; }
+      .edu-year { text-align: left; }
+      .exp-card { grid-template-columns: 1fr; }
+      .exp-period { text-align: left; }
+      .exp-desc, .exp-tags { grid-column: 1; }
+      .pub-card { grid-template-columns: 1fr; }
+      .pub-year, .pub-link-col { display: none; }
+      .contact-inner { grid-template-columns: 1fr; gap: 48px; padding: 60px 20px; }
+      footer { padding: 24px 20px; flex-direction: column; gap: 8px; }
+    }
+    @media (max-width: 600px) { .skills-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div id="scroll-progress"></div>
+  <nav>
+    <a href="#home" class="nav-logo"><div class="nav-logo-dot"></div>Bernard Issifu</a>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#publications">Publications</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+  </nav>
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="#about" onclick="closeMobileMenu()">About</a>
+    <a href="#skills" onclick="closeMobileMenu()">Skills</a>
+    <a href="#projects" onclick="closeMobileMenu()">Projects</a>
+    <a href="#education" onclick="closeMobileMenu()">Education</a>
+    <a href="#experience" onclick="closeMobileMenu()">Experience</a>
+    <a href="#publications" onclick="closeMobileMenu()">Publications</a>
+    <a href="#contact" onclick="closeMobileMenu()">Contact</a>
+  </div>
+
+  <div class="hero" id="home">
+    <div class="hero-visual"></div>
+    <div class="hero-sat"></div>
+    <div class="hero-content">
+      <div class="hero-eyebrow">Geospatial Data Scientist · GISP Certified</div>
+      <h1><span class="name">Bernard Ndeogo<br/>Issifu</span><span class="role">Spatial × Data × AI</span></h1>
+      <p class="hero-tagline">Building <strong>spatial data pipelines and predictive models</strong> at the intersection of machine learning and geospatial systems — with 6+ years of domain expertise in <strong>transportation planning, EV infrastructure, and location intelligence.</strong></p>
+      <div class="hero-cta">
+        <a href="#projects" class="btn btn-primary">View Projects <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <a href="Bernard_Issifu_Resume.pdf" download class="btn btn-outline">Download Resume <svg viewBox="0 0 16 16" fill="none"><path d="M8 3v8M4 9l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <a href="#contact" class="btn btn-ghost">Contact</a>
+      </div>
+      <div class="hero-databand">
+        <div class="databand-item"><div class="databand-num">6+</div><div class="databand-label">Years Transportation & GIS</div></div>
+        <div class="databand-item"><div class="databand-num">4</div><div class="databand-label">Peer-Reviewed Publications</div></div>
+        <div class="databand-item"><div class="databand-num">3</div><div class="databand-label">States NEVI EV Planning</div></div>
+        <div class="databand-item"><div class="databand-num">2</div><div class="databand-label">Graduate Degrees in Progress</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="about"><div class="section-wrap">
+    <div class="section-header fade-in"><div class="section-label">01 — About</div><h2 class="section-title">Who I Am</h2></div>
+    <div class="about-grid">
+      <div class="about-text fade-in">
+        <p>I'm <strong>Bernard Ndeogo Issifu</strong> — a GISP-certified geospatial data scientist embedded at the Ohio Department of Transportation through CDM Smith, applying machine learning and spatial analytics to real transportation and infrastructure problems.</p>
+        <p>My daily stack is <strong>Python, ArcGIS Pro, and SQL</strong>. I build analytical workflows, spatial models, and data-driven deliverables — from EV charging gap analyses using <em>OpenStreetMap API</em> to microsimulation models for major Ohio corridor studies.</p>
+        <p>Currently completing an <strong>MS in Data Science at the University of Arizona</strong>, building toward production-grade geospatial data science: cloud infrastructure on GCP, ML pipelines with Apache Airflow, PostGIS spatial databases, and computer vision for remote sensing.</p>
+        <p>My capstone builds a <strong>real-time wildfire detection pipeline</strong> ingesting NASA FIRMS thermal data, Sentinel-2 imagery, and NOAA feeds into a PostGIS database — with a CNN smoke classifier deployed on Google Cloud Platform.</p>
+      </div>
+      <div class="fade-in">
+        <div class="info-panel">
+          <div class="info-panel-header">Areas of Focus</div>
+          <div class="info-panel-item"><div class="info-icon">⚡</div><div><div class="info-title">EV Infrastructure & NEVI Planning</div><div class="info-body">Led geospatial analysis for EV charging deployment plans across Oklahoma, Tennessee, and Mississippi using ArcGIS Online, Python, and OSM API data.</div></div></div>
+          <div class="info-panel-item"><div class="info-icon">🛰</div><div><div class="info-title">Spatial ML & Analytics</div><div class="info-body">Classification, regression, and clustering applied to transportation, environmental, and infrastructure datasets.</div></div></div>
+          <div class="info-panel-item"><div class="info-icon">🚗</div><div><div class="info-title">Travel Demand Modeling</div><div class="info-body">VISSIM microsimulation, SYNCHRO signal analysis, TransCAD demand modeling, and OD data analysis.</div></div></div>
+          <div class="info-panel-item"><div class="info-icon">🔥</div><div><div class="info-title">Wildfire Detection Pipeline</div><div class="info-body">End-to-end geospatial ML pipeline: PostGIS, Airflow, Sentinel-2, CNN classifier deployed on GCP.</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+
+  <div id="skills" class="section-alt-wrap"><div class="section-wrap">
+    <div class="section-header fade-in"><div class="section-label">02 — Skills</div><h2 class="section-title">Technical Stack</h2><p class="section-desc">Production skills are what I use professionally today. Building skills are actively deployed in graduate coursework and capstone projects.</p></div>
+    <div class="skills-grid fade-in">
+      <div class="skill-card"><div class="skill-card-title">Data Science & ML</div><div class="skill-card-status status-production">● Production</div><div class="skill-tags"><span class="skill-tag core">Python</span><span class="skill-tag core">SQL</span><span class="skill-tag core">Pandas</span><span class="skill-tag core">scikit-learn</span><span class="skill-tag">Statistical Modeling</span><span class="skill-tag">SPSS</span><span class="skill-tag">STATA</span><span class="skill-tag">Jupyter</span></div></div>
+      <div class="skill-card"><div class="skill-card-title">Geospatial</div><div class="skill-card-status status-production">● Production</div><div class="skill-tags"><span class="skill-tag core">ArcGIS Pro</span><span class="skill-tag core">ArcGIS Online</span><span class="skill-tag core">GeoPandas</span><span class="skill-tag core">arcpy</span><span class="skill-tag">QGIS</span><span class="skill-tag">Dashboards</span><span class="skill-tag">Experience Builder</span><span class="skill-tag">OpenStreetMap API</span></div></div>
+      <div class="skill-card"><div class="skill-card-title">Data Engineering & Cloud</div><div class="skill-card-status status-building">◎ Building</div><div class="skill-tags"><span class="skill-tag core">PostGIS</span><span class="skill-tag core">Apache Airflow</span><span class="skill-tag core">Google Cloud Platform</span><span class="skill-tag">Docker</span><span class="skill-tag">Apache Spark</span><span class="skill-tag">Snowflake</span><span class="skill-tag">BigQuery</span><span class="skill-tag">FastAPI</span></div></div>
+      <div class="skill-card"><div class="skill-card-title">Transportation Domain</div><div class="skill-card-status status-domain">◆ Domain</div><div class="skill-tags"><span class="skill-tag core">VISSIM</span><span class="skill-tag core">SYNCHRO</span><span class="skill-tag core">TransCAD</span><span class="skill-tag">VISTRO</span><span class="skill-tag">StreetLight</span><span class="skill-tag">AutoCAD / Civil 3D</span><span class="skill-tag">ITE Trip Generation</span></div></div>
+    </div>
+  </div></div>
+
+  <div id="projects"><div class="section-wrap">
+    <div class="section-header fade-in"><div class="section-label">03 — Projects</div><h2 class="section-title">Work & Research</h2></div>
+    <div class="filter-bar fade-in">
+      <button class="filter-btn active" onclick="filterProjects('all',this)">All Work</button>
+      <button class="filter-btn" onclick="filterProjects('ds',this)">Data Science</button>
+      <button class="filter-btn" onclick="filterProjects('gis',this)">Geospatial</button>
+      <button class="filter-btn" onclick="filterProjects('trans',this)">Transportation</button>
+      <button class="filter-btn" onclick="filterProjects('env',this)">Environmental</button>
+    </div>
+    <div class="projects-grid fade-in">
+      <div class="project-card featured" data-category="ds gis env">
+        <div><span class="project-badge badge-wip"><span class="badge-dot"></span>In Progress</span></div>
+        <div class="project-name">Real-Time Wildfire Detection Pipeline</div>
+        <div class="project-desc">An end-to-end geospatial ML pipeline for near-real-time wildfire monitoring. NASA FIRMS thermal anomaly data (updated every 10 minutes), Sentinel-2 multispectral imagery, NOAA weather feeds, and USGS elevation data are ingested into a PostGIS spatial database. Apache Airflow orchestrates all pipeline jobs. A CNN smoke classifier automatically scores incoming imagery and flags high-probability fire events. Deployed on Google Cloud Platform with a live Kepler.gl spatial dashboard. MS Data Science Capstone — University of Arizona.</div>
+        <div class="arch-box"><div class="arch-flow"><div class="arch-node"><div class="arch-node-label">Source</div><div class="arch-node-value">NASA FIRMS<br/>Sentinel-2<br/>NOAA</div></div><div class="arch-arrow">→</div><div class="arch-node"><div class="arch-node-label">ETL</div><div class="arch-node-value">Apache<br/>Airflow</div></div><div class="arch-arrow">→</div><div class="arch-node"><div class="arch-node-label">Storage</div><div class="arch-node-value">PostGIS<br/>Spatial DB</div></div><div class="arch-arrow">→</div><div class="arch-node"><div class="arch-node-label">ML</div><div class="arch-node-value">CNN Smoke<br/>Classifier</div></div><div class="arch-arrow">→</div><div class="arch-node"><div class="arch-node-label">Deploy</div><div class="arch-node-value">GCP &<br/>Kepler.gl</div></div></div></div>
+        <div class="live-badge"><div class="live-dot"></div>Pipeline infrastructure live on GCP</div>
+        <div class="project-stack"><span class="stack-tag">Python</span><span class="stack-tag">PostGIS</span><span class="stack-tag">Apache Airflow</span><span class="stack-tag">GCP</span><span class="stack-tag">Sentinel-2</span><span class="stack-tag">NASA FIRMS</span><span class="stack-tag">TensorFlow</span><span class="stack-tag">Docker</span><span class="stack-tag">Kepler.gl</span><span class="stack-tag">FastAPI</span></div>
+        <div class="project-links"><span class="plink disabled">Repo coming soon →</span></div>
+      </div>
+      <div class="project-card" data-category="ds trans">
+        <div><span class="project-badge badge-wip"><span class="badge-dot"></span>In Progress</span></div>
+        <div class="project-name">Autonomous Fleet Telemetry Data Platform</div>
+        <div class="project-desc">A production-scale data platform simulating autonomous vehicle telemetry for fleet analytics. High-frequency vehicle streams — GPS traces, speed, heading, sensor events — ingested via Apache Airflow and processed with Spark into dimensional tables in BigQuery for fleet utilization KPIs, trip metrics, and incident tracking.</div>
+        <div class="project-stack"><span class="stack-tag">Python</span><span class="stack-tag">Apache Spark</span><span class="stack-tag">Apache Airflow</span><span class="stack-tag">BigQuery</span><span class="stack-tag">GeoPandas</span><span class="stack-tag">PostGIS</span><span class="stack-tag">Docker</span></div>
+        <div class="project-links"><span class="plink disabled">Repo coming soon →</span></div>
+      </div>
+      <div class="project-card" data-category="ds gis env">
+        <div><span class="project-badge badge-wip"><span class="badge-dot"></span>In Progress</span></div>
+        <div class="project-name">Flood Potential Assessment — Santa Cruz River Basin</div>
+        <div class="project-desc">A spatial ML model predicting flood probability at the parcel level. High-resolution LiDAR DEMs provide elevation, slope, and flow accumulation features. A random forest classifier is trained on spatial features and validated with a confusion matrix and cross-validation.</div>
+        <div class="project-stack"><span class="stack-tag">Python</span><span class="stack-tag">Random Forest</span><span class="stack-tag">LiDAR / DEM</span><span class="stack-tag">arcpy</span><span class="stack-tag">GeoPandas</span><span class="stack-tag">scikit-learn</span></div>
+        <div class="project-links"><span class="plink disabled">Repo coming soon →</span></div>
+      </div>
+      <div class="project-card" data-category="ds gis trans">
+        <div><span class="project-badge badge-wip"><span class="badge-dot"></span>In Progress</span></div>
+        <div class="project-name">EV Charging Site Suitability — Columbus, OH</div>
+        <div class="project-desc">A multi-criteria spatial optimization model identifying optimal heavy-duty EV charging hub locations in Columbus. Criteria weighted using Analytic Hierarchy Process (AHP) implemented in Python, making the methodology reproducible and defensible.</div>
+        <div class="project-stack"><span class="stack-tag">Python</span><span class="stack-tag">AHP / MCDA</span><span class="stack-tag">ArcGIS Pro</span><span class="stack-tag">GeoPandas</span><span class="stack-tag">OpenStreetMap API</span></div>
+        <div class="project-links"><span class="plink disabled">Repo coming soon →</span></div>
+      </div>
+      <div class="project-card" data-category="ds gis env">
+        <div><span class="project-badge badge-wip"><span class="badge-dot"></span>In Progress</span></div>
+        <div class="project-name">Land Use Change Detection — Central Ohio Urban Sprawl</div>
+        <div class="project-desc">A 20-year remote sensing study of urban expansion using Landsat 8/9 multispectral imagery. Raw satellite bands classified using a supervised SVM classifier trained on labeled ground truth points.</div>
+        <div class="project-stack"><span class="stack-tag">Python</span><span class="stack-tag">SVM Classifier</span><span class="stack-tag">Landsat 8/9</span><span class="stack-tag">Google Earth Engine</span><span class="stack-tag">QGIS</span></div>
+        <div class="project-links"><span class="plink disabled">Repo coming soon →</span></div>
+      </div>
+      <div class="project-card" data-category="ds gis env trans">
+        <div><span class="project-badge badge-wip"><span class="badge-dot"></span>In Progress</span></div>
+        <div class="project-name">Historical Hurricane Impact Analysis</div>
+        <div class="project-desc">A spatiotemporal analysis of hurricane impacts on Gulf and Atlantic Coast infrastructure using NOAA HURDAT2 storm track data (1980–2023). GWR model reveals which community factors most predict recovery outcomes.</div>
+        <div class="project-stack"><span class="stack-tag">Python</span><span class="stack-tag">GWR</span><span class="stack-tag">NOAA HURDAT2</span><span class="stack-tag">GeoPandas</span><span class="stack-tag">Kepler.gl</span></div>
+        <div class="project-links"><span class="plink disabled">Repo coming soon →</span></div>
+      </div>
+      <div class="project-card" data-category="gis trans">
+        <div><span class="project-badge badge-done"><span class="badge-dot"></span>Complete</span></div>
+        <div class="project-name">NEVI EV Infrastructure Deployment Analysis</div>
+        <div class="project-desc">Geospatial analysis pipeline supporting FHWA NEVI EV charging deployment plans across Oklahoma, Tennessee, and Mississippi. Identified optimal deployment corridors through Python-automated gap analysis. Published ArcGIS Online web maps for state DOT clients.</div>
+        <div class="project-stack"><span class="stack-tag">Python</span><span class="stack-tag">ArcGIS Online</span><span class="stack-tag">ArcGIS Pro</span><span class="stack-tag">OpenStreetMap API</span><span class="stack-tag">GeoPandas</span></div>
+        <div class="project-links"><span class="plink disabled">Client project (NDA) →</span></div>
+      </div>
+      <div class="project-card" data-category="ds trans">
+        <div><span class="project-badge badge-done"><span class="badge-dot"></span>Complete</span></div>
+        <div class="project-name">Turbo Roundabout Driver Behavior Study</div>
+        <div class="project-desc">Graduate research investigating turbo roundabout feasibility in Nevada. Built VISSIM microsimulation models and applied logistic regression and ANOVA in SPSS, STATA, and Python. Published as MS thesis and presented at Ohio's Roundabout Conference and AHFE 2023.</div>
+        <div class="project-stack"><span class="stack-tag">Python</span><span class="stack-tag">VISSIM</span><span class="stack-tag">AutoCAD</span><span class="stack-tag">SPSS</span><span class="stack-tag">STATA</span></div>
+        <div class="project-links"><a href="http://rave.ohiolink.edu/etdc/view?acc_num=ohiou1701964650330758" class="plink" target="_blank">View Thesis →</a></div>
+      </div>
+    </div>
+  </div></div>
+
+  <div id="education" class="section-alt-wrap"><div class="section-wrap">
+    <div class="section-header fade-in"><div class="section-label">04 — Education</div><h2 class="section-title">Education & Certifications</h2></div>
+    <div class="certs-row fade-in">
+      <div class="cert-card"><div class="cert-icon">🏅</div><div><div class="cert-name">GISP — GIS Professional</div><div class="cert-issuer">GISCI · Geographic Information Systems Certification Institute</div></div></div>
+      <div class="cert-card"><div class="cert-icon">🎓</div><div><div class="cert-name">MS Data Science (In Progress)</div><div class="cert-issuer">University of Arizona · Expected 2026</div></div></div>
+      <div class="cert-card"><div class="cert-icon">🗺</div><div><div class="cert-name">GIS Certificate (In Progress)</div><div class="cert-issuer">Columbus State Community College</div></div></div>
+    </div>
+    <div class="edu-timeline fade-in">
+      <div class="edu-item"><div class="edu-year">2025 — Present</div><div class="edu-body"><div class="edu-degree">MS in Data Science</div><div class="edu-school">University of Arizona — College of Information Science</div><div class="edu-detail">Advanced machine learning, neural networks, NLP, and computer vision — with applied focus on geospatial data engineering, cloud-based data warehousing, and large-scale spatial data mining. Capstone: Real-Time Wildfire Detection Pipeline (PostGIS, Apache Airflow, Sentinel-2, GCP).</div></div></div>
+      <div class="edu-item"><div class="edu-year">In Progress</div><div class="edu-body"><div class="edu-degree">Certificate in GIS</div><div class="edu-school">Columbus State Community College</div><div class="edu-detail">Formal GIS certificate covering spatial analysis, cartography, geodatabases, and remote sensing fundamentals.</div></div></div>
+      <div class="edu-item"><div class="edu-year">2021 — 2023</div><div class="edu-body"><div class="edu-degree">MS in Civil Engineering — Transportation</div><div class="edu-school">Ohio University</div><div class="edu-detail">Graduate research in driver behavior, roundabout design, and human factors. Thesis presented at Ohio Roundabout Conference and AHFE Conference 2023.</div></div></div>
+      <div class="edu-item"><div class="edu-year">Previous</div><div class="edu-body"><div class="edu-degree">BS in Civil Engineering</div><div class="edu-school">Kwame Nkrumah University of Science and Technology — Ghana</div><div class="edu-detail">Foundation in structural analysis, civil infrastructure, engineering systems, and applied mathematics.</div></div></div>
+    </div>
+  </div></div>
+
+  <div id="experience"><div class="section-wrap">
+    <div class="section-header fade-in"><div class="section-label">05 — Experience</div><h2 class="section-title">Work Experience</h2></div>
+    <div class="exp-list fade-in">
+      <div class="exp-card"><div><div class="exp-title">Transportation Planner / Travel Demand Modeler</div><div class="exp-company">CDM Smith — In-House Consultant, Ohio DOT · Columbus, OH</div></div><div class="exp-period">Sep 2023 — Present</div><div class="exp-desc"><ul><li>Embedded transportation planner and travel demand modeler at ODOT, supporting corridor studies, traffic modeling, and statewide planning deliverables across Ohio's road network.</li><li>Performs spatial analysis and GIS automation using ArcGIS Pro, Python (arcpy, GeoPandas), and SQL.</li><li>Develops and maintains travel demand models in TransCAD; conducts OD analysis and network performance assessments for major Ohio corridors.</li></ul></div><div class="exp-tags"><span class="exp-tag">ArcGIS Pro</span><span class="exp-tag">Python</span><span class="exp-tag">TransCAD</span><span class="exp-tag">SQL</span><span class="exp-tag">Travel Demand Modeling</span></div></div>
+      <div class="exp-card"><div><div class="exp-title">Transportation Engineer / Planner</div><div class="exp-company">HNTB Inc. · Columbus, OH</div></div><div class="exp-period">Feb 2024 — Sep 2024</div><div class="exp-desc"><ul><li>Led geospatial analysis for FHWA NEVI EV infrastructure deployment plans across Oklahoma, Mississippi, and Tennessee.</li><li>Extracted and processed highway network data from the OpenStreetMap API, merged with national EV charging datasets.</li><li>Produced high-quality static maps and interactive ArcGIS Online web maps for client deliverables and RFP submissions.</li></ul></div><div class="exp-tags"><span class="exp-tag">ArcGIS Online</span><span class="exp-tag">Python</span><span class="exp-tag">OpenStreetMap API</span><span class="exp-tag">EV Infrastructure</span><span class="exp-tag">NEVI</span></div></div>
+      <div class="exp-card"><div><div class="exp-title">Transportation Intern</div><div class="exp-company">Burton Planning Services · Columbus, OH</div></div><div class="exp-period">Apr 2023 — Aug 2023</div><div class="exp-desc"><ul><li>Used Python to analyze origin-destination data and StreetLight to extract ADT volumes for General Plan updates.</li><li>Maintained ArcGIS geodatabases and produced traffic impact studies using SYNCHRO, VISTRO, and ITE Trip Generation methodology.</li></ul></div><div class="exp-tags"><span class="exp-tag">SYNCHRO</span><span class="exp-tag">Python</span><span class="exp-tag">ArcGIS</span><span class="exp-tag">StreetLight</span><span class="exp-tag">VISTRO</span></div></div>
+      <div class="exp-card"><div><div class="exp-title">Transportation Intern</div><div class="exp-company">Fehr & Peers · Irvine, CA</div></div><div class="exp-period">May 2022 — Dec 2022</div><div class="exp-desc"><ul><li>Developed VISSIM microsimulation models for the CalTrans SR-210 corridor with automated data extraction via Python scripts.</li><li>Maintained ArcGIS databases and produced traffic impact studies for Bay Area and Southern California clients.</li></ul></div><div class="exp-tags"><span class="exp-tag">VISSIM</span><span class="exp-tag">SYNCHRO</span><span class="exp-tag">Python</span><span class="exp-tag">ArcGIS</span><span class="exp-tag">TransCAD</span></div></div>
+      <div class="exp-card"><div><div class="exp-title">Graduate Research Assistant</div><div class="exp-company">Safety and Human Factors Lab · Ohio University</div></div><div class="exp-period">Jan 2021 — Dec 2023</div><div class="exp-desc"><ul><li>Led driving simulation experiments studying driver behavior at mini-roundabouts and turbo roundabouts — designing scenarios in AutoCAD/AutoTurn and building VISSIM models.</li><li>Automated data extraction with Python; applied statistical modeling (logistic regression, ANOVA) in SPSS, STATA, and Python.</li><li>Published MS thesis and presented at Ohio Roundabout Conference and AHFE International Conference 2023.</li></ul></div><div class="exp-tags"><span class="exp-tag">Python</span><span class="exp-tag">VISSIM</span><span class="exp-tag">AutoCAD</span><span class="exp-tag">SPSS</span><span class="exp-tag">STATA</span><span class="exp-tag">Research</span></div></div>
+    </div>
+  </div></div>
+
+  <div id="publications" class="section-alt-wrap"><div class="section-wrap">
+    <div class="section-header fade-in"><div class="section-label">06 — Publications</div><h2 class="section-title">Publications & Presentations</h2><p class="section-desc">4 peer-reviewed works across journal articles, conference papers, and MS thesis.</p></div>
+    <div class="pub-list fade-in">
+      <div class="pub-card"><div class="pub-year">2024</div><div><div class="pub-type">Journal Article</div><div class="pub-venue">Vehicles, MDPI · 2024</div><div class="pub-desc">Bhagat, S. R., <strong>Issifu, B. N.</strong>, et al. "Are Safety Corridors Effective in Mitigating Safety? An Ohio-Based Case Study Evaluating Their Effectiveness." <em>Vehicles</em>, 6(4), 1963–1974.</div><div class="pub-tags"><span class="pub-tag">Peer-Reviewed</span><span class="pub-tag">Safety Analysis</span><span class="pub-tag">Ohio DOT</span></div></div><div class="pub-link-col"><a href="https://www.mdpi.com/2624-8921/6/4/96" target="_blank" class="pub-link">View →</a></div></div>
+      <div class="pub-card"><div class="pub-year">Oct 2024</div><div><div class="pub-type">Conference Paper</div><div class="pub-venue">Road Safety & Simulation Conference · 2024</div><div class="pub-desc">El-Dabaja, S., <strong>Issifu, B.</strong>, et al. "Drivers' Education through eLearning and Exposure: An Opportunity to Increase Acceptance of Connected and Automated Vehicles."</div><div class="pub-tags"><span class="pub-tag">CAV</span><span class="pub-tag">Driver Behavior</span></div></div><div class="pub-link-col"><a href="https://uknowledge.uky.edu/ktc_present/3/" target="_blank" class="pub-link">View →</a></div></div>
+      <div class="pub-card"><div class="pub-year">Dec 2023</div><div><div class="pub-type">MS Thesis</div><div class="pub-venue">Ohio University · OhioLINK ETD Center</div><div class="pub-desc"><strong>Issifu, B. N.</strong> "Assessing the Feasibility of Implementing Turbo Roundabouts Using Driver Performance Factors." OhioLINK Electronic Theses and Dissertations Center.</div><div class="pub-tags"><span class="pub-tag">Roundabouts</span><span class="pub-tag">Human Factors</span><span class="pub-tag">VISSIM</span></div></div><div class="pub-link-col"><a href="http://rave.ohiolink.edu/etdc/view?acc_num=ohiou1701964650330758" target="_blank" class="pub-link">View →</a></div></div>
+      <div class="pub-card"><div class="pub-year">Jul 2023</div><div><div class="pub-type">Conference Presentation</div><div class="pub-venue">AHFE International Conference · 2023</div><div class="pub-desc"><strong>Issifu, B.</strong>, et al. "Exploring Driver Behavior in Turbo Roundabout Design: Human Factors Study." International Conference on Applied Human Factors and Ergonomics.</div><div class="pub-tags"><span class="pub-tag">Human Factors</span><span class="pub-tag">Turbo Roundabouts</span></div></div><div class="pub-link-col"><a href="https://ahfe.org/files/AHFE2023_FinalProgram.pdf" target="_blank" class="pub-link">View →</a></div></div>
+    </div>
+  </div></div>
+
+  <div id="contact" class="contact-band">
+    <div class="contact-inner">
+      <div class="fade-in">
+        <div class="contact-headline">Building the<br/><span>spatial data layer</span><br/>of the future.</div>
+        <p class="contact-sub">Open to Geospatial Data Scientist and Spatial ML Engineer roles. Based in Columbus, OH — open to remote.</p>
+        <p class="contact-targets">Targeting: <em>climate tech</em> · <em>smart infrastructure</em> · <em>location intelligence</em> · <em>autonomous systems</em></p>
+      </div>
+      <div class="contact-links fade-in">
+        <a href="mailto:bernardndeogo@gmail.com" class="contact-link"><div class="contact-link-icon">✉</div><div><div class="contact-link-title">Email</div><div class="contact-link-sub">bernardndeogo@gmail.com</div></div><div class="contact-link-arrow">→</div></a>
+        <a href="https://github.com/ndeogobernard" class="contact-link" target="_blank"><div class="contact-link-icon">⌥</div><div><div class="contact-link-title">GitHub</div><div class="contact-link-sub">github.com/ndeogobernard</div></div><div class="contact-link-arrow">→</div></a>
+        <a href="https://www.linkedin.com/in/bernardndeogo/" class="contact-link" target="_blank"><div class="contact-link-icon">in</div><div><div class="contact-link-title">LinkedIn</div><div class="contact-link-sub">linkedin.com/in/bernardndeogo</div></div><div class="contact-link-arrow">→</div></a>
+        <a href="Bernard_Issifu_Resume.pdf" download class="contact-link"><div class="contact-link-icon">↓</div><div><div class="contact-link-title">Resume</div><div class="contact-link-sub">Download PDF</div></div><div class="contact-link-arrow">→</div></a>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-logo">Bernard Ndeogo Issifu · Geospatial Data Scientist</div>
+    <div class="footer-meta">© 2026 · Columbus, OH · 40.7128°N 82.9988°W</div>
+  </footer>
+
+  <script>
+    window.addEventListener('scroll', () => {
+      const st = window.scrollY, dh = document.documentElement.scrollHeight - window.innerHeight;
+      document.getElementById('scroll-progress').style.width = (st / dh * 100) + '%';
+    });
+    const navAs = document.querySelectorAll('.nav-links a');
+    new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          navAs.forEach(a => a.classList.remove('active'));
+          const a = document.querySelector('.nav-links a[href="#' + e.target.id + '"]');
+          if (a) a.classList.add('active');
+        }
+      });
+    }, { threshold: 0.2, rootMargin: '-60px 0px 0px 0px' }).observe(document.body) ||
+    document.querySelectorAll('div[id]').forEach(s => {
+      new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            navAs.forEach(a => a.classList.remove('active'));
+            const a = document.querySelector('.nav-links a[href="#' + e.target.id + '"]');
+            if (a) a.classList.add('active');
+          }
+        });
+      }, { threshold: 0.2, rootMargin: '-60px 0px 0px 0px' }).observe(s);
+    });
+    const fi = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.fade-in').forEach(el => fi.observe(el));
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobile-menu');
+    hamburger.addEventListener('click', () => { hamburger.classList.toggle('open'); mobileMenu.classList.toggle('open'); });
+    function closeMobileMenu() { hamburger.classList.remove('open'); mobileMenu.classList.remove('open'); }
+    function filterProjects(cat, btn) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.project-card').forEach(card => {
+        const cats = card.getAttribute('data-category') || '';
+        card.classList.toggle('hidden', cat !== 'all' && !cats.includes(cat));
+      });
+    }
+  </script>
+</body>
+</html>
