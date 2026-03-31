@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bernard Ndeogo Issifu | Geospatial Data Scientist</title>
+  <meta name="description" content="Bernard Ndeogo Issifu — GISP-Certified Geospatial Data Scientist. Spatial ML · Transportation Planning · Columbus, OH." />
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%23081120'/%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%237c9bff'/%3E%3Cstop offset='100%25' stop-color='%234be1c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' font-family='Inter,sans-serif' font-weight='800' font-size='14' fill='url(%23g)'%3EBNI%3C/text%3E%3C/svg%3E" type="image/svg+xml">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #08111f;
+      --bg-soft: #0d1830;
+      --surface: rgba(255, 255, 255, 0.08);
+      --surface-strong: rgba(255, 255, 255, 0.12);
+      --text: #eaf2ff;
+      --muted: #a8b5d1;
+      --primary: #7c9bff;
+      --primary-2: #4be1c5;
+      --border: rgba(255, 255, 255, 0.12);
+      --shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+      --radius: 24px;
+      --container: 1160px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(124, 155, 255, 0.12), transparent 30%),
+        radial-gradient(circle at top right, rgba(75, 225, 197, 0.10), transparent 25%),
+        linear-gradient(180deg, #07101d 0%, #08111f 60%, #0b1322 100%);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    .container { width: min(calc(100% - 2rem), var(--container)); margin: 0 auto; }
+
+    .background-orb {
+      position: fixed; border-radius: 50%;
+      filter: blur(90px); opacity: 0.4; pointer-events: none; z-index: -2;
+    }
+    .orb-1 { width: 360px; height: 360px; left: -100px; top: 80px; background: rgba(124, 155, 255, 0.35); }
+    .orb-2 { width: 320px; height: 320px; right: -80px; top: 240px; background: rgba(75, 225, 197, 0.22); }
+    .background-grid {
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.5), transparent 90%);
+      pointer-events: none; z-index: -3;
+    }
+
+    .site-header {
+      position: sticky; top: 0; z-index: 50;
+      backdrop-filter: blur(18px);
+      background: rgba(8, 17, 31, 0.62);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .nav {
+      display: flex; align-items: center; justify-content: space-between;
+      min-height: 82px; gap: 1rem;
+    }
+    .brand { display: flex; align-items: center; gap: 0.9rem; }
+    .brand-logo { width: 50px; height: 50px; border-radius: 14px; box-shadow: var(--shadow); }
+    .brand-name, .brand-subtitle { display: block; }
+    .brand-name { font-weight: 700; letter-spacing: -0.02em; }
+    .brand-subtitle { font-size: 0.9rem; color: var(--muted); }
+
+    .nav-links { display: flex; align-items: center; gap: 1.25rem; }
+    .nav-links a { color: var(--muted); transition: 0.25s ease; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta {
+      padding: 0.75rem 1rem;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+    }
+    .menu-toggle {
+      display: none;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.06);
+      color: var(--text); border-radius: 12px;
+      font-size: 1.15rem; padding: 0.65rem 0.8rem; cursor: pointer;
+    }
+
+    .hero { padding: 4rem 0 2.5rem; }
+    .hero-grid {
+      display: grid; grid-template-columns: 1.25fr 0.75fr;
+      gap: 1.5rem; align-items: center;
+    }
+
+    .eyebrow, .section-label, .card-label {
+      text-transform: uppercase; letter-spacing: 0.18em;
+      font-size: 0.78rem; font-weight: 700; color: var(--primary-2);
+    }
+
+    .hero h1 {
+      margin: 0.75rem 0 0.9rem;
+      font-size: clamp(2.4rem, 5vw, 4.8rem);
+      line-height: 1.02; letter-spacing: -0.05em; max-width: 14ch;
+    }
+
+    .hero-text, .section-intro, .timeline-item li, .project-card p, .skill-card p, .contact-card p, .about-pills span {
+      color: var(--muted);
+    }
+    .hero-text { font-size: 1.05rem; line-height: 1.75; max-width: 58ch; }
+    .hero-actions { display: flex; gap: 0.9rem; flex-wrap: wrap; margin: 1.5rem 0 1.2rem; }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-height: 50px; padding: 0 1rem; border-radius: 999px; font-weight: 700;
+      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+      border: 1px solid transparent;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary { background: linear-gradient(135deg, var(--primary), var(--primary-2)); color: #06111d; }
+    .btn-secondary { background: rgba(255,255,255,0.06); border-color: var(--border); color: var(--text); }
+
+    .quick-stats {
+      list-style: none; display: flex; flex-wrap: wrap;
+      gap: 0.6rem; padding: 0; margin: 1.2rem 0 0;
+    }
+    .quick-stats li {
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 999px; padding: 0.6rem 0.9rem; color: var(--muted);
+    }
+    .quick-stats span { color: var(--text); font-weight: 800; margin-right: 0.3rem; }
+    .hero-copy { max-width: 640px; }
+
+    .glass-card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.05));
+      border: 1px solid var(--border); border-radius: var(--radius);
+      box-shadow: var(--shadow); backdrop-filter: blur(18px);
+    }
+    .profile-shell { padding: 1rem; }
+    .profile-art { width: 100%; border-radius: 20px; border: 1px solid rgba(255,255,255,0.12); }
+    .hero-tags, .tag-row, .about-pills { display: flex; flex-wrap: wrap; gap: 0.65rem; }
+    .hero-tags span, .tag-row span, .about-pills span {
+      padding: 0.58rem 0.8rem; border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.05); font-size: 0.92rem;
+    }
+
+    .section, .section-small { padding: 5rem 0; }
+    .section-small { padding-top: 1rem; padding-bottom: 1.5rem; }
+    .section-grid.two-col {
+      display: grid; grid-template-columns: 0.95fr 1.05fr; gap: 2rem; align-items: start;
+    }
+    .section h2, .section-heading h2 {
+      font-size: clamp(2rem, 4vw, 3rem); line-height: 1.05;
+      letter-spacing: -0.04em; margin: 0.5rem 0 0;
+    }
+    .section-grid p, .contact-copy p { line-height: 1.85; font-size: 1.03rem; }
+    .section-illustration { margin-top: 1.5rem; border-radius: 22px; border: 1px solid rgba(255,255,255,0.10); }
+
+    .logo-strip-inner { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.75rem; }
+    .logo-strip-inner span {
+      display: flex; align-items: center; justify-content: center;
+      min-height: 64px; border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 18px; background: rgba(255,255,255,0.04);
+      color: var(--muted); text-align: center; padding: 0.75rem; font-weight: 600;
+    }
+    .logo-item:hover {
+      transform: translateY(-6px) scale(1.03);
+      background: linear-gradient(135deg, rgba(124,155,255,0.2), rgba(75,225,197,0.2));
+      border-color: rgba(255,255,255,0.2); color: #ffffff;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.35);
+    }
+
+    .section-heading {
+      display: flex; justify-content: space-between; gap: 2rem; align-items: end;
+      margin-bottom: 2rem;
+    }
+    .section-intro { max-width: 46ch; line-height: 1.8; }
+
+    .timeline-item:hover {
+      transform: translateY(-6px) scale(1.01);
+      border-color: rgba(255,255,255,0.2);
+      background: linear-gradient(135deg, rgba(124,155,255,0.12), rgba(75,225,197,0.10));
+      box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+    }
+    .timeline { display: grid; gap: 1.2rem; }
+    .timeline-item { padding: 1.5rem; }
+    .timeline-date {
+      display: inline-flex; padding: 0.48rem 0.75rem; border-radius: 999px;
+      background: rgba(124, 155, 255, 0.12); color: #bfd0ff;
+      font-size: 0.88rem; font-weight: 700;
+    }
+    .timeline-item h3 { margin: 1rem 0 0.35rem; font-size: 1.3rem; }
+    .timeline-company { margin: 0 0 0.9rem; color: #c9d6ef; font-weight: 600; }
+    .timeline-item ul { margin: 0; padding-left: 1.2rem; }
+    .timeline-item li { line-height: 1.7; margin-bottom: 0.55rem; }
+
+    .project-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 1.2rem; }
+    .project-card { grid-column: span 4; overflow: hidden; }
+    .project-card.featured { grid-column: span 6; }
+    .project-image {
+      width: 100%; aspect-ratio: 16 / 10; object-fit: cover;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .project-body { padding: 1.25rem; }
+    .project-badge {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      margin-bottom: 0.7rem; padding: 0.42rem 0.7rem; border-radius: 999px;
+      font-size: 0.82rem; font-weight: 700;
+    }
+    .badge-wip { background: rgba(255,171,64,0.12); border: 1px solid rgba(255,171,64,0.35); color: #ffab40; }
+    .badge-done { background: rgba(75,225,197,0.12); border: 1px solid rgba(75,225,197,0.3); color: #4be1c5; }
+    .badge-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; animation: blink 2s ease-in-out infinite; }
+    .badge-done .badge-dot { animation: none; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.35} }
+    .project-card h3 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+    .project-card p { line-height: 1.75; margin: 0 0 1rem; }
+    .project-card:hover {
+      transform: translateY(-6px) scale(1.01);
+      border-color: rgba(255,255,255,0.18);
+      background: linear-gradient(135deg, rgba(124,155,255,0.12), rgba(75,225,197,0.10));
+      box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+    }
+    .project-stack { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.5rem; }
+    .stack-tag {
+      font-size: 0.75rem; font-weight: 600; padding: 0.28rem 0.6rem;
+      background: rgba(124,155,255,0.1); border: 1px solid rgba(124,155,255,0.2);
+      border-radius: 999px; color: #bfd0ff;
+    }
+    .project-link {
+      display: inline-block; margin-top: 0.9rem;
+      padding: 0.6rem 1rem; border-radius: 999px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      color: #06111d; font-weight: 700; font-size: 0.9rem;
+    }
+    .project-link.secondary {
+      background: rgba(255,255,255,0.06); border: 1px solid var(--border); color: var(--text);
+    }
+    .project-link.disabled { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: var(--muted); pointer-events: none; }
+
+    /* Architecture flow */
+    .arch-box {
+      background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 12px; padding: 0.9rem 1rem; overflow-x: auto; margin: 0.5rem 0 0.75rem;
+    }
+    .arch-flow { display: flex; align-items: center; gap: 0.4rem; min-width: max-content; }
+    .arch-node {
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px; padding: 0.5rem 0.75rem; text-align: center; min-width: 68px;
+    }
+    .arch-label { font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.25rem; }
+    .arch-value { font-size: 0.75rem; color: #bfd0ff; line-height: 1.35; }
+    .arch-arrow { color: var(--muted); font-size: 0.85rem; }
+    .live-badge { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; color: #4be1c5; margin-bottom: 0.5rem; }
+    .live-dot { width: 7px; height: 7px; border-radius: 50%; background: #4be1c5; animation: livepulse 2.5s ease-in-out infinite; }
+    @keyframes livepulse { 0%{box-shadow:0 0 0 0 rgba(75,225,197,0.5)} 70%{box-shadow:0 0 0 8px rgba(75,225,197,0)} 100%{box-shadow:0 0 0 0 rgba(75,225,197,0)} }
+
+    .skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; }
+    .skill-card { padding: 1.35rem; }
+    .skill-card h3 { margin-top: 0; }
+    .skill-card p { line-height: 1.8; }
+
+    /* Education */
+    .edu-grid { display: grid; gap: 1.2rem; }
+    .edu-card { padding: 1.5rem; transition: all 0.3s ease; }
+    .edu-card:hover {
+      transform: translateY(-4px); border-color: rgba(124,155,255,0.25);
+      background: linear-gradient(135deg, rgba(124,155,255,0.08), rgba(75,225,197,0.06));
+    }
+    .edu-year { display: inline-flex; padding: 0.48rem 0.75rem; border-radius: 999px; background: rgba(124,155,255,0.12); color: #bfd0ff; font-size: 0.88rem; font-weight: 700; margin-bottom: 0.85rem; }
+    .edu-degree { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.3rem; }
+    .edu-school { color: #c9d6ef; font-weight: 600; margin-bottom: 0.6rem; font-size: 0.95rem; }
+    .edu-detail { color: var(--muted); line-height: 1.7; font-size: 0.92rem; }
+    .cert-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
+    .cert-card {
+      display: flex; align-items: center; gap: 0.9rem;
+      padding: 1.1rem 1.25rem;
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 18px; transition: all 0.3s ease;
+    }
+    .cert-card:hover { background: rgba(124,155,255,0.07); border-color: rgba(124,155,255,0.25); }
+    .cert-icon { font-size: 1.5rem; flex-shrink: 0; }
+    .cert-name { font-size: 0.9rem; font-weight: 700; margin-bottom: 0.2rem; }
+    .cert-issuer { font-size: 0.8rem; color: var(--muted); line-height: 1.4; }
+
+    .contact-card {
+      padding: 1.4rem; display: grid;
+      grid-template-columns: 1.1fr 0.9fr; gap: 1.4rem; align-items: center;
+    }
+    .contact-links { display: flex; flex-wrap: wrap; gap: 0.9rem; margin-top: 1.3rem; }
+    .contact-visual { border-radius: 22px; border: 1px solid rgba(255,255,255,0.10); }
+    .site-footer { padding: 1.8rem 0 3rem; }
+    .footer-inner {
+      display: flex; justify-content: space-between; gap: 1rem; align-items: center;
+      color: var(--muted); border-top: 1px solid rgba(255,255,255,0.06); padding-top: 1.4rem;
+    }
+    .footer-inner a { color: var(--text); }
+
+    .reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .delay-1 { transition-delay: 0.12s; }
+
+    @media (max-width: 1040px) {
+      .hero-grid, .section-grid.two-col, .contact-card, .skills-grid { grid-template-columns: 1fr; }
+      .logo-strip-inner { grid-template-columns: repeat(3, 1fr); }
+      .project-card, .project-card.featured { grid-column: span 6; }
+      .section-heading { flex-direction: column; align-items: start; }
+      .cert-row { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 760px) {
+      .menu-toggle { display: inline-flex; }
+      .nav-links {
+        position: absolute; top: calc(100% + 0.75rem); right: 1rem; left: 1rem;
+        flex-direction: column; align-items: start; gap: 1rem; padding: 1rem;
+        border-radius: 20px; background: rgba(8,17,31,0.96);
+        border: 1px solid rgba(255,255,255,0.08); display: none;
+      }
+      .nav-links.open { display: flex; }
+      .hero { padding-top: 3rem; }
+      .hero h1 { max-width: 100%; }
+      .logo-strip-inner { grid-template-columns: repeat(2, 1fr); }
+      .project-grid { grid-template-columns: 1fr; }
+      .project-card, .project-card.featured { grid-column: auto; }
+      .skills-grid { grid-template-columns: 1fr; }
+      .cert-row { grid-template-columns: 1fr; }
+      .footer-inner { flex-direction: column; align-items: start; }
+    }
+    @media (max-width: 480px) {
+      .hero-actions, .contact-links { flex-direction: column; }
+      .hero-actions .btn, .contact-links .btn { justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="background-orb orb-1"></div>
+  <div class="background-orb orb-2"></div>
+  <div class="background-grid"></div>
+
+  <header class="site-header">
+    <div class="container nav">
+      <a href="#home" class="brand">
+        <svg class="brand-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
+          <rect width="50" height="50" rx="14" fill="#081120"/>
+          <defs>
+            <linearGradient id="lg" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#7c9bff"/>
+              <stop offset="100%" stop-color="#4be1c5"/>
+            </linearGradient>
+          </defs>
+          <text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle"
+            font-family="Inter,sans-serif" font-weight="800" font-size="13" fill="url(#lg)">BNI</text>
+        </svg>
+        <div>
+          <span class="brand-name">Bernard N. Issifu</span>
+          <span class="brand-subtitle">Geospatial · Data Science · GISP</span>
+        </div>
+      </a>
+
+      <button class="menu-toggle" aria-label="Toggle navigation" id="menuToggle">☰</button>
+
+      <nav class="nav-links" id="navLinks">
+        <a href="#about">About</a>
+        <a href="#experience">Experience</a>
+        <a href="#projects">Projects</a>
+        <a href="#skills">Skills</a>
+        <a href="#education">Education</a>
+        <a href="#contact" class="nav-cta">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ══ HERO ══ -->
+    <section class="hero" id="home" style="padding: 4rem 0 2.5rem;">
+      <div class="container hero-grid" style="display: grid; grid-template-columns: 1.25fr 0.75fr; gap: 1.5rem; align-items: center;">
+
+        <div class="hero-copy reveal" style="max-width: 640px;">
+          <p class="eyebrow" style="margin-bottom: 0.5rem;">
+            Geospatial Data Scientist · GISP Certified · Columbus, OH
+          </p>
+
+          <h1 style="margin: 0.6rem 0 0.9rem; line-height: 1.02; letter-spacing: -0.05em; max-width: 14ch;">
+            Spatial data pipelines. Predictive models. Real-world impact.
+          </h1>
+
+          <p class="hero-text" style="font-size: 1.05rem; line-height: 1.75; max-width: 58ch;">
+            I'm <strong>Bernard Ndeogo Issifu</strong>, a GISP-certified geospatial data scientist building
+            spatial ML systems at the intersection of machine learning, transportation planning, and location
+            intelligence. 6+ years of domain expertise turning complex spatial data into actionable
+            infrastructure decisions.
+          </p>
+
+          <div class="hero-actions" style="display: flex; gap: 0.9rem; flex-wrap: wrap; margin: 1.5rem 0 1.2rem;">
+            <a href="#projects" class="btn btn-primary" style="min-height: 50px; padding: 0 1rem;">View Projects</a>
+            <a href="Bernard_Issifu_Resume.pdf" download class="btn btn-secondary" style="min-height: 50px; padding: 0 1rem;">Download Resume</a>
+          </div>
+
+          <ul class="quick-stats" style="list-style: none; display: flex; flex-wrap: wrap; gap: 0.6rem; padding: 0; margin: 1.2rem 0 0;">
+            <li style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 999px; padding: 0.6rem 0.9rem;">
+              <span style="font-weight: 800;">6+</span> Years Transportation &amp; GIS
+            </li>
+            <li style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 999px; padding: 0.6rem 0.9rem;">
+              <span style="font-weight: 800;">4</span> Peer-Reviewed Publications
+            </li>
+            <li style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 999px; padding: 0.6rem 0.9rem;">
+              <span style="font-weight: 800;">3</span> States NEVI EV Planning
+            </li>
+          </ul>
+        </div>
+
+        <div class="hero-visual reveal delay-1" style="display: flex; justify-content: flex-end;">
+          <div class="profile-shell glass-card" style="padding: 0.8rem; max-width: 540px; width: 100%;">
+            <img
+              src="assets/profile.jpg"
+              alt="Bernard Ndeogo Issifu"
+              class="profile-art"
+              style="border-radius: 20px; width: 100%;"
+            />
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ══ LOGO STRIP ══ -->
+    <section class="logo-strip section-small" style="padding: 1.5rem 0;">
+      <div class="container logo-strip-inner" style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.75rem;">
+        <span class="logo-item" style="display:flex;align-items:center;justify-content:center;min-height:64px;border:1px solid rgba(255,255,255,0.08);border-radius:18px;background:rgba(255,255,255,0.04);color:var(--muted);font-weight:600;transition:all 0.3s ease;">Geospatial ML</span>
+        <span class="logo-item" style="display:flex;align-items:center;justify-content:center;min-height:64px;border:1px solid rgba(255,255,255,0.08);border-radius:18px;background:rgba(255,255,255,0.04);color:var(--muted);font-weight:600;transition:all 0.3s ease;">Transportation</span>
+        <span class="logo-item" style="display:flex;align-items:center;justify-content:center;min-height:64px;border:1px solid rgba(255,255,255,0.08);border-radius:18px;background:rgba(255,255,255,0.04);color:var(--muted);font-weight:600;transition:all 0.3s ease;">EV Infrastructure</span>
+        <span class="logo-item" style="display:flex;align-items:center;justify-content:center;min-height:64px;border:1px solid rgba(255,255,255,0.08);border-radius:18px;background:rgba(255,255,255,0.04);color:var(--muted);font-weight:600;transition:all 0.3s ease;">Spatial Pipelines</span>
+        <span class="logo-item" style="display:flex;align-items:center;justify-content:center;min-height:64px;border:1px solid rgba(255,255,255,0.08);border-radius:18px;background:rgba(255,255,255,0.04);color:var(--muted);font-weight:600;transition:all 0.3s ease;">Remote Sensing</span>
+        <span class="logo-item" style="display:flex;align-items:center;justify-content:center;min-height:64px;border:1px solid rgba(255,255,255,0.08);border-radius:18px;background:rgba(255,255,255,0.04);color:var(--muted);font-weight:600;transition:all 0.3s ease;">GISP Certified</span>
+      </div>
+    </section>
+
+    <!-- ══ ABOUT ══ -->
+    <section class="section" id="about" style="padding: 4rem 0;">
+      <div class="container section-grid two-col" style="display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 1.5rem; align-items: center;">
+
+        <div class="reveal" style="max-width: 520px;">
+          <p class="section-label" style="margin-bottom: 0.6rem;">About</p>
+          <h2 style="margin: 0.5rem 0 1rem; line-height: 1.05; letter-spacing: -0.04em;">
+            From corridor studies to cloud-scale spatial ML pipelines.
+          </h2>
+          <img
+            src="assets/about-visual.svg"
+            alt="Abstract illustration representing geospatial dashboards and data pipelines"
+            class="section-illustration"
+            style="margin-top: 1rem; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); max-width: 100%;"
+          />
+        </div>
+
+        <div class="reveal delay-1" style="max-width: 560px;">
+          <p style="line-height: 1.75; margin-bottom: 1rem;">
+            I'm <strong>Bernard Ndeogo Issifu</strong> — a GISP-certified geospatial data scientist embedded at the
+            Ohio Department of Transportation through CDM Smith, applying <strong>machine learning and spatial
+            analytics</strong> to real transportation and infrastructure problems.
+          </p>
+          <p style="line-height: 1.75; margin-bottom: 1.2rem;">
+            My daily stack is <strong>Python, ArcGIS Pro, and SQL</strong>. I build analytical workflows, spatial
+            models, and data-driven deliverables — from EV charging gap analyses using the OpenStreetMap API to
+            microsimulation models for major Ohio corridor studies. Currently completing an
+            <strong>MS in Data Science at the University of Arizona</strong>, building toward production-grade
+            geospatial pipelines on GCP with Apache Airflow and PostGIS.
+          </p>
+
+          <div class="about-pills" style="display: flex; flex-wrap: wrap; gap: 0.6rem;">
+            <span style="padding: 0.5rem 0.8rem; border-radius: 999px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); font-size: 0.9rem;">Spatial Analytics</span>
+            <span style="padding: 0.5rem 0.8rem; border-radius: 999px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); font-size: 0.9rem;">Travel Demand Modeling</span>
+            <span style="padding: 0.5rem 0.8rem; border-radius: 999px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); font-size: 0.9rem;">EV Infrastructure</span>
+            <span style="padding: 0.5rem 0.8rem; border-radius: 999px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); font-size: 0.9rem;">Remote Sensing</span>
+            <span style="padding: 0.5rem 0.8rem; border-radius: 999px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); font-size: 0.9rem;">Cloud Pipelines</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ══ EXPERIENCE ══ -->
+    <section class="section" id="experience" style="padding: 4rem 0;">
+      <div class="container" style="max-width: 1100px; margin: 0 auto;">
+
+        <div class="section-heading reveal" style="display:flex; justify-content:space-between; gap:2rem; align-items:end; margin-bottom:2rem; flex-wrap:wrap;">
+          <div>
+            <p class="section-label">Experience</p>
+            <h2 style="margin-top:0.5rem;">Professional journey</h2>
+          </div>
+          <p class="section-intro" style="max-width:420px; line-height:1.7;">
+            Roles spanning transportation planning, geospatial analysis, EV infrastructure, and graduate research across consulting, government, and academia.
+          </p>
+        </div>
+
+        <div class="timeline" style="display:grid; gap:1.2rem;">
+
+          <article class="timeline-item glass-card reveal" style="padding:1.4rem; transition:all 0.3s ease; cursor:pointer;">
+            <div class="timeline-date" style="display:inline-flex; padding:0.4rem 0.9rem; border-radius:999px; background:linear-gradient(135deg, #7c9bff, #4be1c5); color:#06111d; font-size:0.85rem; font-weight:700; box-shadow:0 6px 18px rgba(75,225,197,0.25);">
+              Sep 2023 — Present
+            </div>
+            <h3 style="margin:0.8rem 0 0.3rem;">Transportation Planner / Travel Demand Modeler</h3>
+            <p class="timeline-company" style="color:#c9d6ef; font-weight:600; margin:0 0 0.8rem;">CDM Smith — In-House Consultant, Ohio DOT · Columbus, OH</p>
+            <ul style="margin-top:0.6rem; padding-left:1.1rem; line-height:1.75;">
+              <li>Embedded transportation planner and travel demand modeler at ODOT, supporting corridor studies, traffic modeling, and statewide planning deliverables across Ohio's road network.</li>
+              <li>Performs spatial analysis and GIS automation using ArcGIS Pro, Python (arcpy, GeoPandas), and SQL.</li>
+              <li>Develops and maintains travel demand models in TransCAD; conducts OD analysis and network performance assessments for major Ohio corridors.</li>
+            </ul>
+          </article>
+
+          <article class="timeline-item glass-card reveal delay-1" style="padding:1.4rem; transition:all 0.3s ease; cursor:pointer;">
+            <div class="timeline-date" style="display:inline-flex; padding:0.4rem 0.9rem; border-radius:999px; background:linear-gradient(135deg, #7c9bff, #4be1c5); color:#06111d; font-size:0.85rem; font-weight:700; box-shadow:0 6px 18px rgba(75,225,197,0.25);">
+              Feb 2024 — Sep 2024
+            </div>
+            <h3 style="margin:0.8rem 0 0.3rem;">Transportation Engineer / Planner</h3>
+            <p class="timeline-company" style="color:#c9d6ef; font-weight:600; margin:0 0 0.8rem;">HNTB Inc. · Columbus, OH</p>
+            <ul style="margin-top:0.6rem; padding-left:1.1rem; line-height:1.75;">
+              <li>Led geospatial analysis for FHWA NEVI EV infrastructure deployment plans across Oklahoma, Mississippi, and Tennessee.</li>
+              <li>Extracted and processed highway network data from the OpenStreetMap API, merged with national EV charging datasets.</li>
+              <li>Produced high-quality static maps and interactive ArcGIS Online web maps for client deliverables and RFP submissions.</li>
+            </ul>
+          </article>
+
+          <article class="timeline-item glass-card reveal" style="padding:1.4rem; transition:all 0.3s ease; cursor:pointer;">
+            <div class="timeline-date" style="display:inline-flex; padding:0.4rem 0.9rem; border-radius:999px; background:linear-gradient(135deg, #7c9bff, #4be1c5); color:#06111d; font-size:0.85rem; font-weight:700; box-shadow:0 6px 18px rgba(75,225,197,0.25);">
+              Apr 2023 — Aug 2023
+            </div>
+            <h3 style="margin:0.8rem 0 0.3rem;">Transportation Intern</h3>
+            <p class="timeline-company" style="color:#c9d6ef; font-weight:600; margin:0 0 0.8rem;">Burton Planning Services · Columbus, OH</p>
+            <ul style="margin-top:0.6rem; padding-left:1.1rem; line-height:1.75;">
+              <li>Used Python to analyze origin-destination data and StreetLight to extract ADT volumes for General Plan updates.</li>
+              <li>Maintained ArcGIS geodatabases and produced traffic impact studies using SYNCHRO, VISTRO, and ITE Trip Generation methodology.</li>
+            </ul>
+          </article>
+
+          <article class="timeline-item glass-card reveal delay-1" style="padding:1.4rem; transition:all 0.3s ease; cursor:pointer;">
+            <div class="timeline-date" style="display:inline-flex; padding:0.4rem 0.9rem; border-radius:999px; background:linear-gradient(135deg, #7c9bff, #4be1c5); color:#06111d; font-size:0.85rem; font-weight:700; box-shadow:0 6px 18px rgba(75,225,197,0.25);">
+              May 2022 — Dec 2022
+            </div>
+            <h3 style="margin:0.8rem 0 0.3rem;">Transportation Intern</h3>
+            <p class="timeline-company" style="color:#c9d6ef; font-weight:600; margin:0 0 0.8rem;">Fehr &amp; Peers · Irvine, CA</p>
+            <ul style="margin-top:0.6rem; padding-left:1.1rem; line-height:1.75;">
+              <li>Developed VISSIM microsimulation models for the CalTrans SR-210 corridor with automated data extraction via Python scripts.</li>
+              <li>Maintained ArcGIS databases and produced traffic impact studies for Bay Area and Southern California clients.</li>
+            </ul>
+          </article>
+
+          <article class="timeline-item glass-card reveal" style="padding:1.4rem; transition:all 0.3s ease; cursor:pointer;">
+            <div class="timeline-date" style="display:inline-flex; padding:0.4rem 0.9rem; border-radius:999px; background:linear-gradient(135deg, #7c9bff, #4be1c5); color:#06111d; font-size:0.85rem; font-weight:700; box-shadow:0 6px 18px rgba(75,225,197,0.25);">
+              Jan 2021 — Dec 2023
+            </div>
+            <h3 style="margin:0.8rem 0 0.3rem;">Graduate Research Assistant</h3>
+            <p class="timeline-company" style="color:#c9d6ef; font-weight:600; margin:0 0 0.8rem;">Safety and Human Factors Lab · Ohio University</p>
+            <ul style="margin-top:0.6rem; padding-left:1.1rem; line-height:1.75;">
+              <li>Led driving simulation experiments studying driver behavior at mini-roundabouts and turbo roundabouts — designing scenarios in AutoCAD/AutoTurn and building VISSIM models.</li>
+              <li>Automated data extraction with Python; applied statistical modeling (logistic regression, ANOVA) in SPSS, STATA, and Python.</li>
+              <li>Published MS thesis and presented at Ohio Roundabout Conference and AHFE International Conference 2023.</li>
+            </ul>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ PROJECTS ══ -->
+    <section class="section" id="projects" style="padding: 4rem 0;">
+      <div class="container" style="max-width: 1100px; margin: 0 auto;">
+
+        <div class="section-heading reveal" style="display:flex; justify-content:space-between; gap:2rem; align-items:end; margin-bottom:2rem; flex-wrap:wrap;">
+          <div>
+            <p class="section-label">Projects</p>
+            <h2 style="margin-top:0.5rem;">Selected work</h2>
+          </div>
+          <p class="section-intro" style="max-width:420px; line-height:1.7;">
+            End-to-end geospatial ML systems, spatial data pipelines, and transportation analytics — from capstone to client work.
+          </p>
+        </div>
+
+        <div class="project-grid" style="display:grid; grid-template-columns:repeat(12, 1fr); gap:1.2rem;">
+
+          <!-- WILDFIRE — featured -->
+          <article class="project-card glass-card featured reveal" style="grid-column:span 6; overflow:hidden;">
+            <div style="width:100%; aspect-ratio:16/10; background:linear-gradient(135deg, rgba(124,155,255,0.15), rgba(75,225,197,0.1)); display:flex; align-items:center; justify-content:center; border-bottom:1px solid rgba(255,255,255,0.08);">
+              <span style="font-size:2.5rem;">🔥</span>
+            </div>
+            <div style="padding:1.25rem;">
+              <h3>Real-Time Wildfire Detection Pipeline</h3>
+              <p>An end-to-end geospatial ML pipeline for near-real-time wildfire monitoring. NASA FIRMS thermal data, Sentinel-2 imagery, NOAA weather feeds, and USGS elevation data ingest into PostGIS. Apache Airflow orchestrates all jobs. A CNN smoke classifier scores incoming imagery and flags high-probability fire events, deployed on GCP with a live Kepler.gl dashboard.</p>
+              <div style="margin-top:1rem;">
+                <a href="https://github.com/ndeogobernard" target="_blank"
+                  style="display:inline-block; padding:0.6rem 1rem; border-radius:999px; background:linear-gradient(135deg, #7c9bff, #4be1c5); color:#06111d; font-weight:700;">
+                  View on GitHub →
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- AUTONOMOUS FLEET — featured -->
+          <article class="project-card glass-card featured reveal delay-1" style="grid-column:span 6; overflow:hidden;">
+            <div style="width:100%; aspect-ratio:16/10; background:linear-gradient(135deg, rgba(124,155,255,0.15), rgba(75,225,197,0.1)); display:flex; align-items:center; justify-content:center; border-bottom:1px solid rgba(255,255,255,0.08);">
+              <span style="font-size:2.5rem;">🚗</span>
+            </div>
+            <div style="padding:1.25rem;">
+              <h3>Autonomous Fleet Telemetry Data Platform</h3>
+              <p>A production-scale data platform simulating autonomous vehicle telemetry for fleet analytics. High-frequency vehicle streams — GPS traces, speed, heading, sensor events — ingested via Apache Airflow and processed with Spark into dimensional tables in BigQuery for fleet KPIs, trip metrics, and incident tracking.</p>
+              <div style="margin-top:1rem;">
+                <a href="https://github.com/ndeogobernard" target="_blank"
+                  style="display:inline-block; padding:0.6rem 1rem; border-radius:999px; background:linear-gradient(135deg, #7c9bff, #4be1c5); color:#06111d; font-weight:700;">
+                  View on GitHub →
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- FLOOD — span 4 -->
+          <article class="project-card glass-card reveal" style="grid-column:span 4; overflow:hidden;">
+            <div style="width:100%; aspect-ratio:16/10; background:linear-gradient(135deg, rgba(124,155,255,0.15), rgba(75,225,197,0.1)); display:flex; align-items:center; justify-content:center; border-bottom:1px solid rgba(255,255,255,0.08);">
+              <span style="font-size:2.5rem;">🌊</span>
+            </div>
+            <div style="padding:1.25rem;">
+              <h3>Flood Potential Assessment — Santa Cruz River Basin</h3>
+              <p>A spatial ML model predicting flood probability at the parcel level. High-resolution LiDAR DEMs provide elevation, slope, and flow accumulation features, classified with a random forest validated through cross-validation.</p>
+              <div style="margin-top:1rem;">
+                <a href="https://github.com/ndeogobernard" target="_blank"
+                  style="display:inline-block; padding:0.6rem 1rem; border-radius:999px; background:linear-gradient(135deg, #7c9bff, #4be1c5); color:#06111d; font-weight:700;">
+                  View on GitHub →
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- EV CHARGING — span 4 -->
+          <article class="project-card glass-card reveal delay-1" style="grid-column:span 4; overflow:hidden;">
+            <div style="width:100%; aspect-ratio:16/10; background:linear-gradient(135deg, rgba(124,155,255,0.15), rgba(75,225,197,0.1)); display:flex; align-items:center; justify-content:center; border-bottom:1px solid rgba(255,255,255,0.08);">
+              <span style="font-size:2.5rem;">⚡</span>
+            </div>
+            <div style="padding:1.25rem;">
+              <h3>EV Charging Site Suitability — Columbus, OH</h3>
+              <p>A multi-criteria spatial optimization model identifying optimal heavy-duty EV charging hub locations in Columbus using Analytic Hierarchy Process (AHP) implemented in Python, making the methodology reproducible and defensible.</p>
+              <div style="margin-top:1rem;">
+                <a href="https://github.com/ndeogobernard" target="_blank"
+                  style="display:inline-block; padding:0.6rem 1rem; border-radius:999px; background:linear-gradient(135deg, #7c9bff, #4be1c5); color:#06111d; font-weight:700;">
+                  View on GitHub →
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- LAND USE — span 4 -->
+          <article class="project-card glass-card reveal" style="grid-column:span 4; overflow:hidden;">
+            <div style="width:100%; aspect-ratio:16/10; background:linear-gradient(135deg, rgba(124,155,255,0.15), rgba(75,225,197,0.1)); display:flex; align-items:center; justify-content:center; border-bottom:1px solid rgba(255,255,255,0.08);">
+              <span style="font-size:2.5rem;">🛰</span>
+            </div>
+            <div style="padding:1.25rem;">
+              <h3>Land Use Change Detection — Central Ohio</h3>
+              <p>A 20-year remote sensing study of urban expansion using Landsat 8/9 multispectral imagery, classified with a supervised SVM trained on labeled ground truth points.</p>
+              <div style="margin-top:1rem;">
+                <a href="https://github.com/ndeogobernard" target="_blank"
+                  style="display:inline-block; padding:0.6rem 1rem; border-radius:999px; background:linear-gradient(135deg, #7c9bff, #4be1c5); color:#06111d; font-weight:700;">
+                  View on GitHub →
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- HURRICANE — featured -->
+          <article class="project-card glass-card featured reveal" style="grid-column:span 6; overflow:hidden;">
+            <div style="width:100%; aspect-ratio:16/10; background:linear-gradient(135deg, rgba(124,155,255,0.15), rgba(75,225,197,0.1)); display:flex; align-items:center; justify-content:center; border-bottom:1px solid rgba(255,255,255,0.08);">
+              <span style="font-size:2.5rem;">🌀</span>
+            </div>
+            <div style="padding:1.25rem;">
+              <h3>Historical Hurricane Impact Analysis</h3>
+              <p>A spatiotemporal analysis of hurricane impacts on Gulf and Atlantic Coast infrastructure using NOAA HURDAT2 storm track data (1980–2023). A GWR model reveals which community factors most predict recovery outcomes across affected regions.</p>
+              <div style="margin-top:1rem;">
+                <a href="https://github.com/ndeogobernard" target="_blank"
+                  style="display:inline-block; padding:0.6rem 1rem; border-radius:999px; background:linear-gradient(135deg, #7c9bff, #4be1c5); color:#06111d; font-weight:700;">
+                  View on GitHub →
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- NEVI — featured -->
+          <article class="project-card glass-card featured reveal delay-1" style="grid-column:span 6; overflow:hidden;">
+            <div style="width:100%; aspect-ratio:16/10; background:linear-gradient(135deg, rgba(124,155,255,0.15), rgba(75,225,197,0.1)); display:flex; align-items:center; justify-content:center; border-bottom:1px solid rgba(255,255,255,0.08);">
+              <span style="font-size:2.5rem;">🗺</span>
+            </div>
+            <div style="padding:1.25rem;">
+              <h3>NEVI EV Infrastructure Deployment Analysis</h3>
+              <p>Geospatial analysis pipeline supporting FHWA NEVI EV charging deployment plans across Oklahoma, Tennessee, and Mississippi. Identified optimal deployment corridors through Python-automated gap analysis and published ArcGIS Online web maps for state DOT clients.</p>
+              <p style="font-size:0.8rem; color:#8fa6d8; margin-bottom:0;">Client project (NDA) — maps available on request</p>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ SKILLS ══ -->
+    <section class="section" id="skills">
+      <div class="container">
+        <div class="section-heading reveal">
+          <div>
+            <p class="section-label">Skills</p>
+            <h2>Core toolkit</h2>
+          </div>
+        </div>
+
+        <div class="skills-grid">
+          <article class="skill-card glass-card reveal">
+            <h3>Data Science &amp; ML</h3>
+            <p>Python, SQL, Pandas, scikit-learn, Statistical Modeling, Logistic Regression, ANOVA, SPSS, STATA, Jupyter</p>
+          </article>
+          <article class="skill-card glass-card reveal delay-1">
+            <h3>Geospatial Platforms</h3>
+            <p>ArcGIS Pro, ArcGIS Online, GeoPandas, arcpy, QGIS, OpenStreetMap API, ArcGIS Dashboards, Experience Builder</p>
+          </article>
+          <article class="skill-card glass-card reveal">
+            <h3>Data Engineering</h3>
+            <p>PostGIS, Apache Airflow, Apache Spark, Docker, FastAPI, PostgreSQL, spatial databases, ETL pipelines</p>
+          </article>
+          <article class="skill-card glass-card reveal delay-1">
+            <h3>Cloud &amp; Warehousing</h3>
+            <p>Google Cloud Platform, BigQuery, Snowflake, Docker, GCP deployment, cloud-based spatial data infrastructure</p>
+          </article>
+          <article class="skill-card glass-card reveal">
+            <h3>Transportation Modeling</h3>
+            <p>VISSIM microsimulation, SYNCHRO, TransCAD, VISTRO, AutoCAD / Civil 3D, ITE Trip Generation, StreetLight</p>
+          </article>
+          <article class="skill-card glass-card reveal delay-1">
+            <h3>Mapping &amp; Visualization</h3>
+            <p>Kepler.gl, ArcGIS StoryMaps, remote sensing, Landsat / Sentinel-2 imagery, NASA FIRMS, NOAA data, Tableau</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ EDUCATION ══ -->
+    <section class="section" id="education" style="padding: 4rem 0;">
+      <div class="container" style="max-width: 1100px; margin: 0 auto;">
+
+        <div class="section-heading reveal" style="display:flex; justify-content:space-between; gap:2rem; align-items:end; margin-bottom:2rem; flex-wrap:wrap;">
+          <div>
+            <p class="section-label">Education</p>
+            <h2 style="margin-top:0.5rem;">Education &amp; certifications</h2>
+          </div>
+        </div>
+
+        <!-- Certs row -->
+        <div class="cert-row reveal" style="display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin-bottom:1.5rem;">
+          <div class="cert-card">
+            <div class="cert-icon">🏅</div>
+            <div>
+              <div class="cert-name">GISP — GIS Professional</div>
+              <div class="cert-issuer">GISCI · Geographic Information Systems Certification Institute</div>
+            </div>
+          </div>
+          <div class="cert-card">
+            <div class="cert-icon">🎓</div>
+            <div>
+              <div class="cert-name">MS Data Science (In Progress)</div>
+              <div class="cert-issuer">University of Arizona · Expected 2026</div>
+            </div>
+          </div>
+          <div class="cert-card">
+            <div class="cert-icon">🗺</div>
+            <div>
+              <div class="cert-name">GIS Certificate (In Progress)</div>
+              <div class="cert-issuer">Columbus State Community College</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Degree timeline -->
+        <div class="edu-grid" style="display:grid; gap:1.2rem;">
+
+          <article class="edu-card glass-card reveal" style="padding:1.4rem;">
+            <div class="edu-year">2025 — Present</div>
+            <div class="edu-degree">MS in Data Science</div>
+            <div class="edu-school">University of Arizona — College of Information Science</div>
+            <div class="edu-detail">Advanced machine learning, neural networks, NLP, and computer vision — with applied focus on geospatial data engineering, cloud-based data warehousing, and large-scale spatial data mining. Capstone: Real-Time Wildfire Detection Pipeline (PostGIS, Apache Airflow, Sentinel-2, GCP).</div>
+          </article>
+
+          <article class="edu-card glass-card reveal delay-1" style="padding:1.4rem;">
+            <div class="edu-year">In Progress</div>
+            <div class="edu-degree">Certificate in GIS</div>
+            <div class="edu-school">Columbus State Community College</div>
+            <div class="edu-detail">Formal GIS certificate covering spatial analysis, cartography, geodatabases, and remote sensing fundamentals.</div>
+          </article>
+
+          <article class="edu-card glass-card reveal" style="padding:1.4rem;">
+            <div class="edu-year">2021 — 2023</div>
+            <div class="edu-degree">MS in Civil Engineering — Transportation</div>
+            <div class="edu-school">Ohio University</div>
+            <div class="edu-detail">Graduate research in driver behavior, roundabout design, and human factors. Thesis presented at Ohio Roundabout Conference and AHFE Conference 2023.</div>
+          </article>
+
+          <article class="edu-card glass-card reveal delay-1" style="padding:1.4rem;">
+            <div class="edu-year">Previous</div>
+            <div class="edu-degree">BS in Civil Engineering</div>
+            <div class="edu-school">Kwame Nkrumah University of Science and Technology — Ghana</div>
+            <div class="edu-detail">Foundation in structural analysis, civil infrastructure, engineering systems, and applied mathematics.</div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ CONTACT ══ -->
+    <section class="section contact-section" id="contact">
+      <div class="container contact-card glass-card reveal">
+        <div class="contact-copy">
+          <p class="section-label">Contact</p>
+          <h2>Building the spatial data layer of the future.</h2>
+          <p>
+            Open to Geospatial Data Scientist and Spatial ML Engineer roles. Based in Columbus, OH — open to remote.
+            Targeting: climate tech · smart infrastructure · location intelligence · autonomous systems.
+          </p>
+          <div class="contact-links">
+            <!-- Replace with your real email -->
+            <a class="btn btn-primary" href="mailto:YOUR-EMAIL@domain.com">Email Me</a>
+            <a class="btn btn-secondary" href="https://www.linkedin.com/in/bernardndeogo/" target="_blank" rel="noreferrer">LinkedIn</a>
+            <a class="btn btn-secondary" href="https://github.com/ndeogobernard" target="_blank" rel="noreferrer">GitHub</a>
+          </div>
+        </div>
+        <img src="assets/contact-visual.svg" alt="Abstract contact illustration" class="contact-visual"
+          style="border-radius:22px; border:1px solid rgba(255,255,255,0.10); width:100%;" />
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© <span id="year"></span> Bernard Ndeogo Issifu · Geospatial Data Scientist · Columbus, OH</p>
+      <a href="#home">Back to top ↑</a>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks   = document.getElementById('navLinks');
+    if (menuToggle && navLinks) {
+      menuToggle.addEventListener('click', () => {
+        const open = navLinks.classList.toggle('open');
+        menuToggle.textContent = open ? '✕' : '☰';
+      });
+      navLinks.querySelectorAll('a').forEach(l => l.addEventListener('click', () => {
+        navLinks.classList.remove('open'); menuToggle.textContent = '☰';
+      }));
+      document.addEventListener('click', e => {
+        if (!menuToggle.contains(e.target) && !navLinks.contains(e.target)) {
+          navLinks.classList.remove('open'); menuToggle.textContent = '☰';
+        }
+      });
+    }
+
+    const io = new IntersectionObserver(
+      entries => entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+      }),
+      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+    );
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+    const header = document.querySelector('.site-header');
+    if (header) window.addEventListener('scroll', () => {
+      header.style.boxShadow = window.scrollY > 10 ? '0 4px 30px rgba(0,0,0,0.4)' : 'none';
+    }, { passive: true });
+  </script>
+
+</body>
+</html>
