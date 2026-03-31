@@ -307,34 +307,147 @@
     .reveal.visible { opacity: 1; transform: translateY(0); }
     .delay-1 { transition-delay: 0.12s; }
 
+    /* ── Tablet ── */
     @media (max-width: 1040px) {
-      .hero-grid, .section-grid.two-col, .contact-card, .skills-grid { grid-template-columns: 1fr; }
-      .logo-strip-inner { grid-template-columns: repeat(3, 1fr); }
-      .project-card, .project-card.featured { grid-column: span 6; }
+      .hero-grid,
+      .section-grid.two-col,
+      .contact-card,
+      .skills-grid { grid-template-columns: 1fr !important; }
+
+      .logo-strip-inner { grid-template-columns: repeat(3, 1fr) !important; }
+      .project-card, .project-card.featured { grid-column: span 6 !important; }
       .section-heading { flex-direction: column; align-items: start; }
       .cert-row { grid-template-columns: 1fr 1fr; }
+
+      /* hero image below text on tablet */
+      .hero-visual { justify-content: flex-start !important; }
+      .profile-shell { max-width: 380px !important; }
+
+      /* contact visual smaller */
+      .contact-visual { max-width: 280px; }
     }
+
+    /* ── Mobile ── */
     @media (max-width: 760px) {
+      /* Nav */
       .menu-toggle { display: inline-flex; }
       .nav-links {
-        position: absolute; top: calc(100% + 0.75rem); right: 1rem; left: 1rem;
-        flex-direction: column; align-items: start; gap: 1rem; padding: 1rem;
-        border-radius: 20px; background: rgba(8,17,31,0.96);
-        border: 1px solid rgba(255,255,255,0.08); display: none;
+        position: absolute;
+        top: calc(100% + 0.5rem);
+        right: 1rem; left: 1rem;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0; padding: 0.5rem 0;
+        border-radius: 20px;
+        background: rgba(8,17,31,0.98);
+        border: 1px solid rgba(255,255,255,0.1);
+        display: none;
+        z-index: 200;
       }
       .nav-links.open { display: flex; }
-      .hero { padding-top: 3rem; }
-      .hero h1 { max-width: 100%; }
-      .logo-strip-inner { grid-template-columns: repeat(2, 1fr); }
-      .project-grid { grid-template-columns: 1fr; }
-      .project-card, .project-card.featured { grid-column: auto; }
-      .skills-grid { grid-template-columns: 1fr; }
-      .cert-row { grid-template-columns: 1fr; }
-      .footer-inner { flex-direction: column; align-items: start; }
+      .nav-links a {
+        padding: 0.85rem 1.25rem;
+        border-bottom: 1px solid rgba(255,255,255,0.06);
+        border-radius: 0;
+        color: var(--text);
+      }
+      .nav-links a:last-child { border-bottom: none; }
+      .nav-cta {
+        margin: 0.5rem 1rem 0.5rem !important;
+        border-radius: 999px !important;
+        text-align: center;
+        background: linear-gradient(135deg, var(--primary), var(--primary-2)) !important;
+        color: #06111d !important;
+        border: none !important;
+      }
+
+      /* Hero */
+      .hero { padding: 2.5rem 0 2rem !important; }
+      .hero-grid { grid-template-columns: 1fr !important; gap: 2rem !important; }
+      .hero-copy { max-width: 100% !important; }
+      .hero h1 { max-width: 100% !important; font-size: clamp(2rem, 8vw, 2.8rem) !important; }
+      .hero-text { max-width: 100% !important; font-size: 1rem !important; }
+      .hero-visual { justify-content: flex-start !important; }
+      .profile-shell { max-width: 100% !important; }
+
+      /* Logo strip */
+      .logo-strip-inner { grid-template-columns: repeat(2, 1fr) !important; }
+
+      /* About */
+      .section-grid.two-col { grid-template-columns: 1fr !important; }
+
+      /* Projects — single column */
+      .project-grid { grid-template-columns: 1fr !important; }
+      .project-card,
+      .project-card.featured { grid-column: auto !important; }
+
+      /* Skills */
+      .skills-grid { grid-template-columns: 1fr !important; }
+
+      /* Education */
+      .cert-row { grid-template-columns: 1fr !important; }
+
+      /* Contact */
+      .contact-card { grid-template-columns: 1fr !important; padding: 1.5rem !important; }
+      .contact-visual { display: none; }
+
+      /* Footer */
+      .footer-inner { flex-direction: column; align-items: start; gap: 0.5rem; }
+
+      /* Section headings */
+      .section-heading { flex-direction: column; align-items: start; gap: 0.75rem; }
+      .section-intro { max-width: 100% !important; }
+
+      /* Timeline */
+      .timeline-date { font-size: 0.78rem !important; }
+      .timeline-item h3 { font-size: 1.05rem !important; }
     }
+
+    /* ── Small mobile ── */
     @media (max-width: 480px) {
-      .hero-actions, .contact-links { flex-direction: column; }
-      .hero-actions .btn, .contact-links .btn { justify-content: center; }
+      .container { padding: 0 1rem; }
+
+      /* Hero */
+      .hero { padding: 2rem 0 1.5rem !important; }
+      .hero h1 { font-size: clamp(1.8rem, 7vw, 2.4rem) !important; }
+      .hero-actions { flex-direction: column !important; gap: 0.75rem !important; }
+      .hero-actions .btn { width: 100%; justify-content: center; }
+      .quick-stats { gap: 0.5rem !important; }
+      .quick-stats li { font-size: 0.82rem; }
+
+      /* Logo strip */
+      .logo-strip-inner { grid-template-columns: 1fr 1fr !important; gap: 0.5rem !important; }
+      .logo-item { min-height: 52px !important; font-size: 0.78rem !important; }
+
+      /* Section headings */
+      .section h2, .section-heading h2 { font-size: clamp(1.6rem, 6vw, 2.2rem) !important; }
+
+      /* About pills wrap nicely */
+      .about-pills { gap: 0.4rem !important; }
+      .about-pills span { font-size: 0.82rem !important; padding: 0.4rem 0.7rem !important; }
+
+      /* Timeline */
+      .timeline-item { padding: 1rem !important; }
+      .timeline-item ul { padding-left: 1rem !important; }
+      .timeline-item li { font-size: 0.88rem; }
+
+      /* Project cards */
+      .project-card > div { padding: 1rem !important; }
+      .project-card h3 { font-size: 1.05rem !important; }
+      .project-card p { font-size: 0.88rem !important; }
+
+      /* Skills */
+      .skill-card { padding: 1rem !important; }
+
+      /* Education */
+      .edu-card { padding: 1rem !important; }
+      .cert-card { padding: 0.9rem 1rem !important; }
+      .cert-row { gap: 0.75rem; }
+
+      /* Contact */
+      .contact-card { padding: 1.25rem !important; }
+      .contact-links { flex-direction: column !important; gap: 0.75rem !important; }
+      .contact-links .btn { width: 100%; justify-content: center; }
     }
   </style>
 </head>
