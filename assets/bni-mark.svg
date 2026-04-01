@@ -1,0 +1,22 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="g" x1="64" y1="64" x2="448" y2="448" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#7C9BFF"/>
+      <stop offset="1" stop-color="#4BE1C5"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect x="24" y="24" width="464" height="464" rx="124" fill="#0C162A"/>
+  <!-- Gradient border -->
+  <rect x="24" y="24" width="464" height="464" rx="124" stroke="url(#g)" stroke-width="8"/>
+
+  <!-- B — gradient, left side (mirrors Ashly's A) -->
+  <path d="M108 352V160H192C218 160 238 166 251 178C264 190 270 206 270 225C270 237 267 247 261 256C255 265 246 271 235 275C249 278 260 285 268 295C276 305 280 318 280 332C280 353 273 370 258 381C244 393 223 352 192 352H108ZM152 248H187C199 248 208 245 215 239C222 232 225 224 225 214C225 204 222 196 215 190C208 184 199 181 187 181H152V248ZM152 331H194C208 331 218 327 226 321C234 314 238 305 238 294C238 283 234 274 226 267C218 261 208 257 194 257H152V331Z" fill="url(#g)"/>
+
+  <!-- I — white accent, right side (mirrors Ashly's W) -->
+  <path d="M314 160H358V352H314V160Z" fill="#EAF2FF" fill-opacity="0.92"/>
+
+  <!-- Teal dot accent -->
+  <circle cx="384" cy="140" r="24" fill="#4BE1C5" fill-opacity="0.85"/>
+</svg>
