@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projects | Bernard Ndeogo</title>
+  <meta name="description" content="Selected geospatial ML, spatial data pipelines, and transportation analytics projects by Bernard Ndeogo — Data Scientist & AI/ML Engineer." />
+  
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Roboto+Slab:wght@500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg: #08111f;
+      --text: #eaf2ff;
+      --muted: #a8b5d1;
+      --primary: #7c9bff;
+      --accent: #4be1c5;
+      --border: rgba(255,255,255,0.12);
+      --card-bg: rgba(255,255,255,0.06);
+    }
+    
+    * { box-sizing: border-box; margin:0; padding:0; }
+    body {
+      font-family: 'Inter', system_ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+    h1, h2, h3 {
+      font-family: 'Roboto Slab', serif;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+    a { color: var(--primary); text-decoration: none; }
+    a:hover { opacity: 0.85; }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    header {
+      padding: 2.5rem 0 1.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      margin-bottom: 3rem;
+    }
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .site-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: white;
+    }
+    .nav-links a {
+      margin-left: 1.5rem;
+      font-weight: 500;
+      color: var(--muted);
+    }
+    .nav-links a:hover, .nav-links a.active {
+      color: white;
+    }
+
+    .page-header h1 {
+      font-size: 2.8rem;
+      margin-bottom: 0.8rem;
+    }
+    .lead {
+      font-size: 1.25rem;
+      color: var(--muted);
+      max-width: 680px;
+      margin-bottom: 3rem;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 2.2rem;
+    }
+    .project {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.4rem;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      transition: all 0.35s ease;
+      backdrop-filter: blur(12px);
+    }
+    .project:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      border-color: rgba(124,155,255,0.3);
+    }
+    .project .preview-image {
+      display: block;
+      width: 100%;
+      height: 0;
+      padding-top: 58%; /* same ratio as Billy's */
+      background-size: cover;
+      background-position: center;
+      border-radius: 10px;
+      margin-bottom: 1.2rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .project .preview-image::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(124,155,255,0.25), rgba(75,225,197,0.18));
+      opacity: 0.7;
+    }
+    .project .title {
+      font-size: 1.45rem;
+      margin-bottom: 0.7rem;
+      line-height: 1.2;
+    }
+    .project p {
+      color: var(--muted);
+      font-size: 1rem;
+      flex: 1;
+      margin-bottom: 1.2rem;
+    }
+    .spacer { flex: 1; }
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      font-size: 0.95rem;
+    }
+    .links a {
+      background: rgba(255,255,255,0.08);
+      padding: 0.5rem 1rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      transition: all 0.2s;
+    }
+    .links a:hover {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #06111d;
+      border-color: transparent;
+    }
+
+    footer {
+      margin-top: 6rem;
+      padding: 3rem 0 2rem;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      color: var(--muted);
+      font-size: 0.95rem;
+      text-align: center;
+    }
+
+    @media (max-width: 760px) {
+      .projects-grid { grid-template-columns: 1fr; }
+      .nav-links a { margin: 0.5rem 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container nav">
+      <a href="/" class="site-title">Bernard Ndeogo</a>
+      <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/projects/" class="active">Projects</a>
+        <a href="/experience/">Experience</a>
+        <a href="/about/">About</a>
+        <a href="https://github.com/ndeogobernard" target="_blank">GitHub</a>
+        <a href="https://www.linkedin.com/in/bernardndeogo/" target="_blank">LinkedIn</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="page-header">
+      <h1>Projects</h1>
+      <p class="lead">
+        A collection of geospatial machine learning systems, spatial data pipelines, 
+        transportation analytics, and real-world impact projects I've built.
+      </p>
+    </div>
+
+    <div class="projects-grid">
+
+      <!-- Real-Time Wildfire Detection -->
+      <div class="project">
+        <div class="preview-image" style="background-image: linear-gradient(135deg, #1a2a5e, #0f3d3a);">
+          <span style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:4.5rem; opacity:0.9;">🔥</span>
+        </div>
+        <div class="title">Real-Time Wildfire Detection Pipeline</div>
+        <p>An end-to-end geospatial ML pipeline for near-real-time wildfire monitoring. NASA FIRMS thermal data, Sentinel-2 imagery, NOAA weather feeds, and USGS elevation data ingest into PostGIS. Apache Airflow orchestrates all jobs. A CNN smoke classifier scores incoming imagery and flags high-probability fire events, deployed on GCP with a live Kepler.gl dashboard.</p>
+        <div class="spacer"></div>
+        <div class="links">
+          <a href="https://github.com/ndeogobernard" target="_blank">GitHub</a>
+        </div>
+      </div>
+
+      <!-- Autonomous Fleet Telemetry -->
+      <div class="project">
+        <div class="preview-image" style="background-image: linear-gradient(135deg, #1a2a5e, #0f3d3a);">
+          <span style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:4.5rem; opacity:0.9;">🚗</span>
+        </div>
+        <div class="title">Autonomous Fleet Telemetry Data Platform</div>
+        <p>A production-scale data platform simulating autonomous vehicle telemetry for fleet analytics. High-frequency vehicle streams — GPS traces, speed, heading, sensor events — ingested via Apache Airflow and processed with Spark into dimensional tables in BigQuery for fleet KPIs, trip metrics, and incident tracking.</p>
+        <div class="spacer"></div>
+        <div class="links">
+          <a href="https://github.com/ndeogobernard" target="_blank">GitHub</a>
+        </div>
+      </div>
+
+      <!-- Flood Potential -->
+      <div class="project">
+        <div class="preview-image" style="background-image: linear-gradient(135deg, #1a2a5e, #0f3d3a);">
+          <span style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:4.5rem; opacity:0.9;">🌊</span>
+        </div>
+        <div class="title">Flood Potential Assessment — Santa Cruz River Basin</div>
+        <p>A spatial ML model predicting flood probability at the parcel level. High-resolution LiDAR DEMs provide elevation, slope, and flow accumulation features, classified with a random forest validated through cross-validation.</p>
+        <div class="spacer"></div>
+        <div class="links">
+          <a href="https://github.com/ndeogobernard" target="_blank">GitHub</a>
+        </div>
+      </div>
+
+      <!-- EV Charging -->
+      <div class="project">
+        <div class="preview-image" style="background-image: linear-gradient(135deg, #1a2a5e, #0f3d3a);">
+          <span style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:4.5rem; opacity:0.9;">⚡</span>
+        </div>
+        <div class="title">EV Charging Site Suitability — Columbus, OH</div>
+        <p>A multi-criteria spatial optimization model identifying optimal heavy-duty EV charging hub locations in Columbus using Analytic Hierarchy Process (AHP) implemented in Python, making the methodology reproducible and defensible.</p>
+        <div class="spacer"></div>
+        <div class="links">
+          <a href="https://github.com/ndeogobernard" target="_blank">GitHub</a>
+        </div>
+      </div>
+
+      <!-- Land Use Change -->
+      <div class="project">
+        <div class="preview-image" style="background-image: linear-gradient(135deg, #1a2a5e, #0f3d3a);">
+          <span style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:4.5rem; opacity:0.9;">🛰</span>
+        </div>
+        <div class="title">Land Use Change Detection — Central Ohio</div>
+        <p>A 20-year remote sensing study of urban expansion using Landsat 8/9 multispectral imagery, classified with a supervised SVM trained on labeled ground truth points.</p>
+        <div class="spacer"></div>
+        <div class="links">
+          <a href="https://github.com/ndeogobernard" target="_blank">GitHub</a>
+        </div>
+      </div>
+
+      <!-- Historical Hurricane -->
+      <div class="project">
+        <div class="preview-image" style="background-image: linear-gradient(135deg, #1a2a5e, #0f3d3a);">
+          <span style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:4.5rem; opacity:0.9;">🌀</span>
+        </div>
+        <div class="title">Historical Hurricane Impact Analysis</div>
+        <p>A spatiotemporal analysis of hurricane impacts on Gulf and Atlantic Coast infrastructure using NOAA HURDAT2 storm track data (1980–2023). A GWR model reveals which community factors most predict recovery outcomes across affected regions.</p>
+        <div class="spacer"></div>
+        <div class="links">
+          <a href="https://github.com/ndeogobernard" target="_blank">GitHub</a>
+        </div>
+      </div>
+
+      <!-- NEVI -->
+      <div class="project">
+        <div class="preview-image" style="background-image: linear-gradient(135deg, #1a2a5e, #0f3d3a);">
+          <span style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:4.5rem; opacity:0.9;">🗺</span>
+        </div>
+        <div class="title">NEVI EV Infrastructure Deployment Analysis</div>
+        <p>Geospatial analysis pipeline supporting FHWA NEVI EV charging deployment plans across Oklahoma, Tennessee, and Mississippi. Identified optimal deployment corridors through Python-automated gap analysis and published ArcGIS Online web maps for state DOT clients.</p>
+        <p style="font-size:0.85rem; color:#8fa6d8; margin-top:0.5rem;">Client project (NDA) — maps available on request</p>
+        <div class="spacer"></div>
+        <div class="links">
+          <a href="https://github.com/ndeogobernard" target="_blank">GitHub</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      © 2026 Bernard Ndeogo • Geospatial Data Scientist • Columbus, OH<br>
+      Built with inspiration from clean minimal designs • <a href="/">Back to Home</a>
+    </div>
+  </footer>
+
+</body>
+</html>
