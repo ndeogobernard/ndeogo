@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bernard Ndeogo | Data Scientist</title>
+  <meta name="description" content="Bernard Ndeogo Issifu — GISP-Certified Geospatial Data Scientist. Spatial ML · Transportation Planning · Columbus, OH." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%23081120'/%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%237c9bff'/%3E%3Cstop offset='100%25' stop-color='%234be1c5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' font-family='Inter,sans-serif' font-weight='800' font-size='14' fill='url(%23g)'%3EBNI%3C/text%3E%3C/svg%3E" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #08111f;
+      --bg-soft: #0d1830;
+      --surface: rgba(255, 255, 255, 0.08);
+      --surface-strong: rgba(255, 255, 255, 0.12);
+      --text: #eaf2ff;
+      --muted: #a8b5d1;
+      --primary: #7c9bff;
+      --primary-2: #4be1c5;
+      --border: rgba(255, 255, 255, 0.12);
+      --shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+      --radius: 24px;
+      --container: 1160px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(124, 155, 255, 0.12), transparent 30%),
+        radial-gradient(circle at top right, rgba(75, 225, 197, 0.10), transparent 25%),
+        linear-gradient(180deg, #07101d 0%, #08111f 60%, #0b1322 100%);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    .container { width: min(calc(100% - 2rem), var(--container)); margin: 0 auto; }
+
+    /* ... (keeping all your original CSS styles for header, hero, about, experience, skills, education, contact, etc.) ... */
+
+    /* ── Updated Projects Section ── */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 2rem;
+    }
+    .project-card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.05));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      transition: all 0.35s ease;
+    }
+    .project-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 25px 70px rgba(0, 0, 0, 0.45);
+      border-color: rgba(255,255,255,0.25);
+    }
+    .project-preview {
+      height: 0;
+      padding-top: 58%; /* consistent aspect ratio */
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .project-preview-inner {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(124,155,255,0.25), rgba(75,225,197,0.18));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-position 2s ease;
+    }
+    .project-card:hover .project-preview-inner {
+      background-position: center bottom;
+    }
+    .project-body {
+      padding: 1.5rem 1.4rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .project-body h3 {
+      margin: 0 0 0.85rem;
+      font-size: 1.32rem;
+      line-height: 1.25;
+      letter-spacing: -0.015em;
+    }
+    .project-body p {
+      color: var(--muted);
+      line-height: 1.75;
+      flex: 1;
+      margin-bottom: 1.3rem;
+    }
+    .project-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.7rem;
+    }
+    .project-link {
+      padding: 0.55rem 1.1rem;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 0.93rem;
+      transition: all 0.2s ease;
+    }
+    .project-link.primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      color: #06111d;
+    }
+    .project-link.secondary {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+    .project-link:hover {
+      transform: translateY(-2px);
+    }
+
+    /* Keep all your existing media queries and other styles */
+    /* (I'm omitting the full repeat of your original long CSS here for brevity, but in your file keep everything else unchanged) */
+
+  </style>
+</head>
+<body>
+  <!-- Your existing header, hero, logo strip, about, experience, skills, education, contact, and footer remain exactly the same -->
+
+  <!-- Only the Projects section is updated below -->
+
+  <!-- ══ PROJECTS ══ -->
+  <section class="section" id="projects" style="padding: 5rem 0;">
+    <div class="container" style="max-width: 1100px; margin: 0 auto;">
+      <div class="section-heading reveal" style="display:flex; justify-content:space-between; gap:2rem; align-items:end; margin-bottom:2.5rem; flex-wrap:wrap;">
+        <div>
+          <p class="section-label">Projects</p>
+          <h2 style="margin-top:0.5rem;">Selected work</h2>
+        </div>
+        <p class="section-intro" style="max-width:460px; line-height:1.75;">
+          End-to-end geospatial ML systems, spatial data pipelines, and transportation analytics — from capstone to client work.
+        </p>
+      </div>
+
+      <div class="projects-grid">
+
+        <!-- Wildfire -->
+        <article class="project-card reveal">
+          <div class="project-preview">
+            <div class="project-preview-inner">
+              <span style="font-size: 4.8rem;">🔥</span>
+            </div>
+          </div>
+          <div class="project-body">
+            <h3>Real-Time Wildfire Detection Pipeline</h3>
+            <p>An end-to-end geospatial ML pipeline for near-real-time wildfire monitoring. NASA FIRMS thermal data, Sentinel-2 imagery, NOAA weather feeds, and USGS elevation data ingest into PostGIS. Apache Airflow orchestrates all jobs. A CNN smoke classifier scores incoming imagery and flags high-probability fire events, deployed on GCP with a live Kepler.gl dashboard.</p>
+            <div class="project-links">
+              <a href="https://github.com/ndeogobernard" target="_blank" class="project-link primary">View on GitHub →</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Autonomous Fleet -->
+        <article class="project-card reveal">
+          <div class="project-preview">
+            <div class="project-preview-inner">
+              <span style="font-size: 4.8rem;">🚗</span>
+            </div>
+          </div>
+          <div class="project-body">
+            <h3>Autonomous Fleet Telemetry Data Platform</h3>
+            <p>A production-scale data platform simulating autonomous vehicle telemetry for fleet analytics. High-frequency vehicle streams — GPS traces, speed, heading, sensor events — ingested via Apache Airflow and processed with Spark into dimensional tables in BigQuery for fleet KPIs, trip metrics, and incident tracking.</p>
+            <div class="project-links">
+              <a href="https://github.com/ndeogobernard" target="_blank" class="project-link primary">View on GitHub →</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Flood -->
+        <article class="project-card reveal">
+          <div class="project-preview">
+            <div class="project-preview-inner">
+              <span style="font-size: 4.8rem;">🌊</span>
+            </div>
+          </div>
+          <div class="project-body">
+            <h3>Flood Potential Assessment — Santa Cruz River Basin</h3>
+            <p>A spatial ML model predicting flood probability at the parcel level. High-resolution LiDAR DEMs provide elevation, slope, and flow accumulation features, classified with a random forest validated through cross-validation.</p>
+            <div class="project-links">
+              <a href="https://github.com/ndeogobernard" target="_blank" class="project-link primary">View on GitHub →</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- EV Charging -->
+        <article class="project-card reveal">
+          <div class="project-preview">
+            <div class="project-preview-inner">
+              <span style="font-size: 4.8rem;">⚡</span>
+            </div>
+          </div>
+          <div class="project-body">
+            <h3>EV Charging Site Suitability — Columbus, OH</h3>
+            <p>A multi-criteria spatial optimization model identifying optimal heavy-duty EV charging hub locations in Columbus using Analytic Hierarchy Process (AHP) implemented in Python, making the methodology reproducible and defensible.</p>
+            <div class="project-links">
+              <a href="https://github.com/ndeogobernard" target="_blank" class="project-link primary">View on GitHub →</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Land Use -->
+        <article class="project-card reveal">
+          <div class="project-preview">
+            <div class="project-preview-inner">
+              <span style="font-size: 4.8rem;">🛰</span>
+            </div>
+          </div>
+          <div class="project-body">
+            <h3>Land Use Change Detection — Central Ohio</h3>
+            <p>A 20-year remote sensing study of urban expansion using Landsat 8/9 multispectral imagery, classified with a supervised SVM trained on labeled ground truth points.</p>
+            <div class="project-links">
+              <a href="https://github.com/ndeogobernard" target="_blank" class="project-link primary">View on GitHub →</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Hurricane -->
+        <article class="project-card reveal">
+          <div class="project-preview">
+            <div class="project-preview-inner">
+              <span style="font-size: 4.8rem;">🌀</span>
+            </div>
+          </div>
+          <div class="project-body">
+            <h3>Historical Hurricane Impact Analysis</h3>
+            <p>A spatiotemporal analysis of hurricane impacts on Gulf and Atlantic Coast infrastructure using NOAA HURDAT2 storm track data (1980–2023). A GWR model reveals which community factors most predict recovery outcomes across affected regions.</p>
+            <div class="project-links">
+              <a href="https://github.com/ndeogobernard" target="_blank" class="project-link primary">View on GitHub →</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- NEVI -->
+        <article class="project-card reveal">
+          <div class="project-preview">
+            <div class="project-preview-inner">
+              <span style="font-size: 4.8rem;">🗺</span>
+            </div>
+          </div>
+          <div class="project-body">
+            <h3>NEVI EV Infrastructure Deployment Analysis</h3>
+            <p>Geospatial analysis pipeline supporting FHWA NEVI EV charging deployment plans across Oklahoma, Tennessee, and Mississippi. Identified optimal deployment corridors through Python-automated gap analysis and published ArcGIS Online web maps for state DOT clients.</p>
+            <p style="font-size:0.82rem; color:#8fa6d8; margin: 0.6rem 0 0;">Client project (NDA) — maps available on request</p>
+            <div class="project-links">
+              <a href="https://github.com/ndeogobernard" target="_blank" class="project-link primary">View on GitHub →</a>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Rest of your page (contact, footer, scripts) remains unchanged -->
+</body>
+</html>
