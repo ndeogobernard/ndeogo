@@ -4,289 +4,578 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Projects | Bernard Ndeogo</title>
-  <meta name="description" content="Geospatial ML, spatial data pipelines, transportation analytics projects by Bernard Ndeogo" />
+  <meta name="description" content="Projects by Bernard Ndeogo — Geospatial ML, spatial data pipelines, and transportation analytics." />
 
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Roboto+Slab:wght@500;600;700&amp;display=swap" rel="stylesheet">
+  <link rel="icon" href="assets/bni-mark.svg" type="image/svg+xml">
+
+  <!-- FontAwesome for Billy's icons -->
+  <link href="https://use.fontawesome.com/releases/v5.11.2/css/all.css" rel="stylesheet" />
+
+  <!-- Bernard's font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
+    /* ── Variables ── */
     :root {
       --bg: #08111f;
       --text: #eaf2ff;
       --muted: #a8b5d1;
       --primary: #7c9bff;
-      --accent: #4be1c5;
-      --border: rgba(255,255,255,0.12);
-      --card-bg: rgba(255,255,255,0.06);
+      --primary-2: #4be1c5;
+      --border: rgba(255, 255, 255, 0.12);
+      --shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+      --radius: 20px;
+      --container: 1160px;
     }
 
-    * { box-sizing: border-box; margin:0; padding:0; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
     body {
-      font-family: 'Inter', system_ui, sans-serif;
-      background: var(--bg);
+      font-family: 'Inter', sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(124,155,255,0.12), transparent 30%),
+        radial-gradient(circle at top right, rgba(75,225,197,0.10), transparent 25%),
+        linear-gradient(180deg, #07101d 0%, #08111f 60%, #0b1322 100%);
       color: var(--text);
-      line-height: 1.75;
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
 
-    /* Your Navbar */
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    .container { width: min(calc(100% - 2rem), var(--container)); margin: 0 auto; }
+
+    /* ── Background effects ── */
+    .background-orb {
+      position: fixed; border-radius: 50%;
+      filter: blur(90px); opacity: 0.4; pointer-events: none; z-index: -2;
+    }
+    .orb-1 { width: 360px; height: 360px; left: -100px; top: 80px; background: rgba(124,155,255,0.35); }
+    .orb-2 { width: 320px; height: 320px; right: -80px; top: 240px; background: rgba(75,225,197,0.22); }
+    .background-grid {
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.5), transparent 90%);
+      pointer-events: none; z-index: -3;
+    }
+
+    /* ── Nav ── */
     .site-header {
       position: sticky; top: 0; z-index: 50;
       backdrop-filter: blur(18px);
-      background: rgba(8, 17, 31, 0.92);
-      border-bottom: 1px solid var(--border);
+      background: rgba(8,17,31,0.62);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
     }
     .nav {
       display: flex; align-items: center; justify-content: space-between;
-      min-height: 82px; max-width: 1160px; margin: 0 auto; padding: 0 2rem;
+      min-height: 82px; gap: 1rem;
     }
-    .brand {
-      display: flex; align-items: center; gap: 0.9rem; color: white; text-decoration: none;
-    }
-    .brand-name { font-weight: 700; font-size: 1.35rem; letter-spacing: -0.02em; }
-    .brand-subtitle { font-size: 0.9rem; color: var(--muted); }
-    .nav-links {
-      display: flex; align-items: center; gap: 1.8rem;
-    }
-    .nav-links a {
-      color: var(--muted); font-weight: 500; text-decoration: none;
-    }
-    .nav-links a:hover, .nav-links a.active { color: white; }
+    .brand { display: flex; align-items: center; gap: 0.9rem; }
+    .brand-logo { width: 50px; height: 50px; border-radius: 14px; box-shadow: var(--shadow); }
+    .brand-name { display: block; font-weight: 700; letter-spacing: -0.02em; }
+    .brand-subtitle { display: block; font-size: 0.9rem; color: var(--muted); }
+    .nav-links { display: flex; align-items: center; gap: 1.25rem; }
+    .nav-links a { color: var(--muted); transition: 0.25s ease; font-size: 0.92rem; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-links a.active { color: var(--text); }
     .nav-cta {
-      padding: 0.7rem 1.2rem;
-      background: linear-gradient(135deg, var(--primary), var(--accent));
-      color: #06111d; border-radius: 999px; font-weight: 700;
+      padding: 0.65rem 1rem;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+    }
+    .menu-toggle {
+      display: none;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.06);
+      color: var(--text); border-radius: 12px;
+      font-size: 1.15rem; padding: 0.65rem 0.8rem; cursor: pointer;
     }
 
-    /* Billy's exact layout */
-    .container { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
-
-    .projects {
+    /* ── Page content ── */
+    .page-content {
+      flex: 1;
       padding: 4rem 0 6rem;
     }
-    h1 {
-      font-family: 'Roboto Slab', serif;
-      font-size: 2.9rem;
-      margin-bottom: 0.8rem;
+
+    .section-label {
+      text-transform: uppercase; letter-spacing: 0.18em;
+      font-size: 0.78rem; font-weight: 700; color: var(--primary-2);
+      display: block; margin-bottom: 0.5rem;
     }
-    .lead {
-      font-size: 1.25rem;
+
+    .page-title {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      margin-bottom: 0.75rem;
+    }
+
+    .page-lead {
+      font-size: 1.1rem;
       color: var(--muted);
-      max-width: 720px;
-      margin-bottom: 3.5rem;
+      line-height: 1.8;
+      max-width: 70ch;
+      margin-bottom: 3rem;
     }
 
-    .grid {
+    .page-lead a { color: var(--primary-2); }
+    .page-lead a:hover { text-decoration: underline; }
+
+    /* ── Project grid — Billy's 3-col structure ── */
+    .projects-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-      gap: 2.2rem;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.4rem;
     }
 
+    /* ── Project card — Billy's layout, Bernard's dark style ── */
     .project {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 1.5rem;
       display: flex;
       flex-direction: column;
-      height: 100%;
-      transition: all 0.35s ease;
-      backdrop-filter: blur(12px);
+      background: linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.05));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+      overflow: hidden;
+      transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease, background 0.22s ease;
     }
+
     .project:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 25px 65px rgba(0,0,0,0.5);
-      border-color: rgba(124,155,255,0.4);
+      transform: translateY(-6px) scale(1.01);
+      border-color: rgba(255,255,255,0.22);
+      background: linear-gradient(135deg, rgba(124,155,255,0.13), rgba(75,225,197,0.09));
+      box-shadow: 0 24px 60px rgba(0,0,0,0.5);
     }
 
-    .project .title {
-      font-family: 'Roboto Slab', serif;
-      font-size: 1.45rem;
-      font-weight: 600;
-      line-height: 1.25;
-      margin-bottom: 0.8rem;
-    }
-
-    .project .preview-image {
+    /* Billy's preview image — background-image with scroll effect */
+    .preview-image {
       display: block;
       width: 100%;
       height: 0;
-      padding-top: 58%;
+      padding-top: 60%;
       background-size: cover;
-      background-position: center;
-      border-radius: 10px;
-      margin-bottom: 1.4rem;
-      position: relative;
-      overflow: hidden;
+      background-position: top center;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      transition: background-position 1.5s ease;
     }
-    .project .preview-image::after {
-      content: '';
+    .preview-image:hover { background-position: bottom center; }
+
+    /* Emoji placeholder — same proportions as preview-image */
+    .preview-placeholder {
+      width: 100%;
+      padding-top: 60%;
+      position: relative;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      background: linear-gradient(135deg, rgba(124,155,255,0.1), rgba(75,225,197,0.07));
+    }
+    .preview-placeholder span {
       position: absolute;
       inset: 0;
-      background: linear-gradient(135deg, rgba(124,155,255,0.28), rgba(75,225,197,0.22));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+    }
+
+    /* Card body */
+    .project-body {
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .project .title {
+      display: block;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.65rem;
+      line-height: 1.3;
     }
 
     .project p {
+      font-size: 0.86rem;
       color: var(--muted);
-      font-size: 1.02rem;
-      flex: 1;
-      margin-bottom: 1.4rem;
+      line-height: 1.7;
+      margin-bottom: 0.5rem;
     }
 
-    .spacer { flex: 1; }
+    .project .nda-note {
+      font-size: 0.78rem;
+      color: #8fa6d8;
+      font-style: italic;
+      margin-bottom: 0.5rem;
+    }
 
+    /* Spacer pushes links to bottom — exactly like Billy */
+    .spacer { flex: 1; min-height: 0.75rem; }
+
+    /* Billy's links row — with icons */
     .links {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.8rem;
-      font-size: 0.95rem;
-    }
-    .links a {
-      padding: 0.55rem 1.1rem;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.08);
-      border: 1px solid var(--border);
-      color: var(--text);
-      transition: all 0.25s ease;
-    }
-    .links a:hover {
-      background: linear-gradient(135deg, var(--primary), var(--accent));
-      color: #06111d;
-      border-color: transparent;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
     }
 
-    footer {
-      text-align: center;
-      padding: 4rem 0 2.5rem;
-      color: var(--muted);
-      font-size: 0.95rem;
-      border-top: 1px solid var(--border);
+    .links a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 0.38rem 0.75rem;
+      border-radius: 999px;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+
+    /* Demo tag — gradient */
+    .tag-demo {
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      color: #06111d;
+    }
+    .tag-demo:hover { opacity: 0.88; transform: translateY(-1px); }
+
+    /* Code tag */
+    .tag-code {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: var(--text);
+    }
+    .tag-code:hover { background: rgba(255,255,255,0.13); transform: translateY(-1px); }
+
+    /* Website tag */
+    .tag-website {
+      background: rgba(124,155,255,0.12);
+      border: 1px solid rgba(124,155,255,0.28);
+      color: #bfd0ff;
+    }
+    .tag-website:hover { background: rgba(124,155,255,0.2); transform: translateY(-1px); }
+
+    /* Paper tag */
+    .tag-paper {
+      background: rgba(75,225,197,0.1);
+      border: 1px solid rgba(75,225,197,0.28);
+      color: #8ef1e0;
+    }
+    .tag-paper:hover { background: rgba(75,225,197,0.18); transform: translateY(-1px); }
+
+    /* Disabled/coming soon tag */
+    .tag-disabled {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #4a5a78;
+      cursor: default;
+      pointer-events: none;
+    }
+
+    /* ── Footer ── */
+    .site-footer { padding: 1.8rem 0 3rem; }
+    .footer-inner {
+      display: flex; justify-content: space-between; gap: 1rem; align-items: center;
+      color: var(--muted); border-top: 1px solid rgba(255,255,255,0.06); padding-top: 1.4rem;
+      font-size: 0.88rem; flex-wrap: wrap;
+    }
+    .footer-inner a { color: var(--text); transition: 0.2s ease; }
+    .footer-inner a:hover { color: var(--primary-2); }
+
+    /* ── Responsive ── */
+    @media (max-width: 1040px) {
+      .projects-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 760px) {
+      .menu-toggle { display: inline-flex; }
+      .nav-links {
+        position: absolute; top: calc(100% + 0.5rem); right: 1rem; left: 1rem;
+        flex-direction: column; align-items: stretch;
+        gap: 0; padding: 0.5rem 0; border-radius: 20px;
+        background: rgba(8,17,31,0.98); border: 1px solid rgba(255,255,255,0.1);
+        display: none; z-index: 200;
+      }
+      .nav-links.open { display: flex; }
+      .nav-links a {
+        padding: 0.85rem 1.25rem;
+        border-bottom: 1px solid rgba(255,255,255,0.06);
+        border-radius: 0; color: var(--text);
+      }
+      .nav-links a:last-child { border-bottom: none; }
+      .nav-cta {
+        margin: 0.5rem 1rem !important; border-radius: 999px !important;
+        text-align: center;
+        background: linear-gradient(135deg, var(--primary), var(--primary-2)) !important;
+        color: #06111d !important; border: none !important;
+      }
+      .projects-grid { grid-template-columns: 1fr; }
+      .footer-inner { flex-direction: column; align-items: start; }
+    }
+
+    @media (max-width: 480px) {
+      .container { padding: 0 1rem; }
+      .page-title { font-size: 1.8rem; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Your Navbar -->
+  <div class="background-orb orb-1"></div>
+  <div class="background-orb orb-2"></div>
+  <div class="background-grid"></div>
+
+  <!-- ── Nav ── -->
   <header class="site-header">
-    <div class="nav">
-      <a href="/" class="brand">
+    <div class="container nav">
+      <a href="index.html" class="brand">
+        <img src="assets/bni-mark.svg" alt="BNI logo" class="brand-logo" />
         <div>
           <span class="brand-name">Bernard Ndeogo</span>
           <span class="brand-subtitle">Data Scientist · AI/ML Engineer</span>
         </div>
       </a>
-      <div class="nav-links">
-        <a href="/">Home</a>
-        <a href="/about">About</a>
-        <a href="/experience">Experience</a>
-        <a href="/projects" class="active">Projects</a>
-        <a href="/skills">Skills</a>
-        <a href="/education">Education</a>
-        <a href="/contact" class="nav-cta">Contact</a>
-      </div>
+
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">☰</button>
+
+      <nav class="nav-links" id="navLinks">
+        <a href="index.html#about">About</a>
+        <a href="index.html#experience">Experience</a>
+        <a href="projects.html" class="active">Projects</a>
+        <a href="index.html#skills">Skills</a>
+        <a href="index.html#education">Education</a>
+        <a href="index.html#contact" class="nav-cta">Contact</a>
+      </nav>
     </div>
   </header>
 
-  <div class="container">
-    <section class="projects">
-      <h1>Projects</h1>
-      <p class="lead">
-        A collection of the projects I have created or contributed significantly to; for work, for research, or because it needed to be done. 
-        Most include open-source code or public dashboards.
+  <!-- ── Page ── -->
+  <main class="page-content">
+    <div class="container">
+
+      <span class="section-label">Projects</span>
+      <h1 class="page-title">Work &amp; Research</h1>
+      <p class="page-lead">
+        A collection of projects I have built or contributed significantly to — for work, for research,
+        or because it needed to be done. Most of the code lives on
+        <a href="https://github.com/ndeogobernard" target="_blank" rel="noreferrer">GitHub</a>.
       </p>
 
-      <div class="grid">
+      <div class="projects-grid">
 
+        <!-- ── WILDFIRE ── -->
         <div class="project">
-          <span class="title">Real-Time Wildfire Detection Pipeline</span>
-          <span class="preview-image" style="background-image: linear-gradient(135deg, #1a2a5e, #0f3d3a);">
-            <span style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:4.8rem;">🔥</span>
-          </span>
-          <p>An end-to-end geospatial ML pipeline for near-real-time wildfire monitoring. NASA FIRMS thermal data, Sentinel-2 imagery, NOAA weather feeds, and USGS elevation data ingest into PostGIS. Apache Airflow orchestrates all jobs. A CNN smoke classifier scores incoming imagery and flags high-probability fire events, deployed on GCP with a live Kepler.gl dashboard.</p>
-          <div class="spacer"></div>
-          <div class="links">
-            <a href="https://github.com/ndeogobernard" target="_blank">GitHub</a>
+          <div class="preview-placeholder"><span>🔥</span></div>
+          <div class="project-body">
+            <span class="title">Real-Time Wildfire Detection Pipeline</span>
+            <p>
+              An end-to-end geospatial ML pipeline for near-real-time wildfire monitoring.
+              NASA FIRMS thermal data, Sentinel-2 imagery, NOAA weather feeds, and USGS elevation
+              data ingest into PostGIS. Apache Airflow orchestrates all jobs. A CNN smoke classifier
+              scores imagery and flags high-probability fire events, deployed on GCP with a live
+              Kepler.gl spatial dashboard. MS Data Science Capstone — University of Arizona.
+            </p>
+            <div class="spacer"></div>
+            <div class="links">
+              <a href="#" class="tag-demo"><i class="fas fa-play"></i> Demo</a>
+              <a href="https://github.com/ndeogobernard" target="_blank" class="tag-code"><i class="fab fa-github"></i> Code</a>
+            </div>
           </div>
         </div>
 
+        <!-- ── AUTONOMOUS FLEET ── -->
         <div class="project">
-          <span class="title">Autonomous Fleet Telemetry Data Platform</span>
-          <span class="preview-image" style="background-image: linear-gradient(135deg, #1a2a5e, #0f3d3a);">
-            <span style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:4.8rem;">🚗</span>
-          </span>
-          <p>A production-scale data platform simulating autonomous vehicle telemetry for fleet analytics. High-frequency vehicle streams — GPS traces, speed, heading, sensor events — ingested via Apache Airflow and processed with Spark into dimensional tables in BigQuery for fleet KPIs, trip metrics, and incident tracking.</p>
-          <div class="spacer"></div>
-          <div class="links">
-            <a href="https://github.com/ndeogobernard" target="_blank">GitHub</a>
+          <div class="preview-placeholder"><span>🚗</span></div>
+          <div class="project-body">
+            <span class="title">Autonomous Fleet Telemetry Data Platform</span>
+            <p>
+              A production-scale data platform simulating autonomous vehicle telemetry for fleet
+              analytics. High-frequency vehicle streams — GPS traces, speed, heading, sensor events
+              — ingested via Apache Airflow and processed with Spark into dimensional tables in
+              BigQuery for fleet KPIs, trip metrics, and incident tracking.
+            </p>
+            <div class="spacer"></div>
+            <div class="links">
+              <a href="https://github.com/ndeogobernard" target="_blank" class="tag-code"><i class="fab fa-github"></i> Code</a>
+            </div>
           </div>
         </div>
 
+        <!-- ── FLOOD ── -->
         <div class="project">
-          <span class="title">Flood Potential Assessment — Santa Cruz River Basin</span>
-          <span class="preview-image" style="background-image: linear-gradient(135deg, #1a2a5e, #0f3d3a);">
-            <span style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:4.8rem;">🌊</span>
-          </span>
-          <p>A spatial ML model predicting flood probability at the parcel level. High-resolution LiDAR DEMs provide elevation, slope, and flow accumulation features, classified with a random forest validated through cross-validation.</p>
-          <div class="spacer"></div>
-          <div class="links">
-            <a href="https://github.com/ndeogobernard" target="_blank">GitHub</a>
+          <div class="preview-placeholder"><span>🌊</span></div>
+          <div class="project-body">
+            <span class="title">Flood Potential Assessment — Santa Cruz River Basin</span>
+            <p>
+              A spatial ML model predicting flood probability at the parcel level.
+              High-resolution LiDAR DEMs provide elevation, slope, and flow accumulation features,
+              classified with a random forest classifier validated through cross-validation and
+              confusion matrix analysis.
+            </p>
+            <div class="spacer"></div>
+            <div class="links">
+              <a href="https://github.com/ndeogobernard" target="_blank" class="tag-code"><i class="fab fa-github"></i> Code</a>
+            </div>
           </div>
         </div>
 
+        <!-- ── EV SUITABILITY ── -->
         <div class="project">
-          <span class="title">EV Charging Site Suitability — Columbus, OH</span>
-          <span class="preview-image" style="background-image: linear-gradient(135deg, #1a2a5e, #0f3d3a);">
-            <span style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:4.8rem;">⚡</span>
-          </span>
-          <p>A multi-criteria spatial optimization model identifying optimal heavy-duty EV charging hub locations in Columbus using Analytic Hierarchy Process (AHP) implemented in Python, making the methodology reproducible and defensible.</p>
-          <div class="spacer"></div>
-          <div class="links">
-            <a href="https://github.com/ndeogobernard" target="_blank">GitHub</a>
+          <div class="preview-placeholder"><span>⚡</span></div>
+          <div class="project-body">
+            <span class="title">EV Charging Site Suitability — Columbus, OH</span>
+            <p>
+              A multi-criteria spatial optimization model identifying optimal heavy-duty EV charging
+              hub locations in Columbus. Criteria weighted using Analytic Hierarchy Process (AHP)
+              implemented in Python, making the methodology reproducible and defensible for
+              infrastructure planning stakeholders.
+            </p>
+            <div class="spacer"></div>
+            <div class="links">
+              <a href="https://github.com/ndeogobernard" target="_blank" class="tag-code"><i class="fab fa-github"></i> Code</a>
+            </div>
           </div>
         </div>
 
+        <!-- ── LAND USE ── -->
         <div class="project">
-          <span class="title">Land Use Change Detection — Central Ohio</span>
-          <span class="preview-image" style="background-image: linear-gradient(135deg, #1a2a5e, #0f3d3a);">
-            <span style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:4.8rem;">🛰</span>
-          </span>
-          <p>A 20-year remote sensing study of urban expansion using Landsat 8/9 multispectral imagery, classified with a supervised SVM trained on labeled ground truth points.</p>
-          <div class="spacer"></div>
-          <div class="links">
-            <a href="https://github.com/ndeogobernard" target="_blank">GitHub</a>
+          <div class="preview-placeholder"><span>🛰</span></div>
+          <div class="project-body">
+            <span class="title">Land Use Change Detection — Central Ohio</span>
+            <p>
+              A 20-year remote sensing study of urban expansion using Landsat 8/9 multispectral
+              imagery. Raw satellite bands classified using a supervised SVM classifier trained on
+              labeled ground truth points, tracking the pace and pattern of sprawl across Central Ohio.
+            </p>
+            <div class="spacer"></div>
+            <div class="links">
+              <a href="https://github.com/ndeogobernard" target="_blank" class="tag-code"><i class="fab fa-github"></i> Code</a>
+            </div>
           </div>
         </div>
 
+        <!-- ── HURRICANE ── -->
         <div class="project">
-          <span class="title">Historical Hurricane Impact Analysis</span>
-          <span class="preview-image" style="background-image: linear-gradient(135deg, #1a2a5e, #0f3d3a);">
-            <span style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:4.8rem;">🌀</span>
-          </span>
-          <p>A spatiotemporal analysis of hurricane impacts on Gulf and Atlantic Coast infrastructure using NOAA HURDAT2 storm track data (1980–2023). A GWR model reveals which community factors most predict recovery outcomes across affected regions.</p>
-          <div class="spacer"></div>
-          <div class="links">
-            <a href="https://github.com/ndeogobernard" target="_blank">GitHub</a>
+          <div class="preview-placeholder"><span>🌀</span></div>
+          <div class="project-body">
+            <span class="title">Historical Hurricane Impact Analysis</span>
+            <p>
+              A spatiotemporal analysis of hurricane impacts on Gulf and Atlantic Coast infrastructure
+              using NOAA HURDAT2 storm track data (1980–2023). A Geographically Weighted Regression
+              (GWR) model reveals which community factors most predict recovery outcomes across
+              affected regions.
+            </p>
+            <div class="spacer"></div>
+            <div class="links">
+              <a href="https://github.com/ndeogobernard" target="_blank" class="tag-code"><i class="fab fa-github"></i> Code</a>
+            </div>
           </div>
         </div>
 
+        <!-- ── TURBO ROUNDABOUT (Published) ── -->
         <div class="project">
-          <span class="title">NEVI EV Infrastructure Deployment Analysis</span>
-          <span class="preview-image" style="background-image: linear-gradient(135deg, #1a2a5e, #0f3d3a);">
-            <span style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:4.8rem;">🗺</span>
-          </span>
-          <p>Geospatial analysis pipeline supporting FHWA NEVI EV charging deployment plans across Oklahoma, Tennessee, and Mississippi. Identified optimal deployment corridors through Python-automated gap analysis and published ArcGIS Online web maps for state DOT clients.</p>
-          <p style="font-size:0.85rem; color:#8fa6d8; margin-top:0.4rem;">Client project (NDA) — maps available on request</p>
-          <div class="spacer"></div>
-          <div class="links">
-            <a href="https://github.com/ndeogobernard" target="_blank">GitHub</a>
+          <div class="preview-placeholder"><span>🔄</span></div>
+          <div class="project-body">
+            <span class="title">Turbo Roundabout Driver Behavior Study</span>
+            <p>
+              Graduate research assessing the feasibility of turbo roundabouts using driver
+              performance factors. Built VISSIM microsimulation models, applied logistic regression
+              and ANOVA in SPSS and Python. Published as MS thesis and presented at Ohio Roundabout
+              Conference and AHFE International Conference 2023.
+            </p>
+            <div class="spacer"></div>
+            <div class="links">
+              <a href="http://rave.ohiolink.edu/etdc/view?acc_num=ohiou1701964650330758" target="_blank" class="tag-website"><i class="fas fa-link"></i> Website</a>
+              <a href="http://rave.ohiolink.edu/etdc/view?acc_num=ohiou1701964650330758" target="_blank" class="tag-paper"><i class="far fa-file-pdf"></i> Paper</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── SAFETY CORRIDORS (Published) ── -->
+        <div class="project">
+          <div class="preview-placeholder"><span>🛣</span></div>
+          <div class="project-body">
+            <span class="title">Safety Corridors Effectiveness — Ohio Case Study</span>
+            <p>
+              Peer-reviewed study evaluating whether safety corridors effectively mitigate crash
+              frequency on Ohio roads. Spatial analysis of crash data across designated safety
+              corridors, applying statistical modeling to assess the effectiveness of enforcement
+              and signage interventions.
+            </p>
+            <div class="spacer"></div>
+            <div class="links">
+              <a href="https://www.mdpi.com/2624-8921/6/4/96" target="_blank" class="tag-website"><i class="fas fa-link"></i> Website</a>
+              <a href="https://www.mdpi.com/2624-8921/6/4/96" target="_blank" class="tag-paper"><i class="far fa-file-pdf"></i> Paper</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── NEVI (NDA) ── -->
+        <div class="project">
+          <div class="preview-placeholder"><span>🗺</span></div>
+          <div class="project-body">
+            <span class="title">NEVI EV Infrastructure Deployment Analysis</span>
+            <p>
+              Geospatial analysis pipeline supporting FHWA NEVI EV charging deployment plans across
+              Oklahoma, Tennessee, and Mississippi. Identified optimal deployment corridors through
+              Python-automated gap analysis. Published ArcGIS Online web maps for state DOT clients.
+            </p>
+            <p class="nda-note">Client project (NDA) — maps available on request</p>
+            <div class="spacer"></div>
+            <div class="links">
+              <a href="index.html#contact" class="tag-website"><i class="fas fa-link"></i> Request Access</a>
+            </div>
           </div>
         </div>
 
       </div>
-    </section>
-  </div>
+    </div>
+  </main>
 
-  <footer>
-    © 2026 Bernard Ndeogo • Data Scientist • Columbus, OH
+  <!-- ── Footer ── -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© <span id="year"></span> Bernard Ndeogo · Data Scientist · Columbus, OH</p>
+      <a href="index.html">← Back to Portfolio</a>
+    </div>
   </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks   = document.getElementById('navLinks');
+    if (menuToggle && navLinks) {
+      menuToggle.addEventListener('click', () => {
+        const open = navLinks.classList.toggle('open');
+        menuToggle.textContent = open ? '✕' : '☰';
+      });
+      navLinks.querySelectorAll('a').forEach(l => l.addEventListener('click', () => {
+        navLinks.classList.remove('open'); menuToggle.textContent = '☰';
+      }));
+      document.addEventListener('click', e => {
+        if (!menuToggle.contains(e.target) && !navLinks.contains(e.target)) {
+          navLinks.classList.remove('open'); menuToggle.textContent = '☰';
+        }
+      });
+    }
+
+    const header = document.querySelector('.site-header');
+    if (header) window.addEventListener('scroll', () => {
+      header.style.boxShadow = window.scrollY > 10 ? '0 4px 30px rgba(0,0,0,0.4)' : 'none';
+    }, { passive: true });
+  </script>
 
 </body>
 </html>
