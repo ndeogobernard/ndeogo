@@ -4,10 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Projects | Bernard Ndeogo</title>
-  <meta name="description" content="Geospatial ML, spatial data pipelines, transportation analytics, and real-world impact projects by Bernard Ndeogo" />
+  <meta name="description" content="Geospatial ML, spatial data pipelines, transportation analytics projects by Bernard Ndeogo" />
 
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=Roboto+Slab:wght@500;600;700&amp;display=swap" rel="stylesheet">
-  
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Roboto+Slab:wght@500;600;700&amp;display=swap" rel="stylesheet">
+
   <style>
     :root {
       --bg: #08111f;
@@ -16,7 +16,7 @@
       --primary: #7c9bff;
       --accent: #4be1c5;
       --border: rgba(255,255,255,0.12);
-      --card-bg: rgba(255,255,255,0.07);
+      --card-bg: rgba(255,255,255,0.06);
     }
 
     * { box-sizing: border-box; margin:0; padding:0; }
@@ -25,75 +25,42 @@
       background: var(--bg);
       color: var(--text);
       line-height: 1.75;
-      min-height: 100vh;
     }
 
-    /* Your Original Navbar */
+    /* Your Navbar */
     .site-header {
-      position: sticky;
-      top: 0;
-      z-index: 50;
+      position: sticky; top: 0; z-index: 50;
       backdrop-filter: blur(18px);
       background: rgba(8, 17, 31, 0.92);
-      border-bottom: 1px solid rgba(255,255,255,0.08);
+      border-bottom: 1px solid var(--border);
     }
     .nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      min-height: 82px;
-      max-width: 1160px;
-      margin: 0 auto;
-      padding: 0 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      min-height: 82px; max-width: 1160px; margin: 0 auto; padding: 0 2rem;
     }
     .brand {
-      display: flex;
-      align-items: center;
-      gap: 0.9rem;
-      text-decoration: none;
-      color: white;
+      display: flex; align-items: center; gap: 0.9rem; color: white; text-decoration: none;
     }
-    .brand-name {
-      font-weight: 700;
-      font-size: 1.35rem;
-      letter-spacing: -0.02em;
-    }
-    .brand-subtitle {
-      font-size: 0.9rem;
-      color: var(--muted);
-    }
+    .brand-name { font-weight: 700; font-size: 1.35rem; letter-spacing: -0.02em; }
+    .brand-subtitle { font-size: 0.9rem; color: var(--muted); }
     .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 1.8rem;
+      display: flex; align-items: center; gap: 1.8rem;
     }
     .nav-links a {
-      color: var(--muted);
-      font-weight: 500;
-      text-decoration: none;
-      transition: color 0.25s;
+      color: var(--muted); font-weight: 500; text-decoration: none;
     }
-    .nav-links a:hover,
-    .nav-links a.active {
-      color: white;
-    }
+    .nav-links a:hover, .nav-links a.active { color: white; }
     .nav-cta {
       padding: 0.7rem 1.2rem;
       background: linear-gradient(135deg, var(--primary), var(--accent));
-      color: #06111d;
-      border-radius: 999px;
-      font-weight: 700;
+      color: #06111d; border-radius: 999px; font-weight: 700;
     }
 
-    /* Billy-style Projects Layout */
-    .container {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 2rem;
-    }
+    /* Billy's exact layout */
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
 
-    .projects-section {
-      padding: 4rem 0 5rem;
+    .projects {
+      padding: 4rem 0 6rem;
     }
     h1 {
       font-family: 'Roboto Slab', serif;
@@ -142,7 +109,7 @@
       display: block;
       width: 100%;
       height: 0;
-      padding-top: 58%;           /* Exact same ratio as Billy */
+      padding-top: 58%;
       background-size: cover;
       background-position: center;
       border-radius: 10px;
@@ -164,9 +131,7 @@
       margin-bottom: 1.4rem;
     }
 
-    .spacer {
-      flex: 1;
-    }
+    .spacer { flex: 1; }
 
     .links {
       display: flex;
@@ -193,13 +158,13 @@
       padding: 4rem 0 2.5rem;
       color: var(--muted);
       font-size: 0.95rem;
-      border-top: 1px solid rgba(255,255,255,0.08);
+      border-top: 1px solid var(--border);
     }
   </style>
 </head>
 <body>
 
-  <!-- Your Original Navbar -->
+  <!-- Your Navbar -->
   <header class="site-header">
     <div class="nav">
       <a href="/" class="brand">
@@ -221,16 +186,15 @@
   </header>
 
   <div class="container">
-    <section class="projects-section">
+    <section class="projects">
       <h1>Projects</h1>
       <p class="lead">
-        A collection of geospatial machine learning systems, spatial data pipelines, 
-        transportation analytics, and real-world impact projects. Most include open-source code or public dashboards.
+        A collection of the projects I have created or contributed significantly to; for work, for research, or because it needed to be done. 
+        Most include open-source code or public dashboards.
       </p>
 
       <div class="grid">
 
-        <!-- Project 1 -->
         <div class="project">
           <span class="title">Real-Time Wildfire Detection Pipeline</span>
           <span class="preview-image" style="background-image: linear-gradient(135deg, #1a2a5e, #0f3d3a);">
@@ -243,7 +207,6 @@
           </div>
         </div>
 
-        <!-- Project 2 -->
         <div class="project">
           <span class="title">Autonomous Fleet Telemetry Data Platform</span>
           <span class="preview-image" style="background-image: linear-gradient(135deg, #1a2a5e, #0f3d3a);">
@@ -256,8 +219,6 @@
           </div>
         </div>
 
-        <!-- Add the remaining 5 projects in the same format below -->
-        <!-- Project 3: Flood Potential Assessment -->
         <div class="project">
           <span class="title">Flood Potential Assessment — Santa Cruz River Basin</span>
           <span class="preview-image" style="background-image: linear-gradient(135deg, #1a2a5e, #0f3d3a);">
@@ -270,7 +231,6 @@
           </div>
         </div>
 
-        <!-- Project 4: EV Charging -->
         <div class="project">
           <span class="title">EV Charging Site Suitability — Columbus, OH</span>
           <span class="preview-image" style="background-image: linear-gradient(135deg, #1a2a5e, #0f3d3a);">
@@ -283,7 +243,6 @@
           </div>
         </div>
 
-        <!-- Project 5: Land Use Change -->
         <div class="project">
           <span class="title">Land Use Change Detection — Central Ohio</span>
           <span class="preview-image" style="background-image: linear-gradient(135deg, #1a2a5e, #0f3d3a);">
@@ -296,7 +255,6 @@
           </div>
         </div>
 
-        <!-- Project 6: Historical Hurricane -->
         <div class="project">
           <span class="title">Historical Hurricane Impact Analysis</span>
           <span class="preview-image" style="background-image: linear-gradient(135deg, #1a2a5e, #0f3d3a);">
@@ -309,7 +267,6 @@
           </div>
         </div>
 
-        <!-- Project 7: NEVI -->
         <div class="project">
           <span class="title">NEVI EV Infrastructure Deployment Analysis</span>
           <span class="preview-image" style="background-image: linear-gradient(135deg, #1a2a5e, #0f3d3a);">
