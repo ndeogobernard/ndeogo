@@ -203,18 +203,13 @@
     }
     .project-card:hover .card-img-wrap img { transform: scale(1.03); }
 
-    /* Placeholder when no real screenshot */
+    /* Placeholder — clean dark panel, no icon, ready for real image */
     .card-placeholder {
       width: 100%; height: 100%;
       display: flex; align-items: center; justify-content: center;
-      font-size: 3.5rem;
+      background: var(--gray-2);
     }
-    .ph-1 { background: linear-gradient(135deg, #0d1f12, #152e1a); }
-    .ph-2 { background: linear-gradient(135deg, #0d0f1f, #131526); }
-    .ph-3 { background: linear-gradient(135deg, #1f0d0d, #261515); }
-    .ph-4 { background: linear-gradient(135deg, #0d1a1f, #12232a); }
-    .ph-5 { background: linear-gradient(135deg, #1a1f0d, #23260f); }
-    .ph-6 { background: linear-gradient(135deg, #1a0d1f, #231226); }
+    .ph-1, .ph-2, .ph-3, .ph-4, .ph-5, .ph-6 { background: var(--gray-2); }
 
     /* Card text body */
     .card-body {
@@ -245,71 +240,59 @@
       margin-top: 0.15rem;
     }
 
-    /* ── CATEGORY SECTIONS ── */
-    .project-section {
-      margin-bottom: 3.5rem;
-      scroll-margin-top: 6rem;
-    }
-    .project-section:last-child { margin-bottom: 0; }
-
-    /* Understated category heading — small, muted, right-aligned like image 1 */
-    .cat-heading {
-      font-family: var(--font-display);
-      font-size: 0.72rem;
-      font-weight: 400;
-      font-style: italic;
-      color: var(--gray-9);
-      letter-spacing: 0.06em;
-      text-align: right;
-      margin-bottom: 1rem;
-      padding-bottom: 0.6rem;
-      border-bottom: 1px solid var(--gray-3);
-    }
-
     /* ── RIGHT-SIDE STICKY NAV ── */
     .section-nav {
       position: fixed;
-      right: 1.75rem;
+      right: 2rem;
       top: 50%;
       transform: translateY(-50%);
-      display: none;           /* shown by JS when Projects tab is active */
+      display: none;
       flex-direction: column;
-      align-items: flex-end;
-      gap: 0.5rem;
+      align-items: flex-start;
+      gap: 0;
       z-index: 200;
+      min-width: 140px;
     }
-
+    .snav-label {
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gray-7);
+      padding-left: 0.75rem;
+      margin-bottom: 0.65rem;
+    }
     .snav-item {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 1rem;
-      color: var(--gray-8);
-      cursor: pointer;
-      transition: color 0.2s ease;
+      display: block;
+      font-size: 0.8125rem;
+      font-weight: 400;
+      color: var(--gray-9);
+      padding: 0.38rem 0.75rem;
+      border-left: 1px solid var(--gray-5);
       white-space: nowrap;
       text-decoration: none;
+      transition: color 0.2s ease, border-color 0.2s ease;
     }
-    .snav-item::after {
-      content: '';
-      display: block;
-      width: 4px;
-      height: 4px;
-      border-radius: 50%;
-      background: var(--gray-7);
-      flex-shrink: 0;
-      transition: background 0.2s ease, transform 0.2s ease;
-    }
-    .snav-item:hover { color: var(--gray-11); }
-    .snav-item:hover::after { background: var(--gray-10); }
-    .snav-item.snav-active { color: var(--gray-12); }
-    .snav-item.snav-active::after {
-      background: var(--gray-12);
-      transform: scale(1.6);
-    }
-
-    /* Hide on screens too narrow to fit it without overlap */
+    .snav-item:hover { color: var(--gray-11); border-left-color: var(--gray-8); }
+    .snav-item.snav-active { color: var(--gray-12); font-weight: 600; border-left: 2px solid var(--gray-12); }
     @media (max-width: 1280px) { .section-nav { display: none !important; } }
+
+    /* ── CATEGORY SECTIONS ── */
+    .project-section { margin-bottom: 3.5rem; scroll-margin-top: 6rem; }
+    .project-section:last-child { margin-bottom: 0; }
+    .cat-heading {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 400;
+      font-style: italic;
+      color: var(--gray-8);
+      letter-spacing: -0.01em;
+      text-align: right;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.85rem;
+      border-bottom: 1px solid var(--gray-3);
+      line-height: 1.2;
+    }
 
     /* ── EXPERIENCE ── */
     .exp-list { display: flex; flex-direction: column; }
@@ -431,47 +414,47 @@
           <div class="card-grid">
             <a class="project-card" href="projects/project-template.html">
               <div class="card-img-wrap">
-                <div class="card-placeholder ph-1">🛰</div>
+                <img src="assets/gis-land-use.jpg" alt="Land Use Data Analysis Toolbox" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" /><div class="card-placeholder ph-1" style="display:none;"></div>
               </div>
               <div class="card-body">
                 <h3 class="card-title">Land Use Data Analysis Toolbox for ArcGIS</h3>
-                <p class="card-desc">20-year Landsat study of urban expansion across Central Ohio using automated Python pipeline.</p>
+                <p class="card-desc">Automated ArcPy &amp; ModelBuilder workflow for 20-year land use data study.</p>
               </div>
             </a>
             <a class="project-card" href="projects/project-template.html">
               <div class="card-img-wrap">
-                <div class="card-placeholder ph-2">⚙️</div>
+                <img src="assets/gis-land-use.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" /><div class="card-placeholder ph-2" style="display:none;"></div>
               </div>
               <div class="card-body">
-                <h3 class="card-title">Automated USDA SSURGO Soil Slope Data Extractor</h3>
-                <p class="card-desc">ArcPy automation classifying millions of Ohio parcel records by land use type.</p>
+                <h3 class="card-title">USDA Soil Slope Data Extractor</h3>
+                <p class="card-desc">ArcPy automation classifying parcel records by SSURGO slope parameters.</p>
               </div>
             </a>
             <a class="project-card" href="projects/project-template.html">
               <div class="card-img-wrap">
-                <div class="card-placeholder ph-2">⚙️</div>
+                <img src="assets/gis-soil-slope.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" /><div class="card-placeholder ph-2" style="display:none;"></div>
               </div>
               <div class="card-body">
-                <h3 class="card-title">FEMA NFHL 100-Year Flood Hazard Area Extractor</h3>
-                <p class="card-desc">ArcPy automation classifying millions of Ohio parcel records by land use type.</p>
+                <h3 class="card-title">FEMA Flood Hazard Area Extractor</h3>
+                <p class="card-desc">Scripted spatial extraction pipeline for 100-year floodplain data.</p>
               </div>
             </a>
             <a class="project-card" href="projects/project-template.html">
               <div class="card-img-wrap">
-                <div class="card-placeholder ph-2">⚙️</div>
+                <img src="assets/gis-flood-fema.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" /><div class="card-placeholder ph-2" style="display:none;"></div>
               </div>
               <div class="card-body">
-                <h3 class="card-title">EPA Community Water System Boundary Delineator</h3>
-                <p class="card-desc">ArcPy automation classifying millions of Ohio parcel records by land use type.</p>
+                <h3 class="card-title">EPA Water Boundary Delineator</h3>
+                <p class="card-desc">Automated spatial boundary delineation for Ohio public water systems.</p>
               </div>
             </a>
             <a class="project-card" href="projects/project-template.html">
               <div class="card-img-wrap">
-                <div class="card-placeholder ph-2">⚙️</div>
+                <img src="assets/gis-epa-water.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" /><div class="card-placeholder ph-2" style="display:none;"></div>
               </div>
               <div class="card-body">
-                <h3 class="card-title">Automated Statewide Parcel Data Extraction, Cleaning and Schema Standardization</h3>
-                <p class="card-desc">ArcPy automation classifying millions of Ohio parcel records by land use type.</p>
+                <h3 class="card-title">Statewide Parcel Data ETL Pipeline</h3>
+                <p class="card-desc">Automated Python procedure for statewide parcel data extraction, cleaning, and standardization.</p>
               </div>
             </a>
           </div>
@@ -483,38 +466,38 @@
           <div class="card-grid">
             <a class="project-card" href="projects/project-template.html">
               <div class="card-img-wrap">
-                <div class="card-placeholder ph-3">🗺</div>
+                <img src="assets/gis-parcel-extract.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" /><div class="card-placeholder ph-3" style="display:none;"></div>
               </div>
               <div class="card-body">
-                <h3 class="card-title">Oklahoma National Electric Vehicle Infrastructure (NEVI) Web Map</h3>
-                <p class="card-desc">ArcGIS Online dashboards for state DOT clients across Oklahoma, Tennessee, and Mississippi.</p>
+                <h3 class="card-title">Oklahoma NEVI Web Portal</h3>
+                <p class="card-desc">Interactive ArcGIS Online dashboard for state Oklahoma DOT EV deployment planning.</p>
               </div>
             </a>
             <a class="project-card" href="projects/project-template.html">
               <div class="card-img-wrap">
-                <div class="card-placeholder ph-4">🔥</div>
+                <img src="assets/map-oklahoma-nevi.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" /><div class="card-placeholder ph-4" style="display:none;"></div>
               </div>
               <div class="card-body">
-                <h3 class="card-title">Columbus Transit & Bike Accessibility Explorer</h3>
-                <p class="card-desc">Live Kepler.gl map visualizing active fire perimeters and CNN smoke predictions.</p>
+                <h3 class="card-title">Columbus Transit &amp; Bike Explorer</h3>
+                <p class="card-desc">Web map analyzing multimodal transit coverage and bike network accessibility.</p>
               </div>
             </a>
             <a class="project-card" href="projects/project-template.html">
               <div class="card-img-wrap">
-                <div class="card-placeholder ph-4">🔥</div>
+                <img src="assets/map-columbus-transit.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" /><div class="card-placeholder ph-4" style="display:none;"></div>
               </div>
               <div class="card-body">
-                <h3 class="card-title">Tennessee DOT Electric Vehicle Infrastructure Planning Portal</h3>
-                <p class="card-desc">Live Kepler.gl map visualizing active fire perimeters and CNN smoke predictions.</p>
+                <h3 class="card-title">Tennessee DOT EV Planning Portal</h3>
+                <p class="card-desc">Interactive web map visualizing alternative fuel corridors and siting criteria in Tennessee.</p>
               </div>
             </a>
             <a class="project-card" href="projects/project-template.html">
               <div class="card-img-wrap">
-                <div class="card-placeholder ph-4">🔥</div>
+                <img src="assets/map-tennessee-ev.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" /><div class="card-placeholder ph-4" style="display:none;"></div>
               </div>
               <div class="card-body">
-                <h3 class="card-title">Mississippi DOT EVSE Interactive Zone Online Map</h3>
-                <p class="card-desc">Live Kepler.gl map visualizing active fire perimeters and CNN smoke predictions.</p>
+                <h3 class="card-title">Mississippi EVSE Zone Explorer</h3>
+                <p class="card-desc">Mississippi DOT Web GIS portal for state transportation planners analyzing charging gaps.</p>
               </div>
             </a>
           </div>
@@ -526,47 +509,47 @@
           <div class="card-grid">
             <a class="project-card" href="projects/project-template.html">
               <div class="card-img-wrap">
-                <div class="card-placeholder ph-1">🌊</div>
+                <img src="assets/map-mississippi-ev.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" /><div class="card-placeholder ph-1" style="display:none;"></div>
               </div>
               <div class="card-body">
-                <h3 class="card-title">Transit Accessibility Analysis - Connecting Columbus: Who Gets Left Behind by Transit?</h3>
-                <p class="card-desc">Parcel-level flood probability model using LiDAR-derived features and random forest.</p>
+                <h3 class="card-title">Columbus Transit Equity Analysis</h3>
+                <p class="card-desc">Spatial equity model identifying underserved populations across transit corridors.</p>
               </div>
             </a>
             <a class="project-card" href="projects/project-template.html">
               <div class="card-img-wrap">
-                <div class="card-placeholder ph-2">🚗</div>
+                <img src="assets/ds-transit-access.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" /><div class="card-placeholder ph-2" style="display:none;"></div>
               </div>
               <div class="card-body">
-                <h3 class="card-title">Demographic & Employment Dasymetric Mapping &amp; Analysis -  Franklin County</h3>
-                <p class="card-desc">85% accuracy model on multimodal driving data — eye-tracking, speed, and simulation telemetry.</p>
+                <h3 class="card-title">Franklin County Dasymetric Mapping</h3>
+                <p class="card-desc">Fine-grained population and employment disaggregation using land cover weights.</p>
               </div>
             </a>
             <a class="project-card" href="projects/project-template.html">
               <div class="card-img-wrap">
-                <div class="card-placeholder ph-1">🌊</div>
+                <img src="assets/ds-dasymetric-map.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" /><div class="card-placeholder ph-1" style="display:none;"></div>
               </div>
               <div class="card-body">
-                <h3 class="card-title">Terrain Development Suitability Assessment - USDA SSURGO Soil, EPA Water & FEMA Floodplain Multi-Layer Analysis</h3>
-                <p class="card-desc">Parcel-level flood probability model using LiDAR-derived features and random forest.</p>
+                <h3 class="card-title">Terrain Development Suitability Model</h3>
+                <p class="card-desc">Multi-criteria spatial overlay combining SSURGO soils, EPA water, and floodplains.</p>
               </div>
             </a>
             <a class="project-card" href="projects/project-template.html">
               <div class="card-img-wrap">
-                <div class="card-placeholder ph-5">⚡</div>
+                <img src="assets/ds-terrain-suitability.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" /><div class="card-placeholder ph-5" style="display:none;"></div>
               </div>
               <div class="card-body">
-                <h3 class="card-title">EV Charging Site Suitability - OK, TN, MS</h3>
-                <p class="card-desc">Multi-criteria AHP spatial optimization for heavy-duty EV charging hub locations.</p>
+                <h3 class="card-title">Multi-State EV Site Suitability Analysis</h3>
+                <p class="card-desc">Multi-criteria spatial analysis for national electric vehicle charging hub locations.</p>
               </div>
             </a>
             <a class="project-card" href="projects/project-template.html">
               <div class="card-img-wrap">
-                <div class="card-placeholder ph-6">🚌</div>
+                <img src="assets/ds-ev-suitability.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" /><div class="card-placeholder ph-6" style="display:none;"></div>
               </div>
               <div class="card-body">
-                <h3 class="card-title">Electric Vehicle Infrastructure Gap Analysis - 3-State Deployment</h3>
-                <p class="card-desc">Statewide EV coverage analysis covering 14+ siting scenarios across three DOT clients.</p>
+                <h3 class="card-title">3-State EV Infrastructure Gap Analysis</h3>
+                <p class="card-desc">Statewide coverage analysis covering siting scenarios across three DOT clients.</p>
               </div>
             </a>
           </div>
@@ -578,20 +561,20 @@
           <div class="card-grid">
             <a class="project-card" href="projects/project-template.html">
               <div class="card-img-wrap">
-                <div class="card-placeholder ph-3">🗄</div>
+                <img src="assets/ds-ev-gap-analysis.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" /><div class="card-placeholder ph-3" style="display:none;"></div>
               </div>
               <div class="card-body">
-                <h3 class="card-title">Pedestrian Transportation Asset Management Database </h3>
-                <p class="card-desc">Star schema data warehouse in BigQuery processing millions of AV telemetry records.</p>
+                <h3 class="card-title">Pedestrian Asset Management Database</h3>
+                <p class="card-desc">PostGIS/SQL spatial database architecture for pedestrian facilities.</p>
               </div>
             </a>
             <a class="project-card" href="projects/project-template.html">
               <div class="card-img-wrap">
-                <div class="card-placeholder ph-4">🌋</div>
+                <img src="assets/db-pedestrian-assets.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" /><div class="card-placeholder ph-4" style="display:none;"></div>
               </div>
               <div class="card-body">
-                <h3 class="card-title">Wildfire Detection PostGIS Database</h3>
-                <p class="card-desc">Multi-source spatial ingestion into PostGIS — NASA FIRMS, Sentinel-2, NOAA, USGS.</p>
+                <h3 class="card-title">PostGIS Wildfire Monitoring Database</h3>
+                <p class="card-desc">Multi-source spatial database ingesting wildfire and thermal data.</p>
               </div>
             </a>
           </div>
@@ -603,29 +586,29 @@
           <div class="card-grid">
             <a class="project-card" href="projects/project-template.html">
               <div class="card-img-wrap">
-                <div class="card-placeholder ph-5">🗺</div>
+                <img src="assets/db-wildfire-postgis.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" /><div class="card-placeholder ph-5" style="display:none;"></div>
               </div>
               <div class="card-body">
-                <h3 class="card-title">Ohio Demographic Change Map Series</h3>
-                <p class="card-desc">25-year thematic map series across 325 zones communicating population and employment shifts.</p>
+                <h3 class="card-title">Ohio Demographic Change Series</h3>
+                <p class="card-desc">Thematic map series across Ohio communicating regional demographic shifts.</p>
               </div>
             </a>
             <a class="project-card" href="projects/project-template.html">
               <div class="card-img-wrap">
-                <div class="card-placeholder ph-6">🔄</div>
+                <img src="assets/carto-ohio-demographics.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" /><div class="card-placeholder ph-6" style="display:none;"></div>
               </div>
               <div class="card-body">
-                <h3 class="card-title">Crash Risk, Roadway Safety, &amp; Land Cover Mapping </h3>
-                <p class="card-desc">VISSIM microsimulation + logistic regression + ANOVA. Published MS thesis, AHFE 2023.</p>
+                <h3 class="card-title">Crash Risk &amp; Roadway Safety Mapping</h3>
+                <p class="card-desc">Spatial analysis &amp; cartography linking traffic crash hotspots with surrounding land use.</p>
               </div>
             </a>
             <a class="project-card" href="projects/project-template.html">
               <div class="card-img-wrap">
-                <div class="card-placeholder ph-6">🔄</div>
+                <img src="assets/carto-crash-risk.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" /><div class="card-placeholder ph-6" style="display:none;"></div>
               </div>
               <div class="card-body">
-                <h3 class="card-title">Electric Vehicle Infrastructure Planning, GIS Analysis &amp; Mapping</h3>
-                <p class="card-desc">VISSIM microsimulation + logistic regression + ANOVA. Published MS thesis, AHFE 2023.</p>
+                <h3 class="card-title">Corridor Safety &amp; Hazard Analysis</h3>
+                <p class="card-desc">Safety analysis mapping high-risk transportation corridors and hazards.</p>
               </div>
             </a>
           </div>
@@ -774,9 +757,10 @@
 
 <!-- Right-side section nav (fixed, outside page-wrapper) -->
 <nav class="section-nav" id="sectionNav" aria-label="Project sections">
-  <a class="snav-item" href="#cat-gis"   data-target="cat-gis">GIS Programming & Automation</a>
+  <span class="snav-label">Jump to</span>
+  <a class="snav-item" href="#cat-gis"   data-target="cat-gis">Automation</a>
   <a class="snav-item" href="#cat-maps"  data-target="cat-maps">Web Maps</a>
-  <a class="snav-item" href="#cat-ds"    data-target="cat-ds">Spatial Analysis</a>
+  <a class="snav-item" href="#cat-ds"    data-target="cat-ds">Spatial Data</a>
   <a class="snav-item" href="#cat-db"    data-target="cat-db">Databases</a>
   <a class="snav-item" href="#cat-carto" data-target="cat-carto">Cartography</a>
 </nav>
