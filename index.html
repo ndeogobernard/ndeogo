@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bernard Ndeogo · DRAFT</title>
+  <title>Bernard Ndeogo · Data Scientist</title>
   <meta name="description" content="Bernard Ndeogo — Data Scientist & AI/ML Engineer. Columbus, OH." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -245,7 +245,71 @@
       margin-top: 0.15rem;
     }
 
-    /* Tag row */
+    /* ── CATEGORY SECTIONS ── */
+    .project-section {
+      margin-bottom: 3.5rem;
+      scroll-margin-top: 6rem;
+    }
+    .project-section:last-child { margin-bottom: 0; }
+
+    /* Understated category heading — small, muted, right-aligned like image 1 */
+    .cat-heading {
+      font-family: var(--font-display);
+      font-size: 0.72rem;
+      font-weight: 400;
+      font-style: italic;
+      color: var(--gray-9);
+      letter-spacing: 0.06em;
+      text-align: right;
+      margin-bottom: 1rem;
+      padding-bottom: 0.6rem;
+      border-bottom: 1px solid var(--gray-3);
+    }
+
+    /* ── RIGHT-SIDE STICKY NAV ── */
+    .section-nav {
+      position: fixed;
+      right: 1.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      display: none;           /* shown by JS when Projects tab is active */
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.5rem;
+      z-index: 200;
+    }
+
+    .snav-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.7rem;
+      color: var(--gray-8);
+      cursor: pointer;
+      transition: color 0.2s ease;
+      white-space: nowrap;
+      text-decoration: none;
+    }
+    .snav-item::after {
+      content: '';
+      display: block;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--gray-7);
+      flex-shrink: 0;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+    .snav-item:hover { color: var(--gray-11); }
+    .snav-item:hover::after { background: var(--gray-10); }
+    .snav-item.snav-active { color: var(--gray-12); }
+    .snav-item.snav-active::after {
+      background: var(--gray-12);
+      transform: scale(1.6);
+    }
+
+    /* Hide on screens too narrow to fit it without overlap */
+    @media (max-width: 1280px) { .section-nav { display: none !important; } }
 
     /* ── EXPERIENCE ── */
     .exp-list { display: flex; flex-direction: column; }
@@ -361,69 +425,211 @@
       <!-- ── PROJECTS ── -->
       <div id="tab-projects" class="tab-panel tab-active">
 
-        <div class="card-grid">
+        <!-- 1 · GIS Programming & Automation -->
+        <section class="project-section" id="cat-gis">
+          <div class="cat-heading">GIS Programming &amp; Automation</div>
+          <div class="card-grid">
+            <a class="project-card" href="projects/project-template.html">
+              <div class="card-img-wrap">
+                <div class="card-placeholder ph-1">🛰</div>
+              </div>
+              <div class="card-body">
+                <h3 class="card-title">Land Use Data Analysis Toolbox for ArcGIS</h3>
+                <p class="card-desc">20-year Landsat study of urban expansion across Central Ohio using automated Python pipeline.</p>
+              </div>
+            </a>
+            <a class="project-card" href="projects/project-template.html">
+              <div class="card-img-wrap">
+                <div class="card-placeholder ph-2">⚙️</div>
+              </div>
+              <div class="card-body">
+                <h3 class="card-title">Automated USDA SSURGO Soil Slope Data Extractor</h3>
+                <p class="card-desc">ArcPy automation classifying millions of Ohio parcel records by land use type.</p>
+              </div>
+            </a>
+            <a class="project-card" href="projects/project-template.html">
+              <div class="card-img-wrap">
+                <div class="card-placeholder ph-2">⚙️</div>
+              </div>
+              <div class="card-body">
+                <h3 class="card-title">FEMA NFHL 100-Year Flood Hazard Area Extractor</h3>
+                <p class="card-desc">ArcPy automation classifying millions of Ohio parcel records by land use type.</p>
+              </div>
+            </a>
+            <a class="project-card" href="projects/project-template.html">
+              <div class="card-img-wrap">
+                <div class="card-placeholder ph-2">⚙️</div>
+              </div>
+              <div class="card-body">
+                <h3 class="card-title">EPA Community Water System Boundary Delineator</h3>
+                <p class="card-desc">ArcPy automation classifying millions of Ohio parcel records by land use type.</p>
+              </div>
+            </a>
+            <a class="project-card" href="projects/project-template.html">
+              <div class="card-img-wrap">
+                <div class="card-placeholder ph-2">⚙️</div>
+              </div>
+              <div class="card-body">
+                <h3 class="card-title">Automated Statewide Parcel Data Extraction, Cleaning and Schema Standardization</h3>
+                <p class="card-desc">ArcPy automation classifying millions of Ohio parcel records by land use type.</p>
+              </div>
+            </a>
+          </div>
+        </section>
 
-          <a class="project-card" href="projects/#">
-            <div class="card-img-wrap">
-              <div class="card-placeholder ph-1">🛰</div>
-            </div>
-            <div class="card-body">
-              <h3 class="card-title">GIS Programming and Automation</h3>
-              <p class="card-desc">Python scripting, custom ArcGIS and geoprocessing workflows</p>
-            </div>
-          </a>
+        <!-- 2 · Interactive Web Maps & Dashboards -->
+        <section class="project-section" id="cat-maps">
+          <div class="cat-heading">Interactive Web Maps &amp; Applications Development</div>
+          <div class="card-grid">
+            <a class="project-card" href="projects/project-template.html">
+              <div class="card-img-wrap">
+                <div class="card-placeholder ph-3">🗺</div>
+              </div>
+              <div class="card-body">
+                <h3 class="card-title">Oklahoma National Electric Vehicle Infrastructure (NEVI) Web Map</h3>
+                <p class="card-desc">ArcGIS Online dashboards for state DOT clients across Oklahoma, Tennessee, and Mississippi.</p>
+              </div>
+            </a>
+            <a class="project-card" href="projects/project-template.html">
+              <div class="card-img-wrap">
+                <div class="card-placeholder ph-4">🔥</div>
+              </div>
+              <div class="card-body">
+                <h3 class="card-title">Columbus Transit & Bike Accessibility Explorer</h3>
+                <p class="card-desc">Live Kepler.gl map visualizing active fire perimeters and CNN smoke predictions.</p>
+              </div>
+            </a>
+            <a class="project-card" href="projects/project-template.html">
+              <div class="card-img-wrap">
+                <div class="card-placeholder ph-4">🔥</div>
+              </div>
+              <div class="card-body">
+                <h3 class="card-title">Tennessee DOT Electric Vehicle Infrastructure Planning Portal</h3>
+                <p class="card-desc">Live Kepler.gl map visualizing active fire perimeters and CNN smoke predictions.</p>
+              </div>
+            </a>
+            <a class="project-card" href="projects/project-template.html">
+              <div class="card-img-wrap">
+                <div class="card-placeholder ph-4">🔥</div>
+              </div>
+              <div class="card-body">
+                <h3 class="card-title">Mississippi DOT EVSE Interactive Zone Online Map</h3>
+                <p class="card-desc">Live Kepler.gl map visualizing active fire perimeters and CNN smoke predictions.</p>
+              </div>
+            </a>
+          </div>
+        </section>
 
-          <a class="project-card" href="projects/#">
-            <div class="card-img-wrap">
-              <div class="card-placeholder ph-2">🚗</div>
-            </div>
-            <div class="card-body">
-              <h3 class="card-title">Interactive Web Maps & Dashboards</h3>
-              <p class="card-desc">Web GIS, UI/UX, stakeholder communication, and real-time geospatial visualization.</p>
-            </div>
-          </a>
+        <!-- 4 · Spatial Analysis -->
+        <section class="project-section" id="cat-ds">
+          <div class="cat-heading">Geospatial Analysis, Data Science &amp; Predictive Analytics</div>
+          <div class="card-grid">
+            <a class="project-card" href="projects/project-template.html">
+              <div class="card-img-wrap">
+                <div class="card-placeholder ph-1">🌊</div>
+              </div>
+              <div class="card-body">
+                <h3 class="card-title">Transit Accessibility Analysis - Connecting Columbus: Who Gets Left Behind by Transit?</h3>
+                <p class="card-desc">Parcel-level flood probability model using LiDAR-derived features and random forest.</p>
+              </div>
+            </a>
+            <a class="project-card" href="projects/project-template.html">
+              <div class="card-img-wrap">
+                <div class="card-placeholder ph-2">🚗</div>
+              </div>
+              <div class="card-body">
+                <h3 class="card-title">Demographic & Employment Dasymetric Mapping &amp; Analysis -  Franklin County</h3>
+                <p class="card-desc">85% accuracy model on multimodal driving data — eye-tracking, speed, and simulation telemetry.</p>
+              </div>
+            </a>
+            <a class="project-card" href="projects/project-template.html">
+              <div class="card-img-wrap">
+                <div class="card-placeholder ph-1">🌊</div>
+              </div>
+              <div class="card-body">
+                <h3 class="card-title">Terrain Development Suitability Assessment - USDA SSURGO Soil, EPA Water & FEMA Floodplain Multi-Layer Analysis</h3>
+                <p class="card-desc">Parcel-level flood probability model using LiDAR-derived features and random forest.</p>
+              </div>
+            </a>
+            <a class="project-card" href="projects/project-template.html">
+              <div class="card-img-wrap">
+                <div class="card-placeholder ph-5">⚡</div>
+              </div>
+              <div class="card-body">
+                <h3 class="card-title">EV Charging Site Suitability - OK, TN, MS</h3>
+                <p class="card-desc">Multi-criteria AHP spatial optimization for heavy-duty EV charging hub locations.</p>
+              </div>
+            </a>
+            <a class="project-card" href="projects/project-template.html">
+              <div class="card-img-wrap">
+                <div class="card-placeholder ph-6">🚌</div>
+              </div>
+              <div class="card-body">
+                <h3 class="card-title">Electric Vehicle Infrastructure Gap Analysis - 3-State Deployment</h3>
+                <p class="card-desc">Statewide EV coverage analysis covering 14+ siting scenarios across three DOT clients.</p>
+              </div>
+            </a>
+          </div>
+        </section>
 
-          <a class="project-card" href="projects/#">
-            <div class="card-img-wrap">
-              <div class="card-placeholder ph-3">🔥</div>
-            </div>
-            <div class="card-body">
-              <h3 class="card-title">Electric Vehicle Infrastructure Planning, GIS Analysis & Mapping</h3>
-              <p class="card-desc">NASA FIRMS + Sentinel-2 → PostGIS → CNN smoke classifier on GCP.</p>
-            </div>
-          </a>
+        <!-- 5 · Database Management & Spatial SQL -->
+        <section class="project-section" id="cat-db">
+          <div class="cat-heading">Database Management &amp; Spatial SQL</div>
+          <div class="card-grid">
+            <a class="project-card" href="projects/project-template.html">
+              <div class="card-img-wrap">
+                <div class="card-placeholder ph-3">🗄</div>
+              </div>
+              <div class="card-body">
+                <h3 class="card-title">Pedestrian Transportation Asset Management Database </h3>
+                <p class="card-desc">Star schema data warehouse in BigQuery processing millions of AV telemetry records.</p>
+              </div>
+            </a>
+            <a class="project-card" href="projects/project-template.html">
+              <div class="card-img-wrap">
+                <div class="card-placeholder ph-4">🌋</div>
+              </div>
+              <div class="card-body">
+                <h3 class="card-title">Wildfire Detection PostGIS Database</h3>
+                <p class="card-desc">Multi-source spatial ingestion into PostGIS — NASA FIRMS, Sentinel-2, NOAA, USGS.</p>
+              </div>
+            </a>
+          </div>
+        </section>
 
-          <a class="project-card" href="projects/#">
-            <div class="card-img-wrap">
-              <div class="card-placeholder ph-4">🌊</div>
-            </div>
-            <div class="card-body">
-              <h3 class="card-title">Spatial Data Science & Predictive Analytics</h3>
-              <p class="card-desc">Machine learning, statistical modeling, site selection, and pattern detection.</p>
-            </div>
-          </a>
-
-          <a class="project-card" href="projects/#">
-            <div class="card-img-wrap">
-              <div class="card-placeholder ph-5">⚡</div>
-            </div>
-            <div class="card-body">
-              <h3 class="card-title">Database Management & Spatial SQL</h3>
-              <p class="card-desc">Enterprise GIS, relational databases, spatial querying, and data integrity.</p>
-            </div>
-          </a>
-
-          <a class="project-card" href="projects/turbo-roundabout.html">
-            <div class="card-img-wrap">
-              <div class="card-placeholder ph-6">🔄</div>
-            </div>
-            <div class="card-body">
-              <h3 class="card-title">Cartography and Static Maps</h3>
-              <p class="card-desc">VISSIM microsimulation + logistic regression + ANOVA. Published MS thesis.</p>
-            </div>
-          </a>
-
-        </div>
+        <!-- 6 · Cartography & Static Maps -->
+        <section class="project-section" id="cat-carto">
+          <div class="cat-heading">Cartography &amp; Static Maps</div>
+          <div class="card-grid">
+            <a class="project-card" href="projects/project-template.html">
+              <div class="card-img-wrap">
+                <div class="card-placeholder ph-5">🗺</div>
+              </div>
+              <div class="card-body">
+                <h3 class="card-title">Ohio Demographic Change Map Series</h3>
+                <p class="card-desc">25-year thematic map series across 325 zones communicating population and employment shifts.</p>
+              </div>
+            </a>
+            <a class="project-card" href="projects/project-template.html">
+              <div class="card-img-wrap">
+                <div class="card-placeholder ph-6">🔄</div>
+              </div>
+              <div class="card-body">
+                <h3 class="card-title">Crash Risk, Roadway Safety, &amp; Land Cover Mapping </h3>
+                <p class="card-desc">VISSIM microsimulation + logistic regression + ANOVA. Published MS thesis, AHFE 2023.</p>
+              </div>
+            </a>
+            <a class="project-card" href="projects/project-template.html">
+              <div class="card-img-wrap">
+                <div class="card-placeholder ph-6">🔄</div>
+              </div>
+              <div class="card-body">
+                <h3 class="card-title">Electric Vehicle Infrastructure Planning, GIS Analysis &amp; Mapping</h3>
+                <p class="card-desc">VISSIM microsimulation + logistic regression + ANOVA. Published MS thesis, AHFE 2023.</p>
+              </div>
+            </a>
+          </div>
+        </section>
       </div>
 
       <!-- ── EXPERIENCE ── -->
@@ -566,20 +772,72 @@
   </div>
 </div>
 
+<!-- Right-side section nav (fixed, outside page-wrapper) -->
+<nav class="section-nav" id="sectionNav" aria-label="Project sections">
+  <a class="snav-item" href="#cat-gis"   data-target="cat-gis">GIS Programming & Automation</a>
+  <a class="snav-item" href="#cat-maps"  data-target="cat-maps">Web Maps</a>
+  <a class="snav-item" href="#cat-ds"    data-target="cat-ds">Spatial Analysis</a>
+  <a class="snav-item" href="#cat-db"    data-target="cat-db">Databases</a>
+  <a class="snav-item" href="#cat-carto" data-target="cat-carto">Cartography</a>
+</nav>
+
 <script>
+  // ── Local time ──
   function tick() {
     document.getElementById('localTime').textContent = new Date().toLocaleTimeString(
       'en-US', { timeZone: 'America/New_York', hour: 'numeric', minute: '2-digit', hour12: true }
     );
   }
   tick(); setInterval(tick, 1000);
+
+  // ── Tabs ──
+  const sectionNav = document.getElementById('sectionNav');
+
+  function showNav(show) {
+    sectionNav.style.display = show ? 'flex' : 'none';
+  }
+
   document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('tab-active'));
       document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('tab-active'));
       btn.classList.add('tab-active');
       document.getElementById('tab-' + btn.dataset.tab).classList.add('tab-active');
+      // Show nav only on Projects tab, and only on wide screens
+      showNav(btn.dataset.tab === 'projects' && window.innerWidth >= 1280);
     });
+  });
+
+  // ── Scroll spy for right-side nav ──
+  const sections = document.querySelectorAll('.project-section');
+  const navItems = document.querySelectorAll('.snav-item');
+
+  const spy = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navItems.forEach(n => n.classList.remove('snav-active'));
+        const active = document.querySelector(`.snav-item[data-target="${entry.target.id}"]`);
+        if (active) active.classList.add('snav-active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -60% 0px', threshold: 0 });
+
+  sections.forEach(s => spy.observe(s));
+
+  // Smooth scroll — prevent default jump, use scrollIntoView
+  navItems.forEach(item => {
+    item.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.getElementById(item.dataset.target);
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  // Init nav state on load
+  showNav(window.innerWidth >= 1280);
+  window.addEventListener('resize', () => {
+    const isProjects = document.querySelector('.tab-btn.tab-active')?.dataset.tab === 'projects';
+    showNav(isProjects && window.innerWidth >= 1280);
   });
 </script>
 </body>
