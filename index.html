@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bernard Ndeogo · Data Scientist</title>
+  <meta name="description" content="Bernard Ndeogo — Data Scientist & AI/ML Engineer. Columbus, OH." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --background: #000000;
+      --card-bg:    #111214;
+      --gray-1:  #141517;
+      --gray-2:  #191b1e;
+      --gray-3:  #212629;
+      --gray-4:  #293034;
+      --gray-5:  #333b3e;
+      --gray-6:  #3b4345;
+      --gray-7:  #434a4d;
+      --gray-8:  #52595b;
+      --gray-9:  #6e7679;
+      --gray-10: #878d8f;
+      --gray-11: #a1a4a5;
+      --gray-12: #f0f0f0;
+      --slate-a6: #d6ebfd30;
+      --slate-6:  #3a3a3f;
+      --slate-1:  #111113;
+      --slate-2:  #19191b;
+      --slate-3:  #222225;
+      --avatar-border: #323232;
+      --font-sans:    'Inter', ui-sans-serif, system-ui, sans-serif;
+      --font-display: 'Instrument Sans', 'Inter', sans-serif;
+      --font-mono:    'JetBrains Mono', ui-monospace, monospace;
+      --ease-card: cubic-bezier(.36,.66,.6,1);
+      --ease-tab:  cubic-bezier(.3,1,.66,1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; border: 0 solid; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; scrollbar-width: thin; scrollbar-color: gray transparent; }
+    body {
+      background: var(--background);
+      color: var(--gray-12);
+      font-family: var(--font-sans);
+      font-size: 0.875rem;
+      line-height: 1.43;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizelegibility;
+      -webkit-text-size-adjust: none;
+      text-size-adjust: none;
+      min-height: 100vh;
+    }
+    ::selection { background-color: color-mix(in oklab, white 20%, transparent); color: white; }
+    a { color: inherit; text-decoration: inherit; }
+    img { display: block; max-width: 100%; }
+    ul, ol { list-style: none; }
+
+    .page-wrapper {
+      position: relative;
+      margin: 0 auto;
+      min-height: 100vh;
+      width: 100%;
+      max-width: 80rem;
+      padding: 5rem 1.5rem 6rem;
+    }
+    .page-inner {
+      margin-bottom: 1.5rem;
+      display: flex;
+      width: 100%;
+      flex-direction: column;
+      gap: 3rem;
+    }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      position: relative;
+      display: flex;
+      height: fit-content;
+      width: 100%;
+      flex-direction: column;
+      gap: 1rem;
+      transition: all 0.2s ease;
+    }
+    .avatar-wrap {
+      position: relative;
+      display: inline-flex;
+      flex-shrink: 0;
+      height: 6rem; width: 6rem;
+      overflow: hidden;
+      border-radius: 9999px;
+      border: 1px solid var(--avatar-border);
+      background: var(--avatar-border);
+    }
+    .avatar-wrap img { height: 100%; width: 100%; object-fit: cover; object-position: center; }
+    .avatar-fallback {
+      display: none; height: 100%; width: 100%;
+      align-items: center; justify-content: center;
+      background: var(--slate-3); color: var(--gray-11);
+      font-weight: 500; font-size: 1.5rem; text-transform: uppercase;
+    }
+    .sidebar-info {
+      position: relative; display: flex; flex: 1;
+      flex-direction: column; font-size: 0.875rem; color: var(--gray-11);
+    }
+    .sidebar-name {
+      font-family: var(--font-display);
+      font-size: 2.25rem; letter-spacing: -0.05em; line-height: 130%;
+      background: linear-gradient(to bottom, var(--gray-12) 30%, var(--gray-8));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .sidebar-role { margin-bottom: 1rem; font-weight: 600; color: var(--gray-12); -webkit-text-fill-color: var(--gray-12); }
+    .sidebar-meta { margin-top: 1rem; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.8125rem; }
+    .meta-row { position: relative; display: flex; width: 100%; align-items: center; justify-content: flex-start; gap: 0.5rem; color: var(--gray-11); }
+    .meta-row svg { width: 1rem; height: 1rem; flex-shrink: 0; }
+    .meta-row a { color: var(--gray-11); transition: color 0.2s ease; }
+    .meta-row a:hover { color: var(--gray-12); }
+    .sidebar-divider { margin-top: 2rem; margin-bottom: 1.75rem; height: 1px; width: 100%; border: none; background: var(--slate-6); }
+    .clubs-section { display: flex; flex-direction: column; gap: 1.25rem; }
+    .clubs-label { font-size: 0.875rem; color: var(--gray-12); }
+    .clubs-row { position: relative; display: flex; width: 100%; flex-wrap: wrap; justify-content: flex-start; gap: 0.5rem; }
+    .club-item {
+      position: relative; display: flex; aspect-ratio: 1; flex: 1;
+      min-width: 5rem; max-width: 5rem;
+      align-items: center; justify-content: center;
+      overflow: hidden; border-radius: 9999px;
+      border: 2px solid var(--slate-1); background: var(--slate-3); padding: 1rem;
+      cursor: pointer; transform-origin: center; transition: all 0.2s ease;
+    }
+    .club-item:hover { border-color: var(--slate-3); }
+    .club-item span { font-size: 1.6rem; line-height: 1; display: block; transition: transform 0.2s cubic-bezier(.42,0,.58,1.8); }
+    .club-item:hover span { transform: rotate(-6deg); }
+
+    /* ── CONTENT ── */
+    .content-area { display: flex; flex: 1; flex-direction: column; }
+
+    /* ── TABS ── */
+    .tabs-list { display: flex; gap: 0.5rem; align-items: center; position: relative; margin-bottom: 2.5rem; width: 100%; flex-wrap: wrap; }
+    .tab-btn {
+      cursor: pointer; user-select: none; font-family: var(--font-sans);
+      font-size: 0.875rem; font-weight: 600;
+      height: 2.5rem; min-width: 2.625rem;
+      display: inline-flex; align-items: center; justify-content: center;
+      border-radius: 9999px; padding: 0.25rem 0.75rem; line-height: 1.5rem;
+      transition: background-color 300ms var(--ease-tab), color 300ms var(--ease-tab);
+      background: var(--slate-2); border: 1px solid var(--slate-3); color: var(--gray-12); outline: none;
+    }
+    .tab-btn:hover:not(.tab-active) { background: var(--slate-3); }
+    .tab-btn.tab-active { background: var(--gray-12); color: var(--background); border-color: var(--gray-12); }
+
+    .tab-panel { display: none; opacity: 0; transition: opacity 0.5s var(--ease-card); }
+    .tab-panel.tab-active { display: block; opacity: 1; }
+    @starting-style { .tab-panel.tab-active { opacity: 0; } }
+
+    /* ══════════════════════════════════════
+       PROJECT CARDS — Reference image style
+       3-col grid, image fills top, large
+       display-font title, muted description
+    ══════════════════════════════════════ */
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+
+    .project-card {
+      display: flex;
+      flex-direction: column;
+      background: var(--card-bg);
+      border-radius: 0.5rem;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.3s var(--ease-card), opacity 0.3s var(--ease-card);
+      text-decoration: none;
+      color: inherit;
+    }
+    .project-card:hover { transform: translateY(-3px); opacity: 0.92; }
+
+    @starting-style { .project-card { transform: translateY(1rem); opacity: 0; } }
+    .project-card:nth-child(1) { transition-delay:   0ms; }
+    .project-card:nth-child(2) { transition-delay: 100ms; }
+    .project-card:nth-child(3) { transition-delay: 200ms; }
+    .project-card:nth-child(4) { transition-delay: 300ms; }
+    .project-card:nth-child(5) { transition-delay: 400ms; }
+    .project-card:nth-child(6) { transition-delay: 500ms; }
+
+    /* Image area — fills full card width, fixed height */
+    .card-img-wrap {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      overflow: hidden;
+      flex-shrink: 0;
+      position: relative;
+    }
+    .card-img-wrap img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center;
+      display: block;
+      transition: transform 0.4s var(--ease-card);
+    }
+    .project-card:hover .card-img-wrap img { transform: scale(1.03); }
+
+    /* Placeholder when no real screenshot */
+    .card-placeholder {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 3.5rem;
+    }
+    .ph-1 { background: linear-gradient(135deg, #0d1f12, #152e1a); }
+    .ph-2 { background: linear-gradient(135deg, #0d0f1f, #131526); }
+    .ph-3 { background: linear-gradient(135deg, #1f0d0d, #261515); }
+    .ph-4 { background: linear-gradient(135deg, #0d1a1f, #12232a); }
+    .ph-5 { background: linear-gradient(135deg, #1a1f0d, #23260f); }
+    .ph-6 { background: linear-gradient(135deg, #1a0d1f, #231226); }
+
+    /* Card text body */
+    .card-body {
+      padding: 1.1rem 1.15rem 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      flex: 1;
+    }
+
+    /* Large crisp display-font title — matching ref */
+    .card-title {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 500;
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+      color: var(--gray-12);
+      text-wrap: balance;
+    }
+
+    /* Muted small description — like ref's one-liner */
+    .card-desc {
+      font-size: 0.78rem;
+      color: var(--gray-10);
+      line-height: 1.55;
+      text-wrap: pretty;
+      margin-top: 0.15rem;
+    }
+
+    /* Tag row */
+
+    /* ── EXPERIENCE ── */
+    .exp-list { display: flex; flex-direction: column; }
+    .exp-item { display: grid; grid-template-columns: 150px 1fr; gap: 1.5rem; padding: 1.5rem 0; border-bottom: 1px solid var(--gray-3); }
+    .exp-item:first-child { padding-top: 0; }
+    .exp-item:last-child  { border-bottom: none; }
+    .exp-date { font-family: var(--font-mono); font-size: 0.75rem; color: var(--gray-10); padding-top: 3px; line-height: 1.6; }
+    .exp-right h3 { font-size: 0.9375rem; font-weight: 600; color: var(--gray-12); margin-bottom: 2px; }
+    .exp-company { font-size: 0.8125rem; color: var(--gray-11); margin-bottom: 0.6rem; }
+    .exp-bullets { padding-left: 1rem; display: flex; flex-direction: column; gap: 4px; }
+    .exp-bullets li { font-size: 0.8125rem; color: var(--gray-10); line-height: 1.65; }
+
+    /* ── RESUME ── */
+    .resume-section { margin-bottom: 2.5rem; }
+    .resume-label { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--gray-10); margin-bottom: 1rem; }
+    .resume-download { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.625rem 1.25rem; border-radius: 0.375rem; border: 1px solid var(--gray-6); background: var(--gray-2); font-size: 0.875rem; font-weight: 500; color: var(--gray-12); transition: background 0.15s, border-color 0.15s; }
+    .resume-download:hover { background: var(--gray-3); border-color: var(--gray-8); }
+    .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--gray-3); border: 1px solid var(--gray-3); border-radius: 0.5rem; overflow: hidden; }
+    .stat-item { background: var(--background); padding: 1.25rem; }
+    .stat-value { font-family: var(--font-display); font-size: 1.5rem; font-weight: 600; letter-spacing: -0.03em; color: var(--gray-12); line-height: 1; margin-bottom: 4px; }
+    .stat-label { font-size: 0.75rem; color: var(--gray-10); }
+    .skill-row { display: flex; flex-direction: column; gap: 6px; padding: 0.75rem 0; border-bottom: 1px solid var(--gray-3); }
+    .skill-row:last-child { border-bottom: none; }
+    .skill-cat { font-size: 0.6875rem; font-weight: 600; color: var(--gray-10); text-transform: uppercase; letter-spacing: 0.07em; }
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 0.375rem; }
+    .skill-tag { font-family: var(--font-mono); font-size: 0.6875rem; padding: 3px 8px; border-radius: 0.25rem; background: var(--gray-2); border: 1px solid var(--gray-3); color: var(--gray-11); }
+
+    /* ── INTERESTS ── */
+    .interests-label { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--gray-10); margin-bottom: 1.25rem; }
+    .photo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--gray-3); border: 1px solid var(--gray-3); border-radius: 0.5rem; overflow: hidden; margin-bottom: 1.5rem; }
+    .photo-item { aspect-ratio: 1; background: var(--gray-2); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; cursor: pointer; transition: background 0.15s; }
+    .photo-item:hover { background: var(--gray-3); }
+    .photo-item span { font-size: 1.5rem; opacity: 0.4; }
+    .photo-item p { font-size: 0.6875rem; color: var(--gray-10); text-align: center; padding: 0 0.5rem; }
+    .interests-note { font-size: 0.8125rem; color: var(--gray-10); line-height: 1.7; }
+
+    /* ── RESPONSIVE ── */
+    @media (min-width: 768px) {
+      .page-inner   { flex-direction: row; gap: 6rem; }
+      .sidebar      { position: sticky; top: 7rem; width: 16rem; flex-shrink: 0; max-height: calc(100vh - 8rem); overflow-y: auto; scrollbar-width: none; }
+      .sidebar::-webkit-scrollbar { display: none; }
+      .avatar-wrap  { height: 7.375rem; width: 7.375rem; }
+    }
+
+    @media (max-width: 900px) {
+      .card-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 580px) {
+      .card-grid { grid-template-columns: 1fr; }
+      .exp-item  { grid-template-columns: 1fr; gap: 0.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-wrapper">
+  <div class="page-inner">
+
+    <!-- ════════ SIDEBAR ════════ -->
+    <hgroup class="sidebar">
+      <div class="avatar-wrap">
+        <img src="assets/profile.jpg" alt="Bernard Ndeogo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+        <div class="avatar-fallback">BN</div>
+      </div>
+      <div class="sidebar-info">
+        <h1 class="sidebar-name">Bernard Ndeogo</h1>
+        <p class="sidebar-role">Data Scientist &amp; AI/ML Engineer</p>
+        <div class="sidebar-meta">
+          <div class="meta-row">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>
+            Columbus, OH
+          </div>
+          <div class="meta-row">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            <span id="localTime" style="font-family:var(--font-mono);font-size:0.8125rem;">--:-- --</span>
+            <span style="color:var(--gray-9);font-size:0.75rem;">(local time)</span>
+          </div>
+          <div class="meta-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+            <a href="https://github.com/ndeogobernard" target="_blank" rel="noreferrer">ndeogobernard</a>
+          </div>
+          <div class="meta-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            <a href="https://www.linkedin.com/in/bernardndeogo/" target="_blank" rel="noreferrer">bernardndeogo</a>
+          </div>
+          <div class="meta-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            <a href="mailto:bernardndeogo@gmail.com">bernardndeogo@gmail.com</a>
+          </div>
+        </div>
+        <hr class="sidebar-divider" />
+        <div class="clubs-section">
+          <p class="clubs-label">Interests</p>
+          <div class="clubs-row">
+            <div class="club-item" title="Photography"><span>📷</span></div>
+            <div class="club-item" title="Geospatial"><span>🌍</span></div>
+            <div class="club-item" title="ML / AI"><span>🤖</span></div>
+            <div class="club-item" title="AV Systems"><span>🚗</span></div>
+          </div>
+        </div>
+      </div>
+    </hgroup>
+
+    <!-- ════════ CONTENT ════════ -->
+    <div class="content-area">
+      <div class="tabs-list" role="tablist">
+        <button class="tab-btn tab-active" data-tab="projects">Projects</button>
+        <button class="tab-btn" data-tab="experience">Experience</button>
+        <button class="tab-btn" data-tab="resume">Resume</button>
+        <button class="tab-btn" data-tab="interests">Interests</button>
+      </div>
+
+      <!-- ── PROJECTS ── -->
+      <div id="tab-projects" class="tab-panel tab-active">
+
+        <div class="card-grid">
+
+          <a class="project-card" href="projects/land-use-change.html">
+            <div class="card-img-wrap">
+              <div class="card-placeholder ph-1">🛰</div>
+            </div>
+            <div class="card-body">
+              <h3 class="card-title">Land Use Change Detection — Central Ohio</h3>
+              <p class="card-desc">20-year Landsat study of urban expansion using supervised SVM classification.</p>
+            </div>
+          </a>
+
+          <a class="project-card" href="projects/fleet-telemetry.html">
+            <div class="card-img-wrap">
+              <div class="card-placeholder ph-2">🚗</div>
+            </div>
+            <div class="card-body">
+              <h3 class="card-title">Autonomous Fleet Telemetry Platform</h3>
+              <p class="card-desc">Production-scale AV telemetry pipeline with Airflow, Spark, and BigQuery.</p>
+            </div>
+          </a>
+
+          <a class="project-card" href="projects/wildfire-detection.html">
+            <div class="card-img-wrap">
+              <div class="card-placeholder ph-3">🔥</div>
+            </div>
+            <div class="card-body">
+              <h3 class="card-title">Real-Time Wildfire Detection Pipeline</h3>
+              <p class="card-desc">NASA FIRMS + Sentinel-2 → PostGIS → CNN smoke classifier on GCP.</p>
+            </div>
+          </a>
+
+          <a class="project-card" href="projects/flood-assessment.html">
+            <div class="card-img-wrap">
+              <div class="card-placeholder ph-4">🌊</div>
+            </div>
+            <div class="card-body">
+              <h3 class="card-title">Flood Potential Assessment — Santa Cruz</h3>
+              <p class="card-desc">Parcel-level flood probability using LiDAR features and random forest.</p>
+            </div>
+          </a>
+
+          <a class="project-card" href="projects/ev-suitability.html">
+            <div class="card-img-wrap">
+              <div class="card-placeholder ph-5">⚡</div>
+            </div>
+            <div class="card-body">
+              <h3 class="card-title">EV Charging Site Suitability — Columbus</h3>
+              <p class="card-desc">Multi-criteria AHP spatial optimization for heavy-duty EV charging hubs.</p>
+            </div>
+          </a>
+
+          <a class="project-card" href="projects/turbo-roundabout.html">
+            <div class="card-img-wrap">
+              <div class="card-placeholder ph-6">🔄</div>
+            </div>
+            <div class="card-body">
+              <h3 class="card-title">Turbo Roundabout Driver Behavior Study</h3>
+              <p class="card-desc">VISSIM microsimulation + logistic regression + ANOVA. Published MS thesis.</p>
+            </div>
+          </a>
+
+        </div>
+      </div>
+
+      <!-- ── EXPERIENCE ── -->
+      <div id="tab-experience" class="tab-panel">
+        <div class="exp-list">
+          <div class="exp-item">
+            <div class="exp-date">Sep 2024<br/>Present</div>
+            <div class="exp-right">
+              <h3>Data Scientist</h3>
+              <p class="exp-company">CDM Smith Inc. · Columbus, OH</p>
+              <ul class="exp-bullets">
+                <li>25-year demographic projections across 325 analysis zones for regional infrastructure planning.</li>
+                <li>Python + ArcPy automation pipelines processing millions of statewide parcel records.</li>
+                <li>Thematic map series in ArcGIS Pro communicating 25-year socioeconomic change across Ohio.</li>
+                <li>Standardized enterprise geospatial workflows integrating Census, parcel, floodplain, and slope datasets.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="exp-item">
+            <div class="exp-date">Feb 2024<br/>Aug 2024</div>
+            <div class="exp-right">
+              <h3>Data Scientist</h3>
+              <p class="exp-company">HNTB · Columbus, OH</p>
+              <ul class="exp-bullets">
+                <li>Statewide EV charging infrastructure analysis for the US DOT NEVI program across 3 states.</li>
+                <li>14+ siting scenarios via drive-time, accessibility, and equity analysis.</li>
+                <li>ArcGIS Online web maps and dashboards delivered to state agency clients.</li>
+                <li>Custom geoprocessing tools using Python and ModelBuilder to automate spatial workflows.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="exp-item">
+            <div class="exp-date">Jan 2021<br/>Dec 2023</div>
+            <div class="exp-right">
+              <h3>Driver Behavior Analytics Researcher</h3>
+              <p class="exp-company">Safety & Human Factors Lab · Ohio University</p>
+              <ul class="exp-bullets">
+                <li>85% accuracy classification model on multimodal behavioral data using random forest and gradient boosting.</li>
+                <li>30+ derived features from time-series simulation data; PCA for dimensionality reduction.</li>
+                <li>Datasets from 60+ participants across driving metrics, eye-tracking, and survey responses.</li>
+                <li>Validation frameworks using cross-validation, ANOVA, and mixed-effects models.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="exp-item">
+            <div class="exp-date">Apr 2023<br/>Aug 2023</div>
+            <div class="exp-right">
+              <h3>Data Analyst Intern</h3>
+              <p class="exp-company">Burton Planning Services · Columbus, OH</p>
+              <ul class="exp-bullets">
+                <li>GIS-based crash and corridor analysis across Worthington, OH.</li>
+                <li>Emergency shelter mapping across 6 townships for a FEMA planning process.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="exp-item">
+            <div class="exp-date">Apr 2022<br/>Dec 2022</div>
+            <div class="exp-right">
+              <h3>Data Analyst Intern</h3>
+              <p class="exp-company">Fehr & Peers · Irvine, CA</p>
+              <ul class="exp-bullets">
+                <li>Geodatabases consolidating parcel-level land use and traffic volume data for long-range planning.</li>
+                <li>Interactive dashboards for demographic trends and parking utilization for California clients.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="exp-item">
+            <div class="exp-date">Apr 2018<br/>Dec 2020</div>
+            <div class="exp-right">
+              <h3>Data Engineer</h3>
+              <p class="exp-company">SRC Consulting Engineers · Accra, Ghana</p>
+              <ul class="exp-bullets">
+                <li>Site layout maps and construction drawings using ArcGIS and AutoCAD.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── RESUME ── -->
+      <div id="tab-resume" class="tab-panel">
+        <div class="resume-section">
+          <a href="Bernard_Issifu_Resume.pdf" download class="resume-download">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download Resume (PDF)
+          </a>
+        </div>
+        <div class="resume-section">
+          <div class="resume-label">At a glance</div>
+          <div class="stat-grid">
+            <div class="stat-item"><div class="stat-value">7+</div><div class="stat-label">Years experience</div></div>
+            <div class="stat-item"><div class="stat-value">2</div><div class="stat-label">Publications</div></div>
+            <div class="stat-item"><div class="stat-value">GISP</div><div class="stat-label">GIS Certified</div></div>
+          </div>
+        </div>
+        <div class="resume-section">
+          <div class="resume-label">Education</div>
+          <div class="exp-list">
+            <div class="exp-item" style="padding-top:0;">
+              <div class="exp-date">2024 – 2026</div>
+              <div class="exp-right"><h3>M.S. Data Science</h3><p class="exp-company">University of Arizona</p></div>
+            </div>
+            <div class="exp-item">
+              <div class="exp-date">2021 – 2023</div>
+              <div class="exp-right"><h3>M.S. Civil Engineering — Transportation</h3><p class="exp-company">Ohio University</p></div>
+            </div>
+            <div class="exp-item">
+              <div class="exp-date">2014 – 2018</div>
+              <div class="exp-right"><h3>B.S. Civil Engineering</h3><p class="exp-company">KNUST Ghana</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="resume-section">
+          <div class="resume-label">Skills</div>
+          <div>
+            <div class="skill-row"><div class="skill-cat">Languages</div><div class="skill-tags"><span class="skill-tag">Python</span><span class="skill-tag">SQL</span><span class="skill-tag">R</span></div></div>
+            <div class="skill-row"><div class="skill-cat">ML / Analytics</div><div class="skill-tags"><span class="skill-tag">scikit-learn</span><span class="skill-tag">pandas</span><span class="skill-tag">NumPy</span><span class="skill-tag">Random Forest</span><span class="skill-tag">Gradient Boosting</span><span class="skill-tag">PCA</span><span class="skill-tag">A/B Testing</span><span class="skill-tag">Time-Series</span></div></div>
+            <div class="skill-row"><div class="skill-cat">Geospatial</div><div class="skill-tags"><span class="skill-tag">ArcGIS Pro</span><span class="skill-tag">QGIS</span><span class="skill-tag">PostGIS</span><span class="skill-tag">geopandas</span><span class="skill-tag">rasterio</span><span class="skill-tag">Remote Sensing</span><span class="skill-tag">LiDAR</span></div></div>
+            <div class="skill-row"><div class="skill-cat">Infrastructure</div><div class="skill-tags"><span class="skill-tag">GCP</span><span class="skill-tag">BigQuery</span><span class="skill-tag">Airflow</span><span class="skill-tag">Spark</span><span class="skill-tag">Docker</span></div></div>
+            <div class="skill-row"><div class="skill-cat">Databases</div><div class="skill-tags"><span class="skill-tag">PostgreSQL</span><span class="skill-tag">PostGIS</span><span class="skill-tag">SQL Server</span><span class="skill-tag">Oracle</span></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── INTERESTS ── -->
+      <div id="tab-interests" class="tab-panel">
+        <div class="interests-label">Hobbyist Photography</div>
+        <div class="photo-grid">
+          <div class="photo-item"><span>📷</span><p>Urban · Columbus</p></div>
+          <div class="photo-item"><span>🌆</span><p>Cityscape</p></div>
+          <div class="photo-item"><span>🌿</span><p>Nature</p></div>
+          <div class="photo-item"><span>🌅</span><p>Golden Hour</p></div>
+          <div class="photo-item"><span>🏙</span><p>Architecture</p></div>
+          <div class="photo-item"><span>✨</span><p>Abstract</p></div>
+        </div>
+        <p class="interests-note">Photography is how I slow down and pay attention. I shoot mostly around Columbus — architecture, street scenes, and whatever light is doing something interesting. Real portfolio coming soon.</p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  function tick() {
+    document.getElementById('localTime').textContent = new Date().toLocaleTimeString(
+      'en-US', { timeZone: 'America/New_York', hour: 'numeric', minute: '2-digit', hour12: true }
+    );
+  }
+  tick(); setInterval(tick, 1000);
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('tab-active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('tab-active'));
+      btn.classList.add('tab-active');
+      document.getElementById('tab-' + btn.dataset.tab).classList.add('tab-active');
+    });
+  });
+</script>
+</body>
+</html>
