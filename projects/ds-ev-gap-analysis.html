@@ -846,15 +846,24 @@
     <h2 class="h2">The Challenge</h2>
 
     <p>
-      Describe the challenge. What gap existed, what was failing, what decision needed
-      to be made? Keep it grounded in concrete context.
+      Federal infrastructure funding decisions under the NEVI program hinge on
+      one core spatial question for each designated corridor: where along
+      that corridor is there currently no compliant fast charging within the
+      required spacing, and how much of the state's corridor mileage does
+      that represent. Answering that question rigorously, and consistently,
+      across three separate state DOT clients required more than eyeballing a
+      map of existing chargers. Existing charger data doesn't distinguish, out
+      of the box, between a station that actually meets the federal
+      compliance bar and one that doesn't, so a raw charger location dataset
+      overstates real coverage if used naively. The 50-mile maximum spacing
+      rule is a network distance constraint along the corridor itself, not a
+      straight-line distance from any point, so a defensible gap analysis has
+      to measure distance the way a vehicle actually travels the corridor.
+      And three states means three different existing charger baselines,
+      three different corridor structures, and three different funding
+      cycles, so the analysis needed results comparable in method even though
+      the underlying geography and inputs differed completely.
     </p>
-
-    <!-- Example of a small pull quote for a key stat or constraint -->
-    <!-- <div class="pullquote-sm">
-      "The existing workflow required analysts to manually process 88 county datasets —
-      a three-week effort repeated every project cycle."
-    </div> -->
 
   </div>
 
@@ -863,8 +872,12 @@
     <h2 class="h2">Solution</h2>
 
     <p>
-      What were you specifically asked to deliver? What was your scope?
-      Solo or team? What constraints shaped the work?
+      I built a <span class="em">coverage gap analysis</span> applied
+      independently across Tennessee, Oklahoma, and Mississippi's designated
+      Alternative Fuel Corridor systems, using the same measurement method in
+      all three so the results were comparable in how they were derived, even
+      though each state's corridors, existing chargers, and funding structure
+      were entirely different. I built this solo for all three DOT clients.
     </p>
 
   </div>
@@ -874,60 +887,70 @@
     <h2 class="h2">Method</h2>
 
     <p>
-      Describe your process. Use the heading and list styles below as needed —
-      delete whatever doesn't apply to this project.
+      The analysis is built around measuring one thing correctly and
+      consistently: the actual driving distance between chargers that really
+      meet the federal compliance bar, applied the same way in every state.
     </p>
 
-    <h3 class="h3">Data preparation</h3>
+    <h3 class="h3">Filtering for real compliance first</h3>
+    <p>
+      Before any gap could be measured, every existing charger record was
+      checked against the federal technical bar, a minimum number of ports
+      capable of a minimum simultaneous power output, so only chargers that
+      actually satisfy the funding program's requirement count as covering a
+      stretch of corridor. A charger that exists but doesn't meet that bar is
+      treated as if the gap it sits in is still open.
+    </p>
+
+    <h3 class="h3">Measuring distance the way a corridor is driven</h3>
+    <p>
+      Distance between compliant chargers is measured along the
+      <span class="em">corridor network itself</span>, not as a straight
+      line, so a 50-mile gap in the analysis reflects 50 miles a driver would
+      actually need to cover without a compliant charging option, consistent
+      with how the federal spacing rule is written. Rather than rolling every
+      designated route into one statewide number, each corridor gets its own
+      gap analysis, so a planner can see exactly which route has the worst
+      remaining coverage.
+    </p>
+
+    <h3 class="h3">One method, three independent baselines</h3>
+    <p>
+      The same compliance filter and network distance measurement ran
+      against Tennessee's, Oklahoma's, and Mississippi's own corridor
+      networks and charger inventories separately, so each state's gap
+      analysis reflects its own real infrastructure, while still being
+      directly comparable to the other two in terms of how the numbers were
+      derived.
+    </p>
+
+    <h3 class="h3">Gaps tied to an actionable location</h3>
+    <p>
+      Every identified gap is anchored to the actual stretch of corridor it
+      falls on, not reported as an abstract statewide percentage, so the
+      output functions as a prioritization map, not just a summary
+      statistic, feeding directly into where each state's next funding round
+      should focus.
+    </p>
+
+    <h3 class="h3">Technical Highlights</h3>
     <ul class="list-1">
-      <li>Source data description — origin, format, volume, any cleaning challenges.</li>
-      <li>How you structured or transformed it for analysis.
-        <ul class="list-2">
-          <li>Sub-point with additional detail.</li>
-          <li>Another sub-point.</li>
-        </ul>
-      </li>
+      <li>Data sources: State DOT and FHWA corridor designations, DOE
+        Alternative Fuels Data Center existing charger data, state program
+        compliance verification records</li>
+      <li>Method: Federal compliance filtering applied to raw charger
+        inventories before any spatial analysis, network distance
+        measurement along each corridor rather than Euclidean buffering</li>
+      <li>Scope: Independent gap analysis across Tennessee, Oklahoma, and
+        Mississippi's full designated Alternative Fuel Corridor networks</li>
+      <li>Output: Per-corridor gap segments identifying exactly where the
+        50-mile compliant-charger spacing requirement is not currently
+        met</li>
+      <li>Consistency: Identical measurement methodology applied to three
+        states with entirely different corridor structures and charger
+        baselines, producing comparable results despite different underlying
+        data</li>
     </ul>
-
-    <h3 class="h3">Analysis</h3>
-    <ul class="list-1">
-      <li>Method or model used — and why you chose it over alternatives.</li>
-      <li>How you validated or quality-checked the output.</li>
-    </ul>
-
-    <!-- Example: numbered list for a sequential process -->
-    <!-- <ol class="list-numbered">
-      <li>First step in a defined sequence.</li>
-      <li>Second step — what it produced and how it fed into step 3.</li>
-      <li>Third step — final transformation or output.</li>
-    </ol> -->
-
-    <!-- Example: sidebar block for supplementary context -->
-    <!-- <div class="sidebar-block">
-      <div class="sb-title">About SSURGO Slope Data</div>
-      <p>SSURGO (Soil Survey Geographic Database) provides soil property data
-      at the county level, including slope gradients critical for...</p>
-    </div> -->
-
-    <!-- Example: data table -->
-    <!-- <p class="table-title">Table 1. Suitability scoring criteria</p>
-    <table class="proj-table">
-      <thead>
-        <tr>
-          <th>Criterion</th>
-          <th>Weight</th>
-          <th class="centered">Score range</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td>Proximity to freight corridor</td><td>30%</td><td style="text-align:center">1–5</td></tr>
-        <tr><td>Grid upgrade feasibility</td><td>25%</td><td style="text-align:center">1–5</td></tr>
-        <tr><td>Equity of access</td><td>20%</td><td style="text-align:center">1–5</td></tr>
-      </tbody>
-      <tfoot>
-        <tr><td colspan="3">Weights derived from AHP pairwise comparison matrices (CR &lt; 0.10).</td></tr>
-      </tfoot>
-    </table> -->
 
   </div>
 
@@ -936,27 +959,24 @@
     <h2 class="h2">Outcome</h2>
 
     <p>
-      What did you deliver and what impact did it have?
-      Be specific — decisions influenced, data scale, time saved, client feedback.
+      A gap analysis is only useful if it tells a planner exactly where to
+      focus, and it's only trustworthy if the underlying distance and
+      compliance logic actually matches the rule the funding program is
+      enforcing.
     </p>
 
-    <div class="callout">
-      <p>
-        Standout result — e.g. "The pipeline processed <span class="hl">2.4M parcel records</span>
-        across 88 Ohio counties in under 4 hours, replacing a manual workflow that previously
-        took three weeks per cycle."
-      </p>
-    </div>
-
     <ul class="list-1">
-      <li>Additional outcome or deliverable worth noting.</li>
-      <li>Another result — client action taken, infrastructure decision, publication, etc.</li>
+      <li>Filtering for real compliance before measuring, and measuring
+        distance along the corridor a vehicle actually drives, meant the gap
+        segments identified in each state's analysis lined up with the same
+        standard federal reviewers would apply.</li>
+      <li>Running the same method across three states gave each DOT client a
+        coverage picture that could be trusted on its own, not just visually
+        plausible.</li>
+      <li>Every gap ties back to a specific corridor stretch, so the output
+        functions directly as a prioritization tool for each state's next
+        funding round.</li>
     </ul>
-
-    <!-- Large pull quote for a headline-worthy outcome -->
-    <!-- <div class="pullquote-lg">
-      "The analysis directly informed $4.2M in NEVI grant allocations across three states."
-    </div> -->
 
   </div>
 
@@ -1014,8 +1034,8 @@
   <!-- LINKS -->
   <div class="links-section" id="links">
 
-    <!-- Live web map / application -->
-    <a class="link-card" href="https://your-live-link.com" target="_blank" rel="noreferrer">
+    <!-- Live web map / application: Tennessee -->
+    <a class="link-card" href="https://experience.arcgis.com/experience/411e0b0438fc4dc2b64282bfaca88042?views=View" target="_blank" rel="noreferrer">
       <div class="link-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="12" r="10"/>
@@ -1024,8 +1044,8 @@
         </svg>
       </div>
       <div class="link-info">
-        <span class="link-title">Live Web Map</span>
-        <span class="link-desc">Interactive map deployed on ArcGIS Online</span>
+        <span class="link-title">Live Map: Tennessee</span>
+        <span class="link-desc">Tennessee NEVI Anticipated Funding, ArcGIS Experience Builder</span>
       </div>
       <div class="link-arrow">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1034,8 +1054,68 @@
       </div>
     </a>
 
-    <!-- ArcGIS StoryMap -->
-    <a class="link-card" href="https://storymaps.arcgis.com/your-link" target="_blank" rel="noreferrer">
+    <!-- Live web map / application: Oklahoma -->
+    <a class="link-card" href="https://experience.arcgis.com/experience/43c68cdcd5ce4cd6bf7f7b6f1d3be089" target="_blank" rel="noreferrer">
+      <div class="link-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="2" y1="12" x2="22" y2="12"/>
+          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+        </svg>
+      </div>
+      <div class="link-info">
+        <span class="link-title">Live Map: Oklahoma</span>
+        <span class="link-desc">OKDOT NEVI Planning Map, ArcGIS Experience Builder</span>
+      </div>
+      <div class="link-arrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+        </svg>
+      </div>
+    </a>
+
+    <!-- Live web map / application: Mississippi -->
+    <a class="link-card" href="https://experience.arcgis.com/experience/8763a40872994004b292c766c01dd7e7" target="_blank" rel="noreferrer">
+      <div class="link-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="2" y1="12" x2="22" y2="12"/>
+          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+        </svg>
+      </div>
+      <div class="link-info">
+        <span class="link-title">Live Map: Mississippi</span>
+        <span class="link-desc">MDOT EVSE Interactive Zone Map, ArcGIS Experience Builder</span>
+      </div>
+      <div class="link-arrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+        </svg>
+      </div>
+    </a>
+
+    <!-- Project report / PDF -->
+    <a class="link-card" href="../documentation/ds-ev-gap-analysis-documentation.pdf" target="_blank" rel="noreferrer">
+      <div class="link-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
+        </svg>
+      </div>
+      <div class="link-info">
+        <span class="link-title">Project Report</span>
+        <span class="link-desc">Full technical write up of the gap analysis methodology</span>
+      </div>
+      <div class="link-arrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+        </svg>
+      </div>
+    </a>
+
+    <!-- ArcGIS StoryMap — uncomment if applicable -->
+    <!-- <a class="link-card" href="https://storymaps.arcgis.com/your-link" target="_blank" rel="noreferrer">
       <div class="link-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/>
@@ -1051,27 +1131,7 @@
           <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
         </svg>
       </div>
-    </a>
-
-    <!-- Project report / PDF -->
-    <a class="link-card" href="your-report.pdf" target="_blank" rel="noreferrer">
-      <div class="link-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-          <polyline points="14 2 14 8 20 8"/>
-          <line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
-        </svg>
-      </div>
-      <div class="link-info">
-        <span class="link-title">Project Report</span>
-        <span class="link-desc">Full technical report and methodology documentation</span>
-      </div>
-      <div class="link-arrow">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
-        </svg>
-      </div>
-    </a>
+    </a> -->
 
     <!-- Published paper — uncomment when applicable -->
     <!-- <a class="link-card" href="https://doi.org/your-doi" target="_blank" rel="noreferrer">
