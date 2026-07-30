@@ -846,15 +846,19 @@
     <h2 class="h2">The Challenge</h2>
 
     <p>
-      Describe the challenge. What gap existed, what was failing, what decision needed
-      to be made? Keep it grounded in concrete context.
+      Before this application, site developers and planners had no easy way to
+      verify whether a candidate property satisfied the federal NEVI program's
+      core spatial requirements, sitting within one travel-mile of an
+      interchange along a designated corridor, and helping close gaps
+      exceeding 50 miles between compliant chargers across the state's
+      interstate system. Checking either of those rules meant working
+      separately with federal corridor designations, utility service
+      territory maps, and equity screening data, none of it available in one
+      place. For an applicant preparing a grant submission, or a utility
+      trying to understand which sites fell in its own service territory,
+      that meant piecing together several independent data sources before a
+      single candidate site could even be evaluated.
     </p>
-
-    <!-- Example of a small pull quote for a key stat or constraint -->
-    <!-- <div class="pullquote-sm">
-      "The existing workflow required analysts to manually process 88 county datasets —
-      a three-week effort repeated every project cycle."
-    </div> -->
 
   </div>
 
@@ -863,8 +867,11 @@
     <h2 class="h2">Solution</h2>
 
     <p>
-      What were you specifically asked to deliver? What was your scope?
-      Solo or team? What constraints shaped the work?
+      I built this as a public-facing <span class="em">ArcGIS Experience
+      Builder application</span>, so developers, utilities, and planning
+      staff could evaluate candidate sites against the program's actual
+      eligibility criteria themselves. I built and deployed it solo for the
+      Mississippi Department of Transportation's NEVI program.
     </p>
 
   </div>
@@ -874,60 +881,66 @@
     <h2 class="h2">Method</h2>
 
     <p>
-      Describe your process. Use the heading and list styles below as needed —
-      delete whatever doesn't apply to this project.
+      The application is built so every one of the program's eligibility
+      factors, distance, coverage, utility, and equity, is visible on the map
+      at once, rather than requiring a user to check each one separately.
     </p>
 
-    <h3 class="h3">Data preparation</h3>
+    <h3 class="h3">Eligibility zones and coverage gaps from real travel distance</h3>
+    <p>
+      Candidate zones around each qualifying interchange are built from a
+      <span class="em">network routing analysis</span> along public roads,
+      one travel-mile from the interchange ramp, rather than a simple
+      circular radius, so the boundary reflects the distance a vehicle would
+      actually need to travel. A dedicated overlay identifies corridor
+      stretches exceeding 50 miles without a station meeting the program's
+      four-port, 150 kW simultaneous output requirement, so the specific
+      stretches of interstate still needing infrastructure are visible on the
+      map rather than buried in a report.
+    </p>
+
+    <h3 class="h3">Utility and equity context built in</h3>
+    <p>
+      Electric utility service territories, covering both electric power
+      associations and investor-owned utilities, are shown directly on the
+      map, so a developer can immediately see which provider to contact for a
+      given site. Federal disadvantaged community designations are layered in
+      as well, since they factor directly into the program's equity
+      investment goals.
+    </p>
+
+    <h3 class="h3">Navigation built around distinct tasks</h3>
+    <p>
+      Rather than one dense interface trying to do everything at once, the
+      application separates the main map, the layer control panel, and a
+      dedicated data download page into distinct views, so a user looking to
+      explore layers and a user looking to grab the underlying GIS data each
+      land on the interface built for what they're actually trying to do. The
+      underlying candidate zone, corridor, and utility layers can be
+      downloaded directly as GIS-ready files, so a developer or planner isn't
+      limited to what's visible in the map view alone.
+    </p>
+
+    <h3 class="h3">Technical Highlights</h3>
     <ul class="list-1">
-      <li>Source data description — origin, format, volume, any cleaning challenges.</li>
-      <li>How you structured or transformed it for analysis.
-        <ul class="list-2">
-          <li>Sub-point with additional detail.</li>
-          <li>Another sub-point.</li>
-        </ul>
-      </li>
+      <li>Platform: ArcGIS Experience Builder, built on ArcGIS Online hosted
+        feature layers, with dedicated map, layer, and download views</li>
+      <li>Data sources: FHWA and MDOT alternative fuel corridor designations,
+        US Department of Energy Alternative Fuels Data Center for existing
+        chargers, Mississippi Public Service Commission and electric power
+        association utility territories, federal CEJST disadvantaged
+        community layer</li>
+      <li>Spatial analysis: Network drive-distance polygons for interchange
+        eligibility zones, corridor-wide gap analysis against the program's
+        spacing and power output requirements</li>
+      <li>Interactivity: Multi-view navigation (map, layers, downloads),
+        toggleable utility and equity layers, geocoded search, detailed
+        feature pop-ups for interchanges, chargers, and utility
+        territories</li>
+      <li>Scope: Statewide coverage of Mississippi's designated alternative
+        fuel corridors across six interstates, supporting a $50.5 million
+        federal allocation across five fiscal years</li>
     </ul>
-
-    <h3 class="h3">Analysis</h3>
-    <ul class="list-1">
-      <li>Method or model used — and why you chose it over alternatives.</li>
-      <li>How you validated or quality-checked the output.</li>
-    </ul>
-
-    <!-- Example: numbered list for a sequential process -->
-    <!-- <ol class="list-numbered">
-      <li>First step in a defined sequence.</li>
-      <li>Second step — what it produced and how it fed into step 3.</li>
-      <li>Third step — final transformation or output.</li>
-    </ol> -->
-
-    <!-- Example: sidebar block for supplementary context -->
-    <!-- <div class="sidebar-block">
-      <div class="sb-title">About SSURGO Slope Data</div>
-      <p>SSURGO (Soil Survey Geographic Database) provides soil property data
-      at the county level, including slope gradients critical for...</p>
-    </div> -->
-
-    <!-- Example: data table -->
-    <!-- <p class="table-title">Table 1. Suitability scoring criteria</p>
-    <table class="proj-table">
-      <thead>
-        <tr>
-          <th>Criterion</th>
-          <th>Weight</th>
-          <th class="centered">Score range</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td>Proximity to freight corridor</td><td>30%</td><td style="text-align:center">1–5</td></tr>
-        <tr><td>Grid upgrade feasibility</td><td>25%</td><td style="text-align:center">1–5</td></tr>
-        <tr><td>Equity of access</td><td>20%</td><td style="text-align:center">1–5</td></tr>
-      </tbody>
-      <tfoot>
-        <tr><td colspan="3">Weights derived from AHP pairwise comparison matrices (CR &lt; 0.10).</td></tr>
-      </tfoot>
-    </table> -->
 
   </div>
 
@@ -936,27 +949,25 @@
     <h2 class="h2">Outcome</h2>
 
     <p>
-      What did you deliver and what impact did it have?
-      Be specific — decisions influenced, data scale, time saved, client feedback.
+      A statewide infrastructure program depends on developers and utilities
+      being able to evaluate a candidate site against every relevant
+      criterion at once, proximity, corridor coverage, the right utility
+      contact, and equity priorities, rather than reassembling that picture
+      from separate sources for every site under consideration.
     </p>
 
-    <div class="callout">
-      <p>
-        Standout result — e.g. "The pipeline processed <span class="hl">2.4M parcel records</span>
-        across 88 Ohio counties in under 4 hours, replacing a manual workflow that previously
-        took three weeks per cycle."
-      </p>
-    </div>
-
     <ul class="list-1">
-      <li>Additional outcome or deliverable worth noting.</li>
-      <li>Another result — client action taken, infrastructure decision, publication, etc.</li>
+      <li>The application serves as the official spatial reference for a
+        $50.5 million procurement effort, so its eligibility logic has to be
+        dependable, not just illustrative.</li>
+      <li>Building the eligibility zones and gap analysis around the same
+        network-distance methodology the program's rules are actually based
+        on keeps what a user sees on the map consistent with what the
+        program will actually approve.</li>
+      <li>Separate map, layer, and download views mean each type of user,
+        from a first-time applicant to a utility's own GIS staff, gets an
+        interface suited to what they're trying to do.</li>
     </ul>
-
-    <!-- Large pull quote for a headline-worthy outcome -->
-    <!-- <div class="pullquote-lg">
-      "The analysis directly informed $4.2M in NEVI grant allocations across three states."
-    </div> -->
 
   </div>
 
@@ -1015,7 +1026,7 @@
   <div class="links-section" id="links">
 
     <!-- Live web map / application -->
-    <a class="link-card" href="https://your-live-link.com" target="_blank" rel="noreferrer">
+    <a class="link-card" href="https://experience.arcgis.com/experience/8763a40872994004b292c766c01dd7e7" target="_blank" rel="noreferrer">
       <div class="link-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="12" r="10"/>
@@ -1025,7 +1036,7 @@
       </div>
       <div class="link-info">
         <span class="link-title">Live Web Map</span>
-        <span class="link-desc">Interactive map deployed on ArcGIS Online</span>
+        <span class="link-desc">MDOT EVSE Interactive Zone Map, ArcGIS Experience Builder</span>
       </div>
       <div class="link-arrow">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1054,7 +1065,7 @@
     </a>
 
     <!-- Project report / PDF -->
-    <a class="link-card" href="your-report.pdf" target="_blank" rel="noreferrer">
+    <a class="link-card" href="../documentation/map-mississippi-ev-documentation.pdf" target="_blank" rel="noreferrer">
       <div class="link-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
