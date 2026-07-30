@@ -846,15 +846,23 @@
     <h2 class="h2">The Challenge</h2>
 
     <p>
-      Describe the challenge. What gap existed, what was failing, what decision needed
-      to be made? Keep it grounded in concrete context.
+      Government statistics like employment counts and household totals are
+      usually published at coarse geographies, often no finer than a county, but
+      spatial analysis needs those totals broken down to much finer sub county
+      zones. Simply dividing a county total evenly across its zones assumes
+      uniform density, which is wrong, since dense urban zones and rural zones
+      don't hold the same amount of activity per acre. Getting a defensible
+      fine grained estimate runs into several real problems. Employment data
+      arrives as establishment level records with wildly varying location
+      precision, some carry rooftop level geocoding, others resolve only to a ZIP
+      code or not at all, and a meaningful share of records are administrative
+      noise rather than real workplace locations, duplicate headquarters listings,
+      remote work entries with no fixed location, and staffing agencies whose
+      payroll doesn't reflect where people actually work. Household counts come
+      from a separate Census product published at the county level only, and
+      whatever fine grained values get produced have to add up exactly to the
+      original county totals, or the estimate isn't defensible.
     </p>
-
-    <!-- Example of a small pull quote for a key stat or constraint -->
-    <!-- <div class="pullquote-sm">
-      "The existing workflow required analysts to manually process 88 county datasets —
-      a three-week effort repeated every project cycle."
-    </div> -->
 
   </div>
 
@@ -863,8 +871,12 @@
     <h2 class="h2">Solution</h2>
 
     <p>
-      What were you specifically asked to deliver? What was your scope?
-      Solo or team? What constraints shaped the work?
+      I built three linked <span class="em">ArcGIS Python Toolboxes</span> forming
+      a disaggregation pipeline, employment preparation, household allocation, and
+      a final composite density calculation, so each stage can be run and reviewed
+      on its own before feeding the next. I built this solo, as part of the same
+      statewide automation effort as the parcel ETL pipeline and terrain
+      preprocessing tools.
     </p>
 
   </div>
@@ -874,60 +886,72 @@
     <h2 class="h2">Method</h2>
 
     <p>
-      Describe your process. Use the heading and list styles below as needed —
-      delete whatever doesn't apply to this project.
+      The pipeline moves from cleaning raw records through disaggregation to a
+      final composite metric, with a validation pass at the end checking every
+      number against its own control total.
     </p>
 
-    <h3 class="h3">Data preparation</h3>
+    <h3 class="h3">Cleaning and classifying employment records</h3>
+    <p>
+      Employment establishment records are cleaned first, removing headquarters
+      duplicates and telecommuter listings, and redistributing temp staffing
+      employment based on documented share splits. Each record is then classified
+      into standard categories via industry code lookups against a configurable
+      classification table, with explicit overrides for government and K-12
+      employers.
+    </p>
+
+    <h3 class="h3">Point-in-polygon with a dasymetric fallback</h3>
+    <p>
+      Records with reliable point level geocoding are assigned directly to their
+      containing zone through a spatial join. Records with only coarse geocoding
+      fall back to <span class="em">dasymetric allocation</span>, spread across a
+      county's zones weighted by each zone's share of developed land in the
+      matching land use category, rather than dropped or assigned arbitrarily.
+    </p>
+
+    <h3 class="h3">Disaggregating household totals</h3>
+    <p>
+      Household totals come from an American Community Survey table published at
+      the county level. I built a parser for the raw Census CSV export, handling
+      its specific label rows, geography ID format, and margin of error columns,
+      then allocated each county's total down to its zones proportionally by
+      residential developed acreage, the same dasymetric logic used as the
+      employment fallback, but as the primary method here since no point level
+      household data exists. Not every area has land use data of the same
+      quality, so zones flagged as lower confidence use geographic area as a
+      fallback weight instead, decided by a majority rule check on each county.
+    </p>
+
+    <h3 class="h3">Reconciling and building the final metric</h3>
+    <p>
+      Proportional allocation produces fractional values that don't sum to whole
+      numbers on their own, so every zone is rounded down and the rounding
+      remainder is distributed to the zones with the largest fractional leftover,
+      one at a time, until each county's zone values sum to exactly its original
+      control total. Once employment and household estimates exist at the zone
+      level, they're combined with each zone's acreage into a single composite
+      activity density metric, then bucketed into ten classes so each class
+      represents an equal share of total activity rather than an equal number of
+      zones.
+    </p>
+
+    <h3 class="h3">Technical Highlights</h3>
     <ul class="list-1">
-      <li>Source data description — origin, format, volume, any cleaning challenges.</li>
-      <li>How you structured or transformed it for analysis.
-        <ul class="list-2">
-          <li>Sub-point with additional detail.</li>
-          <li>Another sub-point.</li>
-        </ul>
-      </li>
+      <li>Language / Platform: Python, ArcGIS Pro (arcpy) Python Toolboxes,
+        pandas and numpy for tabular processing</li>
+      <li>Data sources: State employment establishment micro data, American
+        Community Survey housing tables, land use acreage from a prior parcel
+        classification stage</li>
+      <li>Data cleaning: Duplicate and headquarters record removal, telecommuter
+        filtering, proportional redistribution of ambiguous employment
+        categories</li>
+      <li>Spatial methods: Point-in-polygon spatial join for precisely geocoded
+        records, dasymetric proportional allocation for everything else,
+        majority rule tiered weighting for reliability</li>
+      <li>Reconciliation: Exact integer rounding reconciliation so disaggregated
+        values always sum to published control totals</li>
     </ul>
-
-    <h3 class="h3">Analysis</h3>
-    <ul class="list-1">
-      <li>Method or model used — and why you chose it over alternatives.</li>
-      <li>How you validated or quality-checked the output.</li>
-    </ul>
-
-    <!-- Example: numbered list for a sequential process -->
-    <!-- <ol class="list-numbered">
-      <li>First step in a defined sequence.</li>
-      <li>Second step — what it produced and how it fed into step 3.</li>
-      <li>Third step — final transformation or output.</li>
-    </ol> -->
-
-    <!-- Example: sidebar block for supplementary context -->
-    <!-- <div class="sidebar-block">
-      <div class="sb-title">About SSURGO Slope Data</div>
-      <p>SSURGO (Soil Survey Geographic Database) provides soil property data
-      at the county level, including slope gradients critical for...</p>
-    </div> -->
-
-    <!-- Example: data table -->
-    <!-- <p class="table-title">Table 1. Suitability scoring criteria</p>
-    <table class="proj-table">
-      <thead>
-        <tr>
-          <th>Criterion</th>
-          <th>Weight</th>
-          <th class="centered">Score range</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td>Proximity to freight corridor</td><td>30%</td><td style="text-align:center">1–5</td></tr>
-        <tr><td>Grid upgrade feasibility</td><td>25%</td><td style="text-align:center">1–5</td></tr>
-        <tr><td>Equity of access</td><td>20%</td><td style="text-align:center">1–5</td></tr>
-      </tbody>
-      <tfoot>
-        <tr><td colspan="3">Weights derived from AHP pairwise comparison matrices (CR &lt; 0.10).</td></tr>
-      </tfoot>
-    </table> -->
 
   </div>
 
@@ -936,27 +960,21 @@
     <h2 class="h2">Outcome</h2>
 
     <p>
-      What did you deliver and what impact did it have?
-      Be specific — decisions influenced, data scale, time saved, client feedback.
+      Fine grained employment and household estimates only earn trust if they can
+      be traced back to a real methodology and reconcile to numbers a data
+      consumer can independently verify.
     </p>
 
-    <div class="callout">
-      <p>
-        Standout result — e.g. "The pipeline processed <span class="hl">2.4M parcel records</span>
-        across 88 Ohio counties in under 4 hours, replacing a manual workflow that previously
-        took three weeks per cycle."
-      </p>
-    </div>
-
     <ul class="list-1">
-      <li>Additional outcome or deliverable worth noting.</li>
-      <li>Another result — client action taken, infrastructure decision, publication, etc.</li>
+      <li>The disaggregation falls back gracefully when precise data isn't
+        available, rather than dropping records or assigning them arbitrarily.</li>
+      <li>Every fine grained value reconciles exactly to its published county
+        control total, so the estimate is defensible in aggregate, not just
+        approximately close.</li>
+      <li>Every classification and validation decision is logged, so the
+        fine grained output can be handed to someone else and defended, not just
+        used as an internal black box number.</li>
     </ul>
-
-    <!-- Large pull quote for a headline-worthy outcome -->
-    <!-- <div class="pullquote-lg">
-      "The analysis directly informed $4.2M in NEVI grant allocations across three states."
-    </div> -->
 
   </div>
 
@@ -1014,6 +1032,26 @@
   <!-- LINKS -->
   <div class="links-section" id="links">
 
+    <!-- Project report / PDF -->
+    <a class="link-card" href="../documentation/ds-dasymetric-map-documentation.pdf" target="_blank" rel="noreferrer">
+      <div class="link-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
+        </svg>
+      </div>
+      <div class="link-info">
+        <span class="link-title">Project Report</span>
+        <span class="link-desc">Full technical write up of the disaggregation methodology</span>
+      </div>
+      <div class="link-arrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+        </svg>
+      </div>
+    </a>
+
     <!-- Live web map / application -->
     <a class="link-card" href="https://your-live-link.com" target="_blank" rel="noreferrer">
       <div class="link-icon">
@@ -1045,26 +1083,6 @@
       <div class="link-info">
         <span class="link-title">ArcGIS StoryMap</span>
         <span class="link-desc">Interactive narrative of the analysis and findings</span>
-      </div>
-      <div class="link-arrow">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
-        </svg>
-      </div>
-    </a>
-
-    <!-- Project report / PDF -->
-    <a class="link-card" href="your-report.pdf" target="_blank" rel="noreferrer">
-      <div class="link-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-          <polyline points="14 2 14 8 20 8"/>
-          <line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
-        </svg>
-      </div>
-      <div class="link-info">
-        <span class="link-title">Project Report</span>
-        <span class="link-desc">Full technical report and methodology documentation</span>
       </div>
       <div class="link-arrow">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

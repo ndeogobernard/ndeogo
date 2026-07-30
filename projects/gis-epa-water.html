@@ -846,15 +846,20 @@
     <h2 class="h2">The Challenge</h2>
 
     <p>
-      Describe the challenge. What gap existed, what was failing, what decision needed
-      to be made? Keep it grounded in concrete context.
+      A statewide land use model needed to know, for every parcel in Ohio, whether
+      it sits inside a public water service area, which drives the with water
+      versus without water classification downstream. The source for that is the
+      EPA's Community Water System service area dataset, but turning it into
+      something usable for a single state runs into real obstacles. The dataset
+      ships as a large GeoPackage containing every state's data, not just Ohio's,
+      so pulling only what's relevant means filtering by the right field rather
+      than clipping geographically after the fact. Community water systems aren't
+      the whole picture either, the EPA separately tracks non-community systems
+      that need to be merged in rather than ignored, and some projects also have a
+      locally supplied private sewer boundary that needs to fold into the same
+      output. On top of that, boundaries from different sources overlap in places,
+      and overlapping polygons would double count coverage further downstream.
     </p>
-
-    <!-- Example of a small pull quote for a key stat or constraint -->
-    <!-- <div class="pullquote-sm">
-      "The existing workflow required analysts to manually process 88 county datasets —
-      a three-week effort repeated every project cycle."
-    </div> -->
 
   </div>
 
@@ -863,8 +868,13 @@
     <h2 class="h2">Solution</h2>
 
     <p>
-      What were you specifically asked to deliver? What was your scope?
-      Solo or team? What constraints shaped the work?
+      I built this as a custom <span class="em">ArcGIS Python Toolbox</span> (.pyt),
+      consistent with the rest of this pipeline, so it runs as a native ArcGIS Pro
+      geoprocessing tool. It downloads and caches the EPA data, filters it to Ohio,
+      merges in an optional local sewer layer, clips and dissolves to the selected
+      scope, and writes a clean water service boundary straight into the project
+      geodatabase. I built this solo, as part of the same statewide land use
+      automation pipeline as the slope and floodplain preprocessing tools.
     </p>
 
   </div>
@@ -874,60 +884,70 @@
     <h2 class="h2">Method</h2>
 
     <p>
-      Describe your process. Use the heading and list styles below as needed —
-      delete whatever doesn't apply to this project.
+      The tool moves from data acquisition to a clean output boundary in a
+      sequence of clearly separated steps, each guarding against a specific way
+      the process could go wrong.
     </p>
 
-    <h3 class="h3">Data preparation</h3>
+    <h3 class="h3">Getting the data, once</h3>
+    <p>
+      The tool checks for a locally cached copy of the EPA GeoPackage first. Only
+      if it's missing does it download the zip from GitHub, extract just the
+      GeoPackage from inside it, and discard the rest, so every later run skips
+      the download entirely. Rather than pulling every state's data and clipping
+      it down afterward, the Community Water System and non-community system
+      layers are filtered directly by their Ohio specific attribute fields at read
+      time, so only relevant records ever get processed.
+    </p>
+
+    <h3 class="h3">Merging every relevant source</h3>
+    <p>
+      The Ohio filtered CWS and T_NTNC layers are merged together, and if a
+      private or local sewer boundary shapefile is supplied, it gets folded into
+      the same merge. If none is provided, the tool proceeds cleanly with just the
+      two EPA layers rather than requiring one. The clip boundary itself is built
+      from the project's TAZ polygons for whichever scope is selected (statewide,
+      an ODOT district, a single county, or a multi county selection), and the
+      merged water layer is clipped to it.
+    </p>
+
+    <h3 class="h3">Resolving overlap</h3>
+    <p>
+      Boundaries from different sources and different systems overlap each other
+      in places, so after clipping, everything is dissolved into a single clean
+      layer, meaning the same physical coverage never gets represented by multiple
+      stacked polygons. Every polygon in the final output then gets a simple
+      <span class="em">Has_Water = 1</span> flag. Downstream, any parcel that
+      doesn't spatially intersect one of these polygons is treated as
+      Has_Water = 0, keeping the flag logic explicit rather than ambiguous.
+    </p>
+
+    <h3 class="h3">Checking the work</h3>
+    <p>
+      Before anything runs, the tool validates its own prerequisites, so a missing
+      layer produces a clear message instead of a cryptic failure deep into a long
+      run. After processing, it checks the output for red flags such as zero
+      features after clipping, zero records from either EPA layer, or a
+      suspiciously small output polygon count, and raises clear warnings rather
+      than staying silent. Every run closes out with a QAQC log covering per layer
+      record counts at each stage.
+    </p>
+
+    <h3 class="h3">Technical Highlights</h3>
     <ul class="list-1">
-      <li>Source data description — origin, format, volume, any cleaning challenges.</li>
-      <li>How you structured or transformed it for analysis.
-        <ul class="list-2">
-          <li>Sub-point with additional detail.</li>
-          <li>Another sub-point.</li>
-        </ul>
-      </li>
+      <li>Language / Platform: Python, ArcGIS Pro (arcpy) Python Toolbox</li>
+      <li>Data source: EPA Community Water System Service Area Boundaries (v3.0),
+        via the EPA ORD GitHub repository, delivered as a GeoPackage</li>
+      <li>Networking: Streamed download with progress logging, SSL handling for
+        corporate network compatibility, local caching to avoid redundant
+        downloads</li>
+      <li>Geoprocessing: Attribute filtered layer reads from a GeoPackage, feature
+        merge including an optional user supplied layer, clip to a dissolved TAZ
+        boundary, dissolve to resolve overlap, feature class export to
+        geodatabase</li>
+      <li>Scope flexibility: Statewide, ODOT district, county, and multi county
+        processing from a single tool</li>
     </ul>
-
-    <h3 class="h3">Analysis</h3>
-    <ul class="list-1">
-      <li>Method or model used — and why you chose it over alternatives.</li>
-      <li>How you validated or quality-checked the output.</li>
-    </ul>
-
-    <!-- Example: numbered list for a sequential process -->
-    <!-- <ol class="list-numbered">
-      <li>First step in a defined sequence.</li>
-      <li>Second step — what it produced and how it fed into step 3.</li>
-      <li>Third step — final transformation or output.</li>
-    </ol> -->
-
-    <!-- Example: sidebar block for supplementary context -->
-    <!-- <div class="sidebar-block">
-      <div class="sb-title">About SSURGO Slope Data</div>
-      <p>SSURGO (Soil Survey Geographic Database) provides soil property data
-      at the county level, including slope gradients critical for...</p>
-    </div> -->
-
-    <!-- Example: data table -->
-    <!-- <p class="table-title">Table 1. Suitability scoring criteria</p>
-    <table class="proj-table">
-      <thead>
-        <tr>
-          <th>Criterion</th>
-          <th>Weight</th>
-          <th class="centered">Score range</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td>Proximity to freight corridor</td><td>30%</td><td style="text-align:center">1–5</td></tr>
-        <tr><td>Grid upgrade feasibility</td><td>25%</td><td style="text-align:center">1–5</td></tr>
-        <tr><td>Equity of access</td><td>20%</td><td style="text-align:center">1–5</td></tr>
-      </tbody>
-      <tfoot>
-        <tr><td colspan="3">Weights derived from AHP pairwise comparison matrices (CR &lt; 0.10).</td></tr>
-      </tfoot>
-    </table> -->
 
   </div>
 
@@ -936,27 +956,27 @@
     <h2 class="h2">Outcome</h2>
 
     <p>
-      What did you deliver and what impact did it have?
-      Be specific — decisions influenced, data scale, time saved, client feedback.
+      Whether a parcel has water service access is a direct input into how it gets
+      classified in the larger land use model, so an incomplete or double counted
+      water layer would quietly distort that classification for however many
+      parcels it touches.
     </p>
 
-    <div class="callout">
-      <p>
-        Standout result — e.g. "The pipeline processed <span class="hl">2.4M parcel records</span>
-        across 88 Ohio counties in under 4 hours, replacing a manual workflow that previously
-        took three weeks per cycle."
-      </p>
-    </div>
-
     <ul class="list-1">
-      <li>Additional outcome or deliverable worth noting.</li>
-      <li>Another result — client action taken, infrastructure decision, publication, etc.</li>
+      <li>Filtering to Ohio at the source, rather than clipping a nationwide
+        dataset after the fact, keeps every processing step working with only the
+        relevant records.</li>
+      <li>Merging in every relevant layer, including an optional locally supplied
+        one, means the water classification reflects the full picture rather than
+        just the EPA's community water system data alone.</li>
+      <li>Dissolving away overlap before the boundary reaches downstream steps
+        means coverage is represented once, not several times over.</li>
     </ul>
 
-    <!-- Large pull quote for a headline-worthy outcome -->
-    <!-- <div class="pullquote-lg">
-      "The analysis directly informed $4.2M in NEVI grant allocations across three states."
-    </div> -->
+    <p>
+      The classification each parcel receives reflects the actual data on the
+      ground, not an artifact of how the source layers happened to be assembled.
+    </p>
 
   </div>
 

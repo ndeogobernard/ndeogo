@@ -846,15 +846,24 @@
     <h2 class="h2">The Challenge</h2>
 
     <p>
-      Describe the challenge. What gap existed, what was failing, what decision needed
-      to be made? Keep it grounded in concrete context.
+      A statewide land use inventory needs to combine data from a lot of
+      independent, messy sources, county parcel records, soil surveys, flood
+      hazard maps, water service boundaries, employment micro-data, and Census
+      housing statistics, into one consistent, defensible dataset. Doing that as
+      a single monolithic process, or as a set of disconnected one-off scripts,
+      runs into problems that get worse the longer the system lives. Every
+      source dataset has its own quirks, changing publication dates,
+      inconsistent county-level coding, unreliable network access, and
+      geocoding of varying precision, and each needs tailored handling rather
+      than a one-size-fits-all import step. Business rules like classification
+      codes and quality thresholds change over time, and a system where those
+      rules live buried in code gets harder to maintain and easier to get wrong
+      with every passing year. At statewide scale, the most expensive
+      operations can take hours if built naively, and without built-in auditing
+      and approval gates, bad data from one weak link can flow silently through
+      the whole system and show up as a wrong number in a final deliverable
+      with no trace of where it went wrong.
     </p>
-
-    <!-- Example of a small pull quote for a key stat or constraint -->
-    <!-- <div class="pullquote-sm">
-      "The existing workflow required analysts to manually process 88 county datasets —
-      a three-week effort repeated every project cycle."
-    </div> -->
 
   </div>
 
@@ -863,8 +872,14 @@
     <h2 class="h2">Solution</h2>
 
     <p>
-      What were you specifically asked to deliver? What was your scope?
-      Solo or team? What constraints shaped the work?
+      I designed and built this as a modular toolbox, roughly twenty
+      <span class="em">ArcGIS Python Toolboxes</span> and standalone Python
+      scripts, each one owning a single, clearly scoped stage of the overall
+      pipeline: configuration and data acquisition, environmental and terrain
+      data preparation, parcel cleaning and classification, a multi-layer
+      terrain overlay, employment and household disaggregation, aggregation,
+      and a final validation and export stage. I designed and built the entire
+      toolbox solo, as one continuous statewide automation effort.
     </p>
 
   </div>
@@ -874,60 +889,92 @@
     <h2 class="h2">Method</h2>
 
     <p>
-      Describe your process. Use the heading and list styles below as needed —
-      delete whatever doesn't apply to this project.
+      The toolbox holds together through a handful of design principles applied
+      consistently across every stage, rather than through any single clever
+      technique.
     </p>
 
-    <h3 class="h3">Data preparation</h3>
+    <h3 class="h3">A staged architecture, not a monolith</h3>
+    <p>
+      The toolbox is organized into clear phases: configuration sync and data
+      acquisition, environmental and terrain data preparation (soil-derived
+      slope, floodplain, water service boundaries), parcel cleaning and
+      classification, a multi-layer terrain overlay that combines the
+      environmental layers into a single suitability classification, employment
+      and household disaggregation down to fine-grained spatial zones,
+      aggregation, and a final validation and export stage. Every stage reads
+      and writes through the same project geodatabase, so tools compose cleanly
+      without any tool needing to know how another one is implemented
+      internally.
+    </p>
+
+    <h3 class="h3">Configuration-driven business rules everywhere</h3>
+    <p>
+      Classification logic, county quality tiers, and validation thresholds all
+      live in version-controlled configuration tables rather than hardcoded in
+      any individual tool. A correction to a business rule is a data edit, not
+      a code change and redeploy, and every tool that depends on that rule
+      reads the same source of truth.
+    </p>
+
+    <h3 class="h3">Performance engineering where it actually matters</h3>
+    <p>
+      The stages that touch the largest volumes of data, spatial assignment of
+      parcels to zones and the multi-layer terrain overlay, are built with the
+      processing order and tooling chosen specifically for scale: joining small
+      layers in first, running expensive geometric operations only where
+      unavoidable, and parallelizing the single most expensive join across
+      worker processes. That turned multi-hour operations into ones that finish
+      in well under an hour.
+    </p>
+
+    <h3 class="h3">Governance gates and defensive engineering</h3>
+    <p>
+      At several points the pipeline stops and requires a human decision before
+      continuing, county-level data quality tiers must be reviewed and approved
+      before classification runs, and any validation failure blocks a final
+      export until the underlying issue is fixed or an analyst explicitly
+      acknowledges a warning. More than one tool in this toolbox exists in its
+      current form because an earlier version had a real, documented failure
+      mode, a data source silently returning bad data behind a success status,
+      or an overlay's base layer choice that could silently drop land from a
+      total. Each of those became a design principle applied consistently going
+      forward: validate what a download actually contains, choose a foundation
+      that structurally can't lose data, and check every output against an
+      independent total before trusting it.
+    </p>
+
+    <h3 class="h3">Audit logging as a first-class output</h3>
+    <p>
+      Every tool in the toolbox writes a structured log covering what it read,
+      what decisions it made, and what it produced, alongside the primary data
+      output. Months later, tracing why a specific number in the final export
+      looks the way it does is a matter of reading a log file, not reverse
+      engineering the code.
+    </p>
+
+    <h3 class="h3">Technical Highlights</h3>
     <ul class="list-1">
-      <li>Source data description — origin, format, volume, any cleaning challenges.</li>
-      <li>How you structured or transformed it for analysis.
-        <ul class="list-2">
-          <li>Sub-point with additional detail.</li>
-          <li>Another sub-point.</li>
-        </ul>
-      </li>
+      <li>Language / Platform: Python, ArcGIS Pro (arcpy) Python Toolboxes,
+        standalone Python scripts (including OGR/GEOS-based tools) for
+        performance critical stages</li>
+      <li>Scope: Roughly twenty linked tools spanning configuration
+        management, data acquisition, geometry cleaning, spatial joins,
+        multi-layer overlay, classification, disaggregation, aggregation, and
+        validation</li>
+      <li>Data sources integrated: County parcel records, soil survey data,
+        flood hazard layers, water service boundaries, state employment
+        establishment data, and Census housing statistics</li>
+      <li>Performance engineering: Parallelized spatial joins using OGR/GEOS
+        and a process pool, overlay operations ordered by feature count,
+        in-memory intermediate processing to avoid unnecessary disk I/O</li>
+      <li>Data governance: Config-driven business rules in version-controlled
+        tables, county-level quality tiering, and analyst approval gates
+        enforced directly in code</li>
+      <li>Data integrity: Download and file validation beyond status codes
+        alone, base layer choices for overlays that guarantee full coverage,
+        and reconciliation checks against independent totals</li>
     </ul>
-
-    <h3 class="h3">Analysis</h3>
-    <ul class="list-1">
-      <li>Method or model used — and why you chose it over alternatives.</li>
-      <li>How you validated or quality-checked the output.</li>
-    </ul>
-
-    <!-- Example: numbered list for a sequential process -->
-    <!-- <ol class="list-numbered">
-      <li>First step in a defined sequence.</li>
-      <li>Second step — what it produced and how it fed into step 3.</li>
-      <li>Third step — final transformation or output.</li>
-    </ol> -->
-
-    <!-- Example: sidebar block for supplementary context -->
-    <!-- <div class="sidebar-block">
-      <div class="sb-title">About SSURGO Slope Data</div>
-      <p>SSURGO (Soil Survey Geographic Database) provides soil property data
-      at the county level, including slope gradients critical for...</p>
-    </div> -->
-
-    <!-- Example: data table -->
-    <!-- <p class="table-title">Table 1. Suitability scoring criteria</p>
-    <table class="proj-table">
-      <thead>
-        <tr>
-          <th>Criterion</th>
-          <th>Weight</th>
-          <th class="centered">Score range</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td>Proximity to freight corridor</td><td>30%</td><td style="text-align:center">1–5</td></tr>
-        <tr><td>Grid upgrade feasibility</td><td>25%</td><td style="text-align:center">1–5</td></tr>
-        <tr><td>Equity of access</td><td>20%</td><td style="text-align:center">1–5</td></tr>
-      </tbody>
-      <tfoot>
-        <tr><td colspan="3">Weights derived from AHP pairwise comparison matrices (CR &lt; 0.10).</td></tr>
-      </tfoot>
-    </table> -->
 
   </div>
 
@@ -936,27 +983,25 @@
     <h2 class="h2">Outcome</h2>
 
     <p>
-      What did you deliver and what impact did it have?
-      Be specific — decisions influenced, data scale, time saved, client feedback.
+      A statewide data system like this earns trust the same way any large
+      piece of engineering does, not by being clever in any one place, but by
+      being consistent, auditable, and resilient to the specific ways its
+      inputs actually fail.
     </p>
 
-    <div class="callout">
-      <p>
-        Standout result — e.g. "The pipeline processed <span class="hl">2.4M parcel records</span>
-        across 88 Ohio counties in under 4 hours, replacing a manual workflow that previously
-        took three weeks per cycle."
-      </p>
-    </div>
-
     <ul class="list-1">
-      <li>Additional outcome or deliverable worth noting.</li>
-      <li>Another result — client action taken, infrastructure decision, publication, etc.</li>
+      <li>Building the system as small, composable tools around shared
+        configuration and shared governance gates means it can absorb new data
+        sources and new business rules over its lifetime without needing to be
+        rebuilt from scratch.</li>
+      <li>Design principles learned from real, documented failures (silent bad
+        data, base layers that could lose coverage) are now applied
+        consistently across every tool in the toolbox, not just the one where
+        the failure first happened.</li>
+      <li>Every number in the final export can be traced back through a chain
+        of config-driven rules, approval gates, and audit logs, rather than
+        trusted as an opaque output.</li>
     </ul>
-
-    <!-- Large pull quote for a headline-worthy outcome -->
-    <!-- <div class="pullquote-lg">
-      "The analysis directly informed $4.2M in NEVI grant allocations across three states."
-    </div> -->
 
   </div>
 
@@ -1054,7 +1099,7 @@
     </a>
 
     <!-- Project report / PDF -->
-    <a class="link-card" href="your-report.pdf" target="_blank" rel="noreferrer">
+    <a class="link-card" href="../documentation/gis-land-use-documentation.pdf" target="_blank" rel="noreferrer">
       <div class="link-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
