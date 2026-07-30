@@ -846,15 +846,19 @@
     <h2 class="h2">The Challenge</h2>
 
     <p>
-      Describe the challenge. What gap existed, what was failing, what decision needed
-      to be made? Keep it grounded in concrete context.
+      A statewide land use model needed floodplain classification for every parcel
+      in Ohio, sourced from FEMA's National Flood Hazard Layer. Floodplain status
+      takes precedence over every other terrain factor downstream, so getting this
+      step wrong or leaving it stale corrupts everything built on top of it. In
+      practice, pulling this data reliably runs into several problems at once.
+      FEMA doesn't publish Ohio's NFHL at a fixed URL, the effective date shifts
+      over time with no index to just ask what's current. The download also sits
+      behind infrastructure that isn't friendly to automated requests: proxy
+      configurations and SSL interception common on managed networks can silently
+      break a naive request, and a firewall can intercept a blocked download and
+      return an HTML page with a 200 OK status instead of an error, which a script
+      checking only the status code would happily accept as success.
     </p>
-
-    <!-- Example of a small pull quote for a key stat or constraint -->
-    <!-- <div class="pullquote-sm">
-      "The existing workflow required analysts to manually process 88 county datasets —
-      a three-week effort repeated every project cycle."
-    </div> -->
 
   </div>
 
@@ -863,8 +867,13 @@
     <h2 class="h2">Solution</h2>
 
     <p>
-      What were you specifically asked to deliver? What was your scope?
-      Solo or team? What constraints shaped the work?
+      I built this as a custom <span class="em">ArcGIS Python Toolbox</span> (.pyt),
+      matching the pattern used across this pipeline, so it runs as a native ArcGIS
+      Pro geoprocessing tool with a standard parameter form. It auto discovers and
+      downloads the current FEMA NFHL data, classifies every flood hazard polygon,
+      clips and dissolves to the selected scope, and writes the result straight into
+      the project geodatabase. I built this solo, as part of the same statewide land
+      use automation pipeline as the slope preprocessing tool.
     </p>
 
   </div>
@@ -874,60 +883,71 @@
     <h2 class="h2">Method</h2>
 
     <p>
-      Describe your process. Use the heading and list styles below as needed —
-      delete whatever doesn't apply to this project.
+      The tool walks through discovery, download, classification, and output in
+      sequence, with enough validation and safety checks to run unattended.
     </p>
 
-    <h3 class="h3">Data preparation</h3>
+    <h3 class="h3">Finding the current data</h3>
+    <p>
+      Since FEMA doesn't expose a current version endpoint, the tool uses
+      <span class="em">date walking</span>: it steps backward from today, day by
+      day, issuing lightweight HEAD requests against the predictable
+      <span class="em">NFHL_39_{YYYYMMDD}.zip</span> naming pattern until it finds
+      one that exists and is a realistic size, probing up to 120 days back to
+      comfortably cover FEMA's actual publication cadence. Once a GDB has been
+      downloaded and extracted, the tool caches it locally and skips the download
+      step entirely on later runs.
+    </p>
+
+    <h3 class="h3">Downloading through a hostile network</h3>
+    <p>
+      The download session is built specifically for the network it runs on, not
+      as generic defensive boilerplate. It disables inheriting the system proxy,
+      turns off SSL verification to tolerate the network's SSL re-signing, and
+      sends a real Chrome user agent so it isn't blocked as a bot. Every downloaded
+      file is then checked for a valid zip header and confirmed as a real archive
+      before it's trusted, which catches the case where a firewall silently swaps
+      the real file for an HTML block page while still returning a success status.
+    </p>
+
+    <h3 class="h3">Classifying and clipping</h3>
+    <p>
+      Flood classification runs off a single field: <span class="em">SFHA_TF</span>
+      true becomes In_Flood equals 1, false becomes In_Flood equals 0, which cleanly
+      collapses FEMA's more granular zone codes into the binary flag the rest of the
+      pipeline needs. The tool then builds a clip boundary from the pipeline's TAZ
+      polygons for whatever scope is selected (statewide, an ODOT district, or a
+      single county), clips the flood layer to it, and dissolves by flood class so
+      overlapping FEMA zone boundaries collapse into clean, non overlapping
+      polygons.
+    </p>
+
+    <h3 class="h3">Checking the work</h3>
+    <p>
+      Before anything runs, the tool validates its own prerequisites, so a missing
+      layer produces a clear message instead of a cryptic failure deep into a long
+      run. After processing, it checks the output against a handful of sanity
+      thresholds (zero features after clipping, zero floodplain polygons, or
+      suspiciously high floodplain coverage) and raises explicit warnings when
+      something looks off, rather than silently producing questionable output.
+      Every run closes out with a detailed QAQC log covering feature counts at
+      each stage and a full FEMA zone breakdown.
+    </p>
+
+    <h3 class="h3">Technical Highlights</h3>
     <ul class="list-1">
-      <li>Source data description — origin, format, volume, any cleaning challenges.</li>
-      <li>How you structured or transformed it for analysis.
-        <ul class="list-2">
-          <li>Sub-point with additional detail.</li>
-          <li>Another sub-point.</li>
-        </ul>
-      </li>
+      <li>Language / Platform: Python, ArcGIS Pro (arcpy) Python Toolbox</li>
+      <li>Data source: FEMA National Flood Hazard Layer, Ohio statewide file
+        geodatabase</li>
+      <li>Networking: Custom requests session tuned for a restrictive corporate
+        network (proxy bypass, SSL handling, browser like headers), streamed
+        downloads with progress logging</li>
+      <li>Geoprocessing: Feature layer selection and dissolve for clip boundaries,
+        field calculation, clip, dissolve by class, feature class export to
+        geodatabase</li>
+      <li>Scope flexibility: Statewide, ODOT district, county, and multi county
+        processing from a single tool</li>
     </ul>
-
-    <h3 class="h3">Analysis</h3>
-    <ul class="list-1">
-      <li>Method or model used — and why you chose it over alternatives.</li>
-      <li>How you validated or quality-checked the output.</li>
-    </ul>
-
-    <!-- Example: numbered list for a sequential process -->
-    <!-- <ol class="list-numbered">
-      <li>First step in a defined sequence.</li>
-      <li>Second step — what it produced and how it fed into step 3.</li>
-      <li>Third step — final transformation or output.</li>
-    </ol> -->
-
-    <!-- Example: sidebar block for supplementary context -->
-    <!-- <div class="sidebar-block">
-      <div class="sb-title">About SSURGO Slope Data</div>
-      <p>SSURGO (Soil Survey Geographic Database) provides soil property data
-      at the county level, including slope gradients critical for...</p>
-    </div> -->
-
-    <!-- Example: data table -->
-    <!-- <p class="table-title">Table 1. Suitability scoring criteria</p>
-    <table class="proj-table">
-      <thead>
-        <tr>
-          <th>Criterion</th>
-          <th>Weight</th>
-          <th class="centered">Score range</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td>Proximity to freight corridor</td><td>30%</td><td style="text-align:center">1–5</td></tr>
-        <tr><td>Grid upgrade feasibility</td><td>25%</td><td style="text-align:center">1–5</td></tr>
-        <tr><td>Equity of access</td><td>20%</td><td style="text-align:center">1–5</td></tr>
-      </tbody>
-      <tfoot>
-        <tr><td colspan="3">Weights derived from AHP pairwise comparison matrices (CR &lt; 0.10).</td></tr>
-      </tfoot>
-    </table> -->
 
   </div>
 
@@ -936,27 +956,29 @@
     <h2 class="h2">Outcome</h2>
 
     <p>
-      What did you deliver and what impact did it have?
-      Be specific — decisions influenced, data scale, time saved, client feedback.
+      Floodplain status isn't just one input among many in this pipeline, it's the
+      input every downstream terrain classification defers to. A tool that quietly
+      downloaded stale or corrupted flood data would propagate that error into
+      every parcel classification built on top of it, with no obvious symptom until
+      someone caught it much later.
     </p>
 
-    <div class="callout">
-      <p>
-        Standout result — e.g. "The pipeline processed <span class="hl">2.4M parcel records</span>
-        across 88 Ohio counties in under 4 hours, replacing a manual workflow that previously
-        took three weeks per cycle."
-      </p>
-    </div>
-
     <ul class="list-1">
-      <li>Additional outcome or deliverable worth noting.</li>
-      <li>Another result — client action taken, infrastructure decision, publication, etc.</li>
+      <li>The download logic actively defends against the specific ways this
+        network and this data source fail, rather than assuming a clean connection
+        and a well behaved server.</li>
+      <li>Self checking QA thresholds flag suspicious output (no features, no
+        floodplain polygons, unusually high floodplain coverage) automatically,
+        instead of relying on someone to notice downstream.</li>
+      <li>Local caching means the several hundred megabyte statewide download only
+        has to happen once, not on every run.</li>
     </ul>
 
-    <!-- Large pull quote for a headline-worthy outcome -->
-    <!-- <div class="pullquote-lg">
-      "The analysis directly informed $4.2M in NEVI grant allocations across three states."
-    </div> -->
+    <p>
+      That risk gets caught at the source instead of discovered several stages
+      downstream, in a pipeline where floodplain status decides classification
+      outcomes for every parcel in the state.
+    </p>
 
   </div>
 
