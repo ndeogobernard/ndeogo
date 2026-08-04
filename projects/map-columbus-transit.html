@@ -1,16 +1,15 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Columbus Transit & Bike Explorer · Bernard Ndeogo</title>
-  <meta name="description" content="Web map analyzing multimodal transit coverage and bike network accessibility." />
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Columbus Transit &amp; Bike Explorer · Bernard Ndeogo</title>
+<meta content="Web map analyzing multimodal transit coverage and bike network accessibility." name="description"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<style>
     /* ─────────────────────────────────────────────
        DESIGN TOKENS — same as index.html
     ───────────────────────────────────────────── */
@@ -780,72 +779,61 @@
   </style>
 </head>
 <body>
-
 <!-- RIGHT-SIDE SECTION NAV -->
-<nav class="section-nav" id="sectionNav" aria-label="Page sections">
-  <span class="snav-label">Jump to</span>
-  <a class="snav-item" href="#challenge"      data-target="challenge">The Challenge</a>
-  <a class="snav-item" href="#solution"       data-target="solution">Solution</a>
-  <a class="snav-item" href="#method"         data-target="method">Method</a>
-  <a class="snav-item" href="#outcome"        data-target="outcome">Outcome</a>
-  <a class="snav-item" href="#visualizations" data-target="visualizations">Visualizations</a>
-  <a class="snav-item" href="#links"          data-target="links">Links</a>
+<nav aria-label="Page sections" class="section-nav" id="sectionNav">
+<span class="snav-label">Jump to</span>
+<a class="snav-item" data-target="challenge" href="https://storymaps.arcgis.com/stories/848365171c644c6fa8aa8be425d54d3a">The Challenge</a>
+<a class="snav-item" data-target="solution" href="#solution">Solution</a>
+<a class="snav-item" data-target="method" href="#method">Method</a>
+<a class="snav-item" data-target="outcome" href="#outcome">Outcome</a>
+<a class="snav-item" data-target="visualizations" href="#visualizations">Visualizations</a>
+<a class="snav-item" data-target="links" href="#links">Links</a>
 </nav>
-
 <!-- LIGHTBOX OVERLAY -->
-<div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
-  <button class="lb-close" id="lbClose" aria-label="Close">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-    </svg>
-  </button>
-  <img id="lbImg" src="" alt="" />
-  <div class="lb-caption" id="lbCaption"></div>
+<div aria-modal="true" class="lightbox" id="lightbox" role="dialog">
+<button aria-label="Close" class="lb-close" id="lbClose">
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24">
+<line x1="18" x2="6" y1="6" y2="18"></line><line x1="6" x2="18" y1="6" y2="18"></line>
+</svg>
+</button>
+<img alt="" id="lbImg" src=""/>
+<div class="lb-caption" id="lbCaption"></div>
 </div>
-
 <div class="page">
-
-  <!-- BACK -->
-  <a href="../index.html" class="back-link">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+<!-- BACK -->
+<a class="back-link" href="../index.html">
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24"><path d="m15 18-6-6 6-6"></path></svg>
     Bernard Ndeogo
   </a>
-
-  <!-- HERO IMAGE -->
-  <div class="hero-img">
-    <img src="../assets/map-columbus-transit.jpg" alt="Project cover image" />
-  </div>
-
-  <!-- PROJECT HEADER -->
-  <div class="proj-meta">
-    <span class="proj-year">2024</span>
-    <span class="proj-dot"></span>
-    <span class="proj-category">Interactive Web Maps & Applications Development</span>
-  </div>
-
-  <h1>Columbus Transit & Bike Explorer</h1>
-
-  <p class="proj-summary">
+<!-- HERO IMAGE -->
+<div class="hero-img">
+<img alt="Project cover image" src="../assets/map-columbus-transit.jpg"/>
+</div>
+<!-- PROJECT HEADER -->
+<div class="proj-meta">
+<span class="proj-year">2024</span>
+<span class="proj-dot"></span>
+<span class="proj-category">Interactive Web Maps &amp; Applications Development</span>
+</div>
+<h1>Columbus Transit &amp; Bike Explorer</h1>
+<p class="proj-summary">
     Web map analyzing multimodal transit coverage and bike network accessibility.
   </p>
-
-  <!-- ROLE / CONTEXT STRIP -->
-  <div class="meta-strip">
-    <div>
-      <div class="meta-block-label">Role</div>
-      <div class="meta-block-value">Data Scientist &nbsp;·&nbsp; GIS Analyst</div>
-    </div>
-    <div>
-      <div class="meta-block-label">Client / Context</div>
-      <div class="meta-block-value">CDM Smith Inc. &nbsp;·&nbsp; Columbus, OH</div>
-    </div>
-  </div>
-
-  <!-- THE CHALLENGE -->
-  <div class="section-block" id="challenge">
-    <h2 class="h2">The Challenge</h2>
-
-    <p>
+<!-- ROLE / CONTEXT STRIP -->
+<div class="meta-strip">
+<div>
+<div class="meta-block-label">Role</div>
+<div class="meta-block-value">Data Scientist  ·  GIS Analyst</div>
+</div>
+<div>
+<div class="meta-block-label">Client / Context</div>
+<div class="meta-block-value">CDM Smith Inc.  ·  Columbus, OH</div>
+</div>
+</div>
+<!-- THE CHALLENGE -->
+<div class="section-block" id="challenge">
+<h2 class="h2">The Challenge</h2>
+<p>
       Before this project, transit route planning and demographic need were
       largely evaluated in isolation from each other. COTA's bus network,
       Columbus's bike infrastructure, and Census vehicle-ownership data each
@@ -857,36 +845,29 @@
       mobility isolation meant cross-referencing separate maps and
       spreadsheets by hand, if it happened at all.
     </p>
-
-  </div>
-
-  <!-- SOLUTION -->
-  <div class="section-block" id="solution">
-    <h2 class="h2">Solution</h2>
-
-    <p>
+</div>
+<!-- SOLUTION -->
+<div class="section-block" id="solution">
+<h2 class="h2">Solution</h2>
+<p>
       I built this as a combination <span class="em">ArcGIS StoryMap and
       interactive web map</span>, so the analysis could be read as a
       narrative for a general audience while still supporting hands-on
       exploration for planners who wanted to dig into a specific corridor or
       neighborhood. I built this solo.
     </p>
-
-  </div>
-
-  <!-- METHOD -->
-  <div class="section-block" id="method">
-    <h2 class="h2">Method</h2>
-
-    <p>
+</div>
+<!-- METHOD -->
+<div class="section-block" id="method">
+<h2 class="h2">Method</h2>
+<p>
       The analysis is built around one core move: overlay a consistent
       walkability standard against the Census data that actually defines
       transit need, rather than treating either as a standalone reference
       layer.
     </p>
-
-    <h3 class="h3">A walkability standard applied consistently</h3>
-    <p>
+<h3 class="h3">A walkability standard applied consistently</h3>
+<p>
       Every COTA bus stop gets a <span class="em">quarter-mile buffer</span>,
       the standard five-minute walk distance used in transit planning,
       generated systematically across the entire stop network rather than
@@ -894,9 +875,8 @@
       whether a location actually has practical transit access, not just
       proximity on a map.
     </p>
-
-    <h3 class="h3">Vehicle availability as the equity lens</h3>
-    <p>
+<h3 class="h3">Vehicle availability as the equity lens</h3>
+<p>
       Census tract and block group data on household vehicle availability is
       layered directly against the walkability buffers, with tracts where
       more than 15 to 20 percent of households lack a personal vehicle, well
@@ -905,17 +885,15 @@
       separate datasets into a single, visual answer to where the gap
       actually is.
     </p>
-
-    <h3 class="h3">Bike infrastructure as part of the access picture</h3>
-    <p>
+<h3 class="h3">Bike infrastructure as part of the access picture</h3>
+<p>
       Columbus's bike network is included and categorized by facility type,
       since a resident's practical mobility options extend beyond bus stops
       alone, and the map is built to be read against the city's adopted Bike
       Plus Plan targets rather than only its current-state network.
     </p>
-
-    <h3 class="h3">A narrative for a general audience, with a full explorer underneath</h3>
-    <p>
+<h3 class="h3">A narrative for a general audience, with a full explorer underneath</h3>
+<p>
       The StoryMap leads a reader through the finding, starting broad with
       route density and network overview, then narrowing to the specific
       overlay of transit buffers against vehicle availability that reveals
@@ -923,170 +901,133 @@
       and technical users full layer control to toggle routes, bike facility
       types, and demographic boundaries on their own.
     </p>
-
-    <h3 class="h3">Technical Highlights</h3>
-    <ul class="list-1">
-      <li>Platform: ArcGIS StoryMaps hosting an embedded ArcGIS Online web
+<h3 class="h3">Technical Highlights</h3>
+<ul class="list-1">
+<li>Platform: ArcGIS StoryMaps hosting an embedded ArcGIS Online web
         map and Instant App explorer</li>
-      <li>Data sources: COTA GTFS feed for bus stops and routes, City of
+<li>Data sources: COTA GTFS feed for bus stops and routes, City of
         Columbus Open Data Portal for bike infrastructure, US Census Bureau
         ACS 5-Year Estimates (Table B08201, household vehicle availability),
         MORPC Regional Transportation Plan and the Columbus Bike Plus Plan</li>
-      <li>Spatial analysis: Quarter-mile proximity buffers generated across
+<li>Spatial analysis: Quarter-mile proximity buffers generated across
         the full COTA bus stop network, overlaid directly against Census
         vehicle-availability boundaries to identify compounded access gaps</li>
-      <li>Interactivity: Toggleable layers for route type, bike facility
+<li>Interactivity: Toggleable layers for route type, bike facility
         category, stop buffers, and demographic boundaries, feature pop-ups
         for routes and Census geography, a StoryMap scroll narrative paired
         with a full interactive explorer</li>
-      <li>Scope: Metropolitan Columbus and Central Ohio, covering dozens of
+<li>Scope: Metropolitan Columbus and Central Ohio, covering dozens of
         COTA routes, thousands of stops, and hundreds of miles of existing
         and planned bike infrastructure</li>
-    </ul>
-
-  </div>
-
-  <!-- OUTCOME -->
-  <div class="section-block" id="outcome">
-    <h2 class="h2">Outcome</h2>
-
-    <p>
+</ul>
+</div>
+<!-- OUTCOME -->
+<div class="section-block" id="outcome">
+<h2 class="h2">Outcome</h2>
+<p>
       An equity gap that isn't visualized against the data that actually
       defines it, vehicle ownership, walkable transit access, safe cycling
       routes, tends to stay a matter of general impression rather than
       something a planner can act on with confidence.
     </p>
-
-    <ul class="list-1">
-      <li>Overlaying COTA's stop network buffer against Census
+<ul class="list-1">
+<li>Overlaying COTA's stop network buffer against Census
         vehicle-availability data turned a set of separate, individually
         unremarkable datasets into a specific, defensible map of where
         mobility isolation is compounded.</li>
-      <li>The narrative StoryMap format makes the finding accessible to
+<li>The narrative StoryMap format makes the finding accessible to
         council members and community advocates, not just GIS staff, while
         the underlying web map still supports technical exploration.</li>
-      <li>The work is built to directly inform COTA service adjustments,
+<li>The work is built to directly inform COTA service adjustments,
         MORPC regional planning, and the city's active transportation
         investment priorities following adoption of the Bike Plus Plan.</li>
-    </ul>
-
-  </div>
-
-  <!-- VISUALIZATIONS -->
-  <div class="section-block" id="visualizations">
-    <h2 class="h2">Visualizations</h2>
-
-    <p>Maps, charts, and key outputs from the project. Click any image to view full size.</p>
-
-    <div class="map-grid">
-
-      <div class="map-thumb" data-src="../assets/map-columbus-transit-1.png" data-caption="Regional layer view: COTA bus routes, sidewalks, and Census vehicle availability boundaries across Central Ohio">
-        <img src="../assets/map-columbus-transit-1.png" alt="Regional web map showing COTA bus routes and sidewalks over Census vehicle availability boundaries across Central Ohio" loading="lazy" />
-        <div class="map-expand-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/>
-            <line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/>
-          </svg>
-        </div>
-      </div>
-
-      <div class="map-thumb" data-src="../assets/map-columbus-transit-2.png" data-caption="Full legend view showing COTA routes by service type, bike lane categories, stop buffers, and vehicle availability shading">
-        <img src="../assets/map-columbus-transit-2.png" alt="Columbus Transit and Bike Access Explorer with full legend showing bus routes, bike lanes, stop buffers, and vehicle availability classes" loading="lazy" />
-        <div class="map-expand-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/>
-            <line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/>
-          </svg>
-        </div>
-      </div>
-
-      <div class="map-thumb" data-src="../assets/map-columbus-transit-3.png" data-caption="Landing view of the Columbus Transit and Bike Access Explorer, with the app's introductory summary panel">
-        <img src="../assets/map-columbus-transit-3.png" alt="Landing screen of the Columbus Transit and Bike Access Explorer application with introductory info panel" loading="lazy" />
-        <div class="map-expand-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/>
-            <line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/>
-          </svg>
-        </div>
-      </div>
-
-      <!-- Add more .map-thumb blocks as needed.
+</ul>
+</div>
+<!-- VISUALIZATIONS -->
+<div class="section-block" id="visualizations">
+<h2 class="h2">Visualizations</h2>
+<p>Maps, charts, and key outputs from the project. Click any image to view full size.</p>
+<div class="map-grid">
+<div class="map-thumb" data-caption="Regional layer view: COTA bus routes, sidewalks, and Census vehicle availability boundaries across Central Ohio" data-src="../assets/map-columbus-transit-1.png">
+<img alt="Regional web map showing COTA bus routes and sidewalks over Census vehicle availability boundaries across Central Ohio" loading="lazy" src="../assets/map-columbus-transit-1.png"/>
+<div class="map-expand-icon">
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24">
+<polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline>
+<line x1="21" x2="14" y1="3" y2="10"></line><line x1="3" x2="10" y1="21" y2="14"></line>
+</svg>
+</div>
+</div>
+<div class="map-thumb" data-caption="Full legend view showing COTA routes by service type, bike lane categories, stop buffers, and vehicle availability shading" data-src="../assets/map-columbus-transit-2.png">
+<img alt="Columbus Transit and Bike Access Explorer with full legend showing bus routes, bike lanes, stop buffers, and vehicle availability classes" loading="lazy" src="../assets/map-columbus-transit-2.png"/>
+<div class="map-expand-icon">
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24">
+<polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline>
+<line x1="21" x2="14" y1="3" y2="10"></line><line x1="3" x2="10" y1="21" y2="14"></line>
+</svg>
+</div>
+</div>
+<div class="map-thumb" data-caption="Landing view of the Columbus Transit and Bike Access Explorer, with the app's introductory summary panel" data-src="../assets/map-columbus-transit-3.png">
+<img alt="Landing screen of the Columbus Transit and Bike Access Explorer application with introductory info panel" loading="lazy" src="../assets/map-columbus-transit-3.png"/>
+<div class="map-expand-icon">
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24">
+<polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline>
+<line x1="21" x2="14" y1="3" y2="10"></line><line x1="3" x2="10" y1="21" y2="14"></line>
+</svg>
+</div>
+</div>
+<!-- Add more .map-thumb blocks as needed.
            Use class="map-grid two-col" for 2-column layout. -->
-
-    </div>
-
-    <!-- Example: single figure instead of grid -->
-    <!-- <div class="fig">
+</div>
+<!-- Example: single figure instead of grid -->
+<!-- <div class="fig">
       <img src="../assets/your-figure.jpg" alt="Description" />
       <p class="fig-caption">Figure caption describing what's shown.</p>
       <span class="source">Source: Dataset name, Year</span>
     </div> -->
-  </div><!-- /visualizations -->
+</div><!-- /visualizations -->
+<!-- LINKS -->
+<div class="links-section" id="links">
+<!-- Live web map / application -->
 
-  <!-- LINKS -->
-  <div class="links-section" id="links">
-
-    <!-- Live web map / application -->
-    <a class="link-card" href="https://columbusstate.maps.arcgis.com/apps/instant/sidebar/index.html?appid=9efefb1f3a71410b8a45d9d8b7766955" target="_blank" rel="noreferrer">
-      <div class="link-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="10"/>
-          <line x1="2" y1="12" x2="22" y2="12"/>
-          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-        </svg>
-      </div>
-      <div class="link-info">
-        <span class="link-title">Live Web Map</span>
-        <span class="link-desc">Columbus Transit &amp; Bike Access Explorer, Instant App</span>
-      </div>
-      <div class="link-arrow">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
-        </svg>
-      </div>
-    </a>
-
-    <!-- ArcGIS StoryMap -->
-    <a class="link-card" href="https://storymaps.arcgis.com/stories/848365171c644c6fa8aa8be425d54d3a" target="_blank" rel="noreferrer">
-      <div class="link-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/>
-          <line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/>
-        </svg>
-      </div>
-      <div class="link-info">
-        <span class="link-title">ArcGIS StoryMap</span>
-        <span class="link-desc">Interactive narrative of the analysis and findings</span>
-      </div>
-      <div class="link-arrow">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
-        </svg>
-      </div>
-    </a>
-
-    <!-- Project report / PDF -->
-    <a class="link-card" href="../documentation/map-columbus-transit-documentation.pdf" target="_blank" rel="noreferrer">
-      <div class="link-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-          <polyline points="14 2 14 8 20 8"/>
-          <line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
-        </svg>
-      </div>
-      <div class="link-info">
-        <span class="link-title">Project Report</span>
-        <span class="link-desc">Full technical report and methodology documentation</span>
-      </div>
-      <div class="link-arrow">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
-        </svg>
-      </div>
-    </a>
-
-    <!-- Published paper — uncomment when applicable -->
-    <!-- <a class="link-card" href="https://doi.org/your-doi" target="_blank" rel="noreferrer">
+<!-- ArcGIS StoryMap -->
+<a class="link-card" href="https://storymaps.arcgis.com/stories/848365171c644c6fa8aa8be425d54d3a" rel="noreferrer" target="_blank">
+<div class="link-icon">
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24">
+<polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>
+<line x1="8" x2="8" y1="2" y2="18"></line><line x1="16" x2="16" y1="6" y2="22"></line>
+</svg>
+</div>
+<div class="link-info">
+<span class="link-title">ArcGIS StoryMap</span>
+<span class="link-desc">Interactive narrative of the analysis and findings</span>
+</div>
+<div class="link-arrow">
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24">
+<line x1="5" x2="19" y1="12" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline>
+</svg>
+</div>
+</a>
+<!-- Project report / PDF -->
+<a class="link-card" href="../documentation/map-columbus-transit-documentation.md.pdf" rel="noreferrer" target="_blank">
+<div class="link-icon">
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24">
+<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+<polyline points="14 2 14 8 20 8"></polyline>
+<line x1="16" x2="8" y1="13" y2="13"></line><line x1="16" x2="8" y1="17" y2="17"></line>
+</svg>
+</div>
+<div class="link-info">
+<span class="link-title">Project Report</span>
+<span class="link-desc">Full technical report and methodology documentation</span>
+</div>
+<div class="link-arrow">
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24">
+<line x1="5" x2="19" y1="12" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline>
+</svg>
+</div>
+</a>
+<!-- Published paper — uncomment when applicable -->
+<!-- <a class="link-card" href="https://doi.org/your-doi" target="_blank" rel="noreferrer">
       <div class="link-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
@@ -1103,27 +1044,22 @@
         </svg>
       </div>
     </a> -->
-
-  </div>
-
-  <!-- GITHUB BUTTON — kept separate from link cards -->
-  <a href="https://github.com/ndeogobernard" target="_blank" rel="noreferrer" class="github-btn">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
-    </svg>
+</div>
+<!-- GITHUB BUTTON — kept separate from link cards -->
+<a class="github-btn" href="https://github.com/ndeogobernard/Activity-Density-Calculator" rel="noreferrer" target="_blank">
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24">
+<path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+</svg>
     View on GitHub
   </a>
-
-  <!-- NEXT PROJECT — enable once you have multiple pages -->
-  <!-- <div class="next-project">
+<!-- NEXT PROJECT — enable once you have multiple pages -->
+<!-- <div class="next-project">
     <a href="next-project.html">
       <div class="next-label">Next project</div>
       <div class="next-title">Name of Next Project →</div>
     </a>
   </div> -->
-
 </div>
-
 <script>
   // ── LIGHTBOX ──
   const lb      = document.getElementById('lightbox');
@@ -1176,6 +1112,5 @@
     });
   });
 </script>
-
 </body>
 </html>
