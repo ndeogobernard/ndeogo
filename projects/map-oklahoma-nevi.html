@@ -944,36 +944,9 @@
 <h2 class="h2">Visualizations</h2>
 <p>Maps, charts, and key outputs from the project. Click any image to view full size.</p>
 <div class="map-grid">
-<div class="map-thumb" data-caption="Caption for this map" data-src="../assets/your-map-1.jpg">
-<img alt="Describe the map" loading="lazy" src="../assets/your-map-1.jpg"/>
-<div class="map-expand-icon">
-<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24">
-<polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline>
-<line x1="21" x2="14" y1="3" y2="10"></line><line x1="3" x2="10" y1="21" y2="14"></line>
-</svg>
-</div>
-</div>
-<div class="map-thumb" data-caption="Caption for this map" data-src="../assets/your-map-2.jpg">
-<img alt="Describe the map" loading="lazy" src="../assets/your-map-2.jpg"/>
-<div class="map-expand-icon">
-<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24">
-<polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline>
-<line x1="21" x2="14" y1="3" y2="10"></line><line x1="3" x2="10" y1="21" y2="14"></line>
-</svg>
-</div>
-</div>
-<div class="map-thumb" data-caption="Caption for this map" data-src="../assets/your-map-3.jpg">
-<img alt="Describe the map" loading="lazy" src="../assets/your-map-3.jpg"/>
-<div class="map-expand-icon">
-<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24">
-<polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline>
-<line x1="21" x2="14" y1="3" y2="10"></line><line x1="3" x2="10" y1="21" y2="14"></line>
-</svg>
-</div>
-</div>
 <!-- Add more .map-thumb blocks as needed.
            Use class="map-grid two-col" for 2-column layout. -->
-</div>
+<div style="background:var(--card-bg, #111214); border:1px solid var(--gray-3, #212629); border-radius:0.5rem; overflow:hidden;"><a href="../assets/visualizations/map-oklahoma-nevi/ok-nevi-rfp-round2-gaps.png" style="cursor: pointer; display: block;" target="_self"><img alt="Round 2 Candidate Site Zones &amp; Gaps" src="../assets/visualizations/map-oklahoma-nevi/ok-nevi-rfp-round2-gaps.png" style="width:100%; display:block; aspect-ratio:16/9; object-fit:cover;"/></a><p style="padding:0.75rem 1rem; font-size:0.8125rem; color:var(--gray-11, #a1a4a5);">Round 2 Candidate Site Zones &amp; Gaps</p></div><div style="background:var(--card-bg, #111214); border:1px solid var(--gray-3, #212629); border-radius:0.5rem; overflow:hidden;"><a href="../assets/visualizations/map-oklahoma-nevi/ok-nevi-neighboring-state-corridors.png" style="cursor: pointer; display: block;" target="_self"><img alt="Neighboring State Connectivity Analysis" src="../assets/visualizations/map-oklahoma-nevi/ok-nevi-neighboring-state-corridors.png" style="width:100%; display:block; aspect-ratio:16/9; object-fit:cover;"/></a><p style="padding:0.75rem 1rem; font-size:0.8125rem; color:var(--gray-11, #a1a4a5);">Neighboring State Connectivity Analysis</p></div></div>
 <!-- Example: single figure instead of grid -->
 <!-- <div class="fig">
       <img src="../assets/your-figure.jpg" alt="Description" />
@@ -1003,7 +976,6 @@
 </div>
 </a>
 <!-- ArcGIS StoryMap -->
-
 <!-- Project report / PDF -->
 <a class="link-card" href="../documentation/map-oklahoma-nevi-documentation.md.pdf" rel="noreferrer" target="_blank">
 <div class="link-icon">
@@ -1043,7 +1015,6 @@
     </a> -->
 </div>
 <!-- GITHUB BUTTON — kept separate from link cards -->
-
 <!-- NEXT PROJECT — enable once you have multiple pages -->
 <!-- <div class="next-project">
     <a href="next-project.html">
@@ -1103,6 +1074,57 @@
       if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   });
+</script>
+<!-- Program Visualizations Gallery -->
+<!-- Program Visualizations Gallery -->
+
+<!-- Image Lightbox Modal -->
+<div id="image-lightbox-modal" style="display:none; position:fixed; z-index:9999; left:0; top:0; width:100%; height:100%; background-color:rgba(0,0,0,0.85); backdrop-filter:blur(5px); justify-content:center; align-items:center;">
+<span id="lightbox-close-btn" style="position:absolute; top:20px; right:35px; color:#ffffff; font-size:40px; font-weight:bold; cursor:pointer; user-select:none; z-index:10000; transition:color 0.2s;">×</span>
+<img alt="Expanded View" id="lightbox-modal-img" src="" style="max-width:90%; max-height:85vh; border-radius:8px; box-shadow:0 10px 30px rgba(0,0,0,0.8); object-fit:contain;"/>
+<p id="lightbox-caption" style="position:absolute; bottom:25px; color:#a1a4a5; font-size:0.9rem; text-align:center; margin:0; width:90%; font-family:sans-serif;"></p>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const modal = document.getElementById("image-lightbox-modal");
+  const modalImg = document.getElementById("lightbox-modal-img");
+  const captionText = document.getElementById("lightbox-caption");
+  const closeBtn = document.getElementById("lightbox-close-btn");
+
+  // Intercept clicks on visualization links
+  document.querySelectorAll('a[href*="/assets/visualizations/"]').forEach(anchor => {
+    anchor.addEventListener("click", function(e) {
+      e.preventDefault();
+      const imgSrc = this.getAttribute("href");
+      const imgTag = this.querySelector("img");
+      const caption = imgTag ? imgTag.getAttribute("alt") : "";
+
+      modalImg.src = imgSrc;
+      captionText.innerText = caption;
+      modal.style.display = "flex";
+      document.body.style.overflow = "hidden"; // Prevent scrolling behind modal
+    });
+  });
+
+  function closeModal() {
+    modal.style.display = "none";
+    modalImg.src = "";
+    document.body.style.overflow = "auto";
+  }
+
+  closeBtn.addEventListener("click", closeModal);
+  modal.addEventListener("click", function(e) {
+    if (e.target === modal || e.target === modalImg) {
+      closeModal();
+    }
+  });
+
+  document.addEventListener("keydown", function(e) {
+    if (e.key === "Escape" && modal.style.display === "flex") {
+      closeModal();
+    }
+  });
+});
 </script>
 </body>
 </html>
