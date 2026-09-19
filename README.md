@@ -20,6 +20,7 @@ assets/<slug>.jpg              Project cover image (also used for link previews)
 assets/visualizations/<slug>/  Full-size maps and figures for a project
 documentation/                 Project PDFs
 tools/check_site.py            Site integrity checker — run before pushing
+tools/stamp_assets.py          Re-stamps CSS/JS links after you edit them
 .github/workflows/check-site.yml   Runs the checker automatically on every push
 ```
 
@@ -44,6 +45,8 @@ It fails the build on anything that would embarrass the live site:
 - missing `<title>` or link-preview metadata
 - CSS or JS creeping back into individual pages
 - a project page missing from `sitemap.xml`, or listed there after being deleted
+- a "Jump to" nav item that leaves the site instead of scrolling within the page
+- a stale `?v=` asset stamp that would serve visitors a cached stylesheet
 
 To also verify that outbound links still resolve — ArcGIS items get deleted or
 re-shared, and that is how the Oklahoma map link silently broke:
@@ -59,6 +62,23 @@ and detects the ArcGIS failure mode where a deleted item still answers HTTP 200 
 The same external check runs automatically every Monday via GitHub Actions, so a map
 that stops being publicly shared shows up as a failed run rather than as a dead link a
 recruiter finds first.
+
+### After editing any CSS or JS
+
+```bash
+python tools/stamp_assets.py
+```
+
+Browsers cache `assets/css/site.css` by filename, so after a style change a
+returning visitor can render the **old** stylesheet against the **new** markup.
+This appends `?v=<hash of the file>` to each asset link, so the URL changes
+whenever the file does and the browser is forced to refetch it. `check_site.py`
+fails the build when a stamp is out of date, so forgetting is caught before it
+ships.
+
+Inline `<svg>` icons also carry explicit `width="16" height="16"`. CSS still
+sizes them, but if the stylesheet is stale, blocked or still loading, the icons
+stay 16px instead of expanding to fill the sidebar.
 
 ### Previewing locally
 

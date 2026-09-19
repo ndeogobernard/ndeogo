@@ -130,6 +130,22 @@ def check_section_nav(errors):
                 )
 
 
+def check_asset_stamps(errors):
+    """CSS/JS links must carry a ?v= hash matching the file they point at."""
+    try:
+        import stamp_assets
+    except ImportError:
+        sys.path.insert(0, os.path.join(ROOT, "tools"))
+        import stamp_assets
+
+    stale = stamp_assets.stamp(write=False)
+    for page in stale:
+        errors.append(
+            f"{page}: stale asset ?v= stamp - run 'python tools/stamp_assets.py' "
+            f"(visitors would keep a cached stylesheet)"
+        )
+
+
 def check_placeholders(errors, warnings):
     still_unfinished = set()
     for rel in pages():
@@ -279,6 +295,7 @@ def main() -> int:
     check_internal_refs(errors, warnings)
     check_anchors(errors)
     check_section_nav(errors)
+    check_asset_stamps(errors)
     check_placeholders(errors, warnings)
     check_orphans(warnings)
     check_inlined_assets(warnings)
