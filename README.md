@@ -103,10 +103,10 @@ works too, but relative paths and the theme toggle behave better over HTTP.
    | Prefix   | Tab                               | Panel id           |
    |----------|-----------------------------------|--------------------|
    | `gis-`   | Automation                        | `tab-automation`   |
-   | `map-`   | Web Applications Development      | `tab-webapps`      |
-   | `ds-`    | Spatial Analysis                  | `tab-analysis`     |
+   | `map-`   | Web Applications                  | `tab-webapps`      |
+   | `ds-`    | Analysis                          | `tab-analysis`     |
    | `db-`    | Geodatabase Design & Spatial SQL  | `tab-geodatabase`  |
-   | `carto-` | Cartography and Visualization     | `tab-cartography`  |
+   | `carto-` | Cartography                       | `tab-cartography`  |
 
 3. **Edit the page contents:** `<title>`, the `description` meta, the canonical and
    `og:`/`twitter:` URLs and image, the `<h1>`, the summary, the role/context strip, and
