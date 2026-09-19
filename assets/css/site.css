@@ -191,18 +191,36 @@
     }
     .tab-btn:hover:not(.tab-active) { background: var(--slate-3); }
     .tab-btn.tab-active { background: var(--gray-12); color: var(--background); border-color: var(--gray-12); }
-    /* Five category tabs wrap to two rows on desktop, which is fine; on a phone
-       that becomes four or five stacked rows, so scroll them sideways instead. */
+    /* Five category tabs wrap to two rows on wider screens, which is fine. On a
+       phone that would be four or five stacked rows, so they scroll sideways
+       instead - with a fade on whichever side still has tabs hidden, and
+       scroll-padding so the selected tab never sits flush against the edge.
+       site.js scrolls the active tab into view and toggles the fade classes. */
     @media (max-width: 768px) {
       .tabs-list {
         flex-wrap: nowrap;
         overflow-x: auto;
+        scroll-padding-inline: 1rem;
         scrollbar-width: none;
         -webkit-overflow-scrolling: touch;
         margin-bottom: 1.75rem;
       }
       .tabs-list::-webkit-scrollbar { display: none; }
+
+      .tabs-list.can-scroll-right {
+        -webkit-mask-image: linear-gradient(to right, #000 82%, transparent 100%);
+        mask-image: linear-gradient(to right, #000 82%, transparent 100%);
+      }
+      .tabs-list.can-scroll-left {
+        -webkit-mask-image: linear-gradient(to left, #000 82%, transparent 100%);
+        mask-image: linear-gradient(to left, #000 82%, transparent 100%);
+      }
+      .tabs-list.can-scroll-left.can-scroll-right {
+        -webkit-mask-image: linear-gradient(to right, transparent 0, #000 8%, #000 92%, transparent 100%);
+        mask-image: linear-gradient(to right, transparent 0, #000 8%, #000 92%, transparent 100%);
+      }
     }
+
     .tab-panel { display: none; opacity: 0; transition: opacity 0.5s var(--ease-card); }
     .tab-panel.tab-active { display: block; opacity: 1; }
     @starting-style { .tab-panel.tab-active { opacity: 0; } }
