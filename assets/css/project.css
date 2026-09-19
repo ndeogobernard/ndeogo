@@ -1,0 +1,766 @@
+/* ─────────────────────────────────────────────
+       DESIGN TOKENS — same as index.html
+    ───────────────────────────────────────────── */
+    :root {
+      --background: #000000;
+      --gray-1:  #141517;
+      --gray-2:  #191b1e;
+      --gray-3:  #212629;
+      --gray-4:  #293034;
+      --gray-5:  #333b3e;
+      --gray-6:  #3b4345;
+      --gray-7:  #434a4d;
+      --gray-8:  #52595b;
+      --gray-9:  #6e7679;
+      --gray-10: #878d8f;
+      --gray-11: #a1a4a5;
+      --gray-12: #f0f0f0;
+      --slate-3:  #222225;
+      --slate-6:  #3a3a3f;
+      --font-sans:    'Inter', ui-sans-serif, system-ui, sans-serif;
+      --font-display: 'Instrument Sans', 'Inter', sans-serif;
+      --font-mono:    'JetBrains Mono', ui-monospace, monospace;
+      --ease-card: cubic-bezier(.36,.66,.6,1);
+    }
+
+    /* ─────────────────────────────────────────────
+       BASE RESET
+    ───────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; border: 0 solid; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; scrollbar-width: thin; scrollbar-color: gray transparent; }
+    body {
+      background: var(--background);
+      color: var(--gray-12);
+      font-family: var(--font-sans);
+      font-size: 0.9375rem;
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizelegibility;
+      min-height: 100vh;
+    }
+    ::selection { background-color: color-mix(in oklab, white 20%, transparent); color: white; }
+    a   { color: inherit; text-decoration: inherit; }
+    img { display: block; max-width: 100%; }
+    ul, ol { list-style: none; }
+
+    /* ─────────────────────────────────────────────
+       PAGE WRAPPER
+    ───────────────────────────────────────────── */
+    .page {
+      max-width: 46rem;
+      margin: 0 auto;
+      padding: 3.5rem 1.5rem 8rem;
+    }
+
+    /* ─────────────────────────────────────────────
+       BACK LINK
+    ───────────────────────────────────────────── */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.8125rem;
+      color: var(--gray-10);
+      transition: color 0.2s ease;
+      margin-bottom: 3.5rem;
+    }
+    .back-link:hover { color: var(--gray-12); }
+    .back-link svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+    /* ─────────────────────────────────────────────
+       HERO IMAGE
+    ───────────────────────────────────────────── */
+    .hero-img {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 0.5rem;
+      overflow: hidden;
+      margin-bottom: 2.5rem;
+      background: var(--gray-2);
+    }
+    .hero-img img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
+
+    /* ─────────────────────────────────────────────
+       PROJECT HEADER
+    ───────────────────────────────────────────── */
+    .proj-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.9rem;
+    }
+    .proj-year {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--gray-9);
+    }
+    .proj-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--gray-7); flex-shrink: 0; }
+    .proj-category { font-size: 0.75rem; color: var(--gray-9); font-style: italic; }
+
+    h1 {
+      font-family: var(--font-display);
+      font-size: clamp(1.9rem, 4.5vw, 2.75rem);
+      font-weight: 600;
+      letter-spacing: -0.04em;
+      line-height: 1.12;
+      color: var(--gray-12);
+      text-wrap: balance;
+      margin-bottom: 1rem;
+    }
+
+    .proj-summary {
+      font-size: 1.05rem;
+      color: var(--gray-11);
+      line-height: 1.65;
+      text-wrap: pretty;
+      margin-bottom: 2.5rem;
+    }
+
+    /* ─────────────────────────────────────────────
+       ROLE / CONTEXT STRIP
+    ───────────────────────────────────────────── */
+    .meta-strip {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      padding: 1.25rem 0;
+      border-top: 1px solid var(--gray-3);
+      border-bottom: 1px solid var(--gray-3);
+      margin-bottom: 3rem;
+    }
+    .meta-block-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gray-8);
+      margin-bottom: 0.45rem;
+    }
+    .meta-block-value {
+      font-size: 0.875rem;
+      color: var(--gray-11);
+      line-height: 1.6;
+    }
+
+    /* ─────────────────────────────────────────────
+       SECTION BLOCKS — STAR structure
+       Each section separated by a thin top border.
+    ───────────────────────────────────────────── */
+    .section-block {
+      padding-top: 2.25rem;
+      margin-top: 2.25rem;
+      border-top: 1px solid var(--gray-3);
+    }
+    .section-block:first-of-type { border-top: none; padding-top: 0; margin-top: 0; }
+
+    /* ═══════════════════════════════════════════
+       HEADING HIERARCHY
+       Six levels derived from LFT Heading 1–6.
+       Use only what each project needs.
+    ═══════════════════════════════════════════ */
+
+    /* H2 — Major section opener (LFT Heading 2: 18pt, light)
+       Use for: The problem / My role / How I approached it / Outcome */
+    .h2 {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 400;
+      letter-spacing: -0.03em;
+      color: var(--gray-12);
+      line-height: 1.2;
+      margin-bottom: 1rem;
+      margin-top: 0;
+    }
+
+    /* H3 — Strong subsection (LFT Heading 3: 14pt, bold)
+       Use for: named sub-phases, named methods, key findings headers */
+    .h3 {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--gray-12);
+      line-height: 1.3;
+      margin-bottom: 0.65rem;
+      margin-top: 1.75rem;
+    }
+    .h3:first-child { margin-top: 0; }
+
+    /* H4 — Neutral subsection (LFT Heading 4: 13pt, bold, no color)
+       Use for: step labels, dataset names, tool references */
+    .h4 {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--gray-11);
+      letter-spacing: -0.01em;
+      line-height: 1.35;
+      margin-bottom: 0.5rem;
+      margin-top: 1.5rem;
+    }
+    .h4:first-child { margin-top: 0; }
+
+    /* H5 — Light italic subsection (LFT Heading 5: 12pt, italic)
+       Use for: secondary notes, methodology variants, asides */
+    .h5 {
+      font-family: var(--font-display);
+      font-size: 0.9375rem;
+      font-weight: 400;
+      font-style: italic;
+      color: var(--gray-11);
+      line-height: 1.4;
+      margin-bottom: 0.5rem;
+      margin-top: 1.25rem;
+    }
+    .h5:first-child { margin-top: 0; }
+
+    /* H6 — Inline label with border (LFT Heading 6: 11pt, italic, underline)
+       Use for: very tight labels within dense content */
+    .h6 {
+      font-size: 0.875rem;
+      font-weight: 500;
+      font-style: italic;
+      color: var(--gray-10);
+      padding-bottom: 0.25rem;
+      border-bottom: 1px solid var(--gray-4);
+      margin-bottom: 0.6rem;
+      margin-top: 1.25rem;
+      display: block;
+    }
+    .h6:first-child { margin-top: 0; }
+
+    /* Kicker — tiny uppercase label, not a heading (LFT PD/Res Head 2)
+       Use for: DATA PREPARATION, ANALYSIS, MAPS & OUTPUTS */
+    .kicker {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--gray-8);
+      margin-bottom: 0.65rem;
+      margin-top: 1.75rem;
+      display: block;
+    }
+    .kicker:first-child { margin-top: 0; }
+
+    /* ═══════════════════════════════════════════
+       BODY PROSE
+    ═══════════════════════════════════════════ */
+    p {
+      color: var(--gray-11);
+      line-height: 1.8;
+      margin-bottom: 1rem;
+      text-wrap: pretty;
+      font-size: 0.9375rem;
+    }
+    p:last-child { margin-bottom: 0; }
+
+    /* Inline emphasis (LFT Emphasis text: bold italic)
+       Use within <p>: <span class="em">key term</span> */
+    .em { font-weight: 600; font-style: italic; color: var(--gray-12); }
+
+    /* Inline highlight — for key numbers/outcomes within prose */
+    .hl { font-weight: 600; color: var(--gray-12); }
+
+    /* Source citation (LFT Source: 8pt italic)
+       Use for: data source attributions under figures/tables */
+    .source {
+      font-size: 0.75rem;
+      font-style: italic;
+      color: var(--gray-9);
+      margin-top: 0.35rem;
+      display: block;
+    }
+
+    /* ═══════════════════════════════════════════
+       BULLET SYSTEM — 4 levels
+       Matches LFT Bullet 1–4 indentation logic.
+    ═══════════════════════════════════════════ */
+
+    /* Level 1 — em-dash bullets (LFT Bullet 1) */
+    ul.list-1 {
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+      margin-bottom: 1rem;
+    }
+    ul.list-1 > li {
+      font-size: 0.9rem;
+      color: var(--gray-10);
+      line-height: 1.72;
+      padding-left: 1.1rem;
+      position: relative;
+    }
+    ul.list-1 > li::before { content: "—"; position: absolute; left: 0; color: var(--gray-7); }
+
+    /* Level 2 — indented, smaller (LFT Bullet 2) */
+    ul.list-2 {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      margin-top: 0.4rem;
+      margin-bottom: 0.4rem;
+      padding-left: 1.25rem;
+    }
+    ul.list-2 > li {
+      font-size: 0.875rem;
+      color: var(--gray-9);
+      line-height: 1.65;
+      padding-left: 0.85rem;
+      position: relative;
+    }
+    ul.list-2 > li::before { content: "·"; position: absolute; left: 0; color: var(--gray-7); }
+
+    /* Level 3 — further indented (LFT Bullet 3) */
+    ul.list-3 {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      margin-top: 0.3rem;
+      margin-bottom: 0.3rem;
+      padding-left: 1.25rem;
+    }
+    ul.list-3 > li {
+      font-size: 0.8375rem;
+      color: var(--gray-9);
+      line-height: 1.6;
+      padding-left: 0.75rem;
+      position: relative;
+    }
+    ul.list-3 > li::before { content: "–"; position: absolute; left: 0; color: var(--gray-6); font-size: 0.75rem; }
+
+    /* Numbered list (LFT Numbered List) */
+    ol.list-numbered {
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+      margin-bottom: 1rem;
+      counter-reset: proj-counter;
+    }
+    ol.list-numbered > li {
+      font-size: 0.9rem;
+      color: var(--gray-10);
+      line-height: 1.72;
+      padding-left: 1.75rem;
+      position: relative;
+      counter-increment: proj-counter;
+    }
+    ol.list-numbered > li::before {
+      content: counter(proj-counter) ".";
+      position: absolute;
+      left: 0;
+      color: var(--gray-8);
+      font-variant-numeric: tabular-nums;
+      font-size: 0.8rem;
+      font-family: var(--font-mono);
+      top: 0.15rem;
+    }
+
+    /* Lettered list (LFT Lettered List) */
+    ol.list-lettered {
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+      margin-bottom: 1rem;
+      counter-reset: letter-counter;
+    }
+    ol.list-lettered > li {
+      font-size: 0.9rem;
+      color: var(--gray-10);
+      line-height: 1.72;
+      padding-left: 1.75rem;
+      position: relative;
+      counter-increment: letter-counter;
+    }
+    ol.list-lettered > li::before {
+      content: counter(letter-counter, lower-alpha) ".";
+      position: absolute;
+      left: 0;
+      color: var(--gray-8);
+      font-size: 0.8rem;
+      font-family: var(--font-mono);
+      top: 0.15rem;
+    }
+
+    /* ═══════════════════════════════════════════
+       PULL QUOTES
+       LFT Large pull quote: 18pt bold italic
+       LFT Small pull quote: 12pt, taller line-height
+    ═══════════════════════════════════════════ */
+
+    /* Large pull quote — for a standout statement */
+    .pullquote-lg {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 600;
+      font-style: italic;
+      color: var(--gray-11);
+      line-height: 1.45;
+      border-left: 2px solid var(--gray-6);
+      padding: 0.5rem 0 0.5rem 1.5rem;
+      margin: 2rem 0;
+    }
+
+    /* Small pull quote — for a supporting stat or concise insight */
+    .pullquote-sm {
+      font-size: 1rem;
+      color: var(--gray-10);
+      line-height: 1.7;
+      border-left: 1px solid var(--gray-5);
+      padding: 0.4rem 0 0.4rem 1.25rem;
+      margin: 1.5rem 0;
+      font-style: italic;
+    }
+
+    /* ═══════════════════════════════════════════
+       CALLOUT / OUTCOME BOX
+       Standard callout and stronger sidebar variant
+    ═══════════════════════════════════════════ */
+
+    /* Callout — neutral info box (LFT Small pull quote style) */
+    .callout {
+      background: var(--gray-2);
+      border: 1px solid var(--gray-3);
+      border-left: 2px solid var(--gray-7);
+      border-radius: 0.375rem;
+      padding: 1rem 1.25rem;
+      margin: 1.5rem 0;
+    }
+    .callout p { font-size: 0.9375rem; color: var(--gray-11); line-height: 1.7; margin: 0; }
+
+    /* Sidebar block — for supplementary context (LFT Sidebar system)
+       Dark background, lighter text, distinct from main flow */
+    .sidebar-block {
+      background: var(--gray-2);
+      border: 1px solid var(--gray-4);
+      border-radius: 0.5rem;
+      padding: 1.25rem 1.35rem;
+      margin: 2rem 0;
+    }
+    .sidebar-block .sb-title {
+      font-family: var(--font-display);
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: var(--gray-12);
+      text-align: center;
+      margin-bottom: 0.75rem;
+      padding-bottom: 0.65rem;
+      border-bottom: 1px solid var(--gray-4);
+      letter-spacing: 0.01em;
+    }
+    .sidebar-block .sb-header {
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: var(--gray-11);
+      margin-bottom: 0.3rem;
+      margin-top: 0.85rem;
+    }
+    .sidebar-block .sb-header:first-of-type { margin-top: 0; }
+    .sidebar-block p {
+      font-size: 0.8125rem;
+      color: var(--gray-10);
+      line-height: 1.65;
+      margin-bottom: 0.5rem;
+    }
+    .sidebar-block ul { gap: 0.35rem; }
+    .sidebar-block ul li { font-size: 0.8125rem; color: var(--gray-10); }
+
+    /* ═══════════════════════════════════════════
+       FIGURE / IMAGE + CAPTION
+       LFT Figure Placement + LFT Caption
+    ═══════════════════════════════════════════ */
+    .fig {
+      margin: 2rem 0;
+    }
+    .fig img {
+      width: 100%;
+      border-radius: 0.375rem;
+      border: 1px solid var(--gray-3);
+    }
+    .fig-caption {
+      margin-top: 0.55rem;
+      font-size: 0.78rem;
+      color: var(--gray-9);
+      font-style: italic;
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    /* ═══════════════════════════════════════════
+       TABLE SYSTEM
+       LFT Table Text / Title / Header 1 & 2 / Notation
+    ═══════════════════════════════════════════ */
+    .proj-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8375rem;
+      margin: 1.5rem 0;
+      border: 1px solid var(--gray-4);
+      border-radius: 0.375rem;
+      overflow: hidden;
+    }
+
+    /* Table title — above the table element (LFT Table Title: bold) */
+    .table-title {
+      font-size: 0.8375rem;
+      font-weight: 600;
+      color: var(--gray-12);
+      margin-bottom: 0.5rem;
+    }
+
+    /* Dark header row (LFT Table Header 1: white, bold, centered) */
+    .proj-table thead tr {
+      background: var(--gray-3);
+    }
+    .proj-table thead th {
+      padding: 0.55rem 0.85rem;
+      text-align: left;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--gray-12);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--gray-4);
+    }
+    .proj-table thead th.centered { text-align: center; }
+
+    /* Secondary header row (LFT Table Header 2: 9.5pt, less emphasis) */
+    .proj-table thead tr.sub-header th {
+      background: var(--gray-2);
+      font-weight: 600;
+      font-size: 0.75rem;
+      text-transform: none;
+      letter-spacing: 0;
+      color: var(--gray-11);
+    }
+
+    /* Body rows (LFT Table Text: tight line-height) */
+    .proj-table tbody td {
+      padding: 0.5rem 0.85rem;
+      font-size: 0.8375rem;
+      color: var(--gray-10);
+      line-height: 1.5;
+      border-bottom: 1px solid var(--gray-3);
+      vertical-align: top;
+    }
+    .proj-table tbody tr:last-child td { border-bottom: none; }
+    .proj-table tbody tr:hover td { background: var(--gray-2); }
+
+    /* Table notation row (LFT Table Notation: inherits, smaller) */
+    .proj-table tfoot td {
+      padding: 0.45rem 0.85rem;
+      font-size: 0.75rem;
+      color: var(--gray-9);
+      font-style: italic;
+      border-top: 1px solid var(--gray-3);
+      background: var(--gray-1);
+    }
+
+    /* ═══════════════════════════════════════════
+       MAP / IMAGE GRID WITH LIGHTBOX
+    ═══════════════════════════════════════════ */
+    .map-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+      margin: 1.25rem 0;
+    }
+    .map-grid.two-col { grid-template-columns: repeat(2, 1fr); }
+
+    .map-thumb {
+      position: relative;
+      aspect-ratio: 4 / 3;
+      overflow: hidden;
+      border-radius: 0.3rem;
+      border: 1px solid var(--gray-3);
+      background: var(--gray-2);
+      cursor: zoom-in;
+    }
+    .map-thumb img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center;
+      transition: transform 0.3s ease, filter 0.25s ease;
+    }
+    .map-thumb:hover img { transform: scale(1.04); filter: brightness(1.08); }
+    .map-thumb::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: rgba(0,0,0,0);
+      transition: background 0.2s ease;
+    }
+    .map-thumb:hover::after { background: rgba(0,0,0,0.15); }
+    .map-expand-icon {
+      position: absolute; top: 0.5rem; right: 0.5rem;
+      z-index: 1; opacity: 0;
+      transition: opacity 0.2s ease;
+      pointer-events: none; color: #fff;
+    }
+    .map-thumb:hover .map-expand-icon { opacity: 1; }
+    .map-expand-icon svg { width: 15px; height: 15px; filter: drop-shadow(0 1px 3px rgba(0,0,0,0.7)); }
+    .map-grid-caption {
+      font-size: 0.75rem;
+      color: var(--gray-9);
+      font-style: italic;
+      text-align: center;
+      margin-top: 0.4rem;
+    }
+
+    /* ─── LIGHTBOX ─── */
+    .lightbox {
+      position: fixed; inset: 0; z-index: 1000;
+      background: rgba(0,0,0,0.93);
+      display: flex; align-items: center; justify-content: center;
+      padding: 2rem;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.25s ease;
+      cursor: zoom-out;
+    }
+    .lightbox.lb-open { opacity: 1; pointer-events: all; }
+    .lightbox img {
+      max-width: min(90vw, 1200px);
+      max-height: 88vh;
+      object-fit: contain;
+      border-radius: 0.375rem;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.7);
+      cursor: default;
+    }
+    .lb-close {
+      position: fixed; top: 1.25rem; right: 1.5rem;
+      background: var(--gray-3); border: 1px solid var(--gray-5);
+      border-radius: 9999px;
+      width: 2.25rem; height: 2.25rem;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--gray-11);
+      transition: background 0.15s, color 0.15s; z-index: 1001;
+    }
+    .lb-close:hover { background: var(--gray-4); color: var(--gray-12); }
+    .lb-close svg { width: 14px; height: 14px; }
+    .lb-caption {
+      position: fixed; bottom: 1.5rem; left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.78rem; color: var(--gray-9);
+      font-style: italic; white-space: nowrap; pointer-events: none;
+    }
+
+    /* ═══════════════════════════════════════════
+       LINKS SECTION
+       Cards linking to live pages, storymaps, reports etc.
+    ═══════════════════════════════════════════ */
+    .links-section {
+      margin-top: 2.25rem;
+      padding-top: 2.25rem;
+      border-top: 1px solid var(--gray-3);
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .link-card {
+      display: flex; align-items: center; gap: 1rem;
+      padding: 0.9rem 1rem;
+      border: 1px solid var(--gray-3); border-radius: 0.5rem;
+      background: var(--gray-2);
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .link-card:hover { background: var(--gray-3); border-color: var(--gray-5); }
+    .link-icon {
+      width: 2rem; height: 2rem; border-radius: 0.375rem;
+      background: var(--gray-3); border: 1px solid var(--gray-4);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; color: var(--gray-10);
+      transition: background 0.15s;
+    }
+    .link-card:hover .link-icon { background: var(--gray-4); }
+    .link-icon svg { width: 14px; height: 14px; }
+    .link-info { flex: 1; min-width: 0; }
+    .link-title {
+      display: block; font-size: 0.875rem; font-weight: 600;
+      color: var(--gray-12); margin-bottom: 0.15rem;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .link-desc {
+      display: block; font-size: 0.78rem; color: var(--gray-10);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .link-arrow { color: var(--gray-8); flex-shrink: 0; transition: color 0.15s, transform 0.15s; }
+    .link-card:hover .link-arrow { color: var(--gray-11); transform: translateX(2px); }
+    .link-arrow svg { width: 14px; height: 14px; }
+
+    /* ─── GITHUB BUTTON ─── */
+    .github-btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.65rem 1.2rem; border-radius: 0.375rem;
+      font-size: 0.8125rem; font-weight: 600;
+      background: var(--gray-12); color: var(--background);
+      border: 1px solid var(--gray-12);
+      transition: background 0.15s, border-color 0.15s;
+      margin-top: 2.25rem;
+    }
+    .github-btn:hover { background: var(--gray-11); border-color: var(--gray-11); }
+    .github-btn svg { width: 14px; height: 14px; }
+
+    /* ─── NEXT PROJECT ─── */
+    .next-project {
+      margin-top: 4rem; padding-top: 2rem;
+      border-top: 1px solid var(--gray-3);
+    }
+    .next-label {
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--gray-8); margin-bottom: 0.4rem;
+    }
+    .next-title {
+      font-family: var(--font-display);
+      font-size: 1.05rem; font-weight: 500; color: var(--gray-11);
+      transition: color 0.2s;
+    }
+    .next-project a:hover .next-title { color: var(--gray-12); }
+
+    /* ─── RIGHT-SIDE SECTION NAV (same system as index.html) ─── */
+    .section-nav {
+      position: fixed;
+      right: 2rem;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0;
+      z-index: 200;
+      min-width: 120px;
+    }
+    .snav-label {
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gray-7);
+      padding-left: 0.75rem;
+      margin-bottom: 0.65rem;
+    }
+    .snav-item {
+      display: block;
+      font-size: 0.8125rem;
+      font-weight: 400;
+      color: var(--gray-9);
+      padding: 0.38rem 0.75rem;
+      border-left: 1px solid var(--gray-5);
+      white-space: nowrap;
+      text-decoration: none;
+      transition: color 0.2s ease, border-color 0.2s ease;
+    }
+    .snav-item:hover { color: var(--gray-11); border-left-color: var(--gray-8); }
+    .snav-item.snav-active { color: var(--gray-12); font-weight: 600; border-left: 2px solid var(--gray-12); }
+    @media (max-width: 1280px) { .section-nav { display: none; } }
+
+    /* scroll-margin so nav jump clears viewport top */
+    .section-block { scroll-margin-top: 5rem; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 640px) {
+      .page { padding: 2.5rem 1.25rem 6rem; }
+      .meta-strip { grid-template-columns: 1fr; }
+      .map-grid { grid-template-columns: repeat(2, 1fr); }
+      .map-grid.two-col { grid-template-columns: 1fr; }
+      .lightbox { padding: 1rem; }
+      .proj-table { font-size: 0.78rem; }
+      .proj-table thead th, .proj-table tbody td { padding: 0.4rem 0.6rem; }
+    }
