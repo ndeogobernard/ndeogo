@@ -146,6 +146,28 @@ def check_asset_stamps(errors):
         )
 
 
+def check_card_titles_match(errors):
+    """A homepage card must carry the same title as the page it opens."""
+    index = open(os.path.join(ROOT, "index.html"), encoding="utf-8").read()
+    for m in re.finditer(
+        r'href="(projects/[^"]+\.html)".*?<h3 class="card-title">(.*?)</h3>', index, re.S
+    ):
+        rel, card_title = m.group(1), m.group(2).strip()
+        path = os.path.join(ROOT, rel)
+        if not os.path.exists(path):
+            continue
+        src = open(path, encoding="utf-8").read()
+        h1 = re.search(r"<h1[^>]*>(.*?)</h1>", src, re.S)
+        if not h1:
+            errors.append(f"{rel}: no <h1>")
+            continue
+        page_title = h1.group(1).strip()
+        if page_title != card_title:
+            errors.append(
+                f"{rel}: card says '{card_title}' but the page <h1> says '{page_title}'"
+            )
+
+
 def check_placeholders(errors, warnings):
     still_unfinished = set()
     for rel in pages():
@@ -296,6 +318,7 @@ def main() -> int:
     check_anchors(errors)
     check_section_nav(errors)
     check_asset_stamps(errors)
+    check_card_titles_match(errors)
     check_placeholders(errors, warnings)
     check_orphans(warnings)
     check_inlined_assets(warnings)
