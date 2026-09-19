@@ -108,10 +108,10 @@
       min-height: 100vh;
       width: 100%;
       max-width: 80rem;
-      padding: 5rem 1.5rem 6rem;
+      padding: 3rem 1.5rem 2.5rem;
     }
     .page-inner {
-      margin-bottom: 1.5rem;
+      margin-bottom: 0;
       display: flex;
       width: 100%;
       flex-direction: column;
@@ -178,7 +178,7 @@
     /* ── CONTENT ── */
     .content-area { display: flex; flex: 1; flex-direction: column; }
     /* ── TABS ── */
-    .tabs-list { display: flex; gap: 0.5rem; align-items: center; position: relative; margin-bottom: 2.5rem; width: 100%; flex-wrap: wrap; }
+    .tabs-list { display: flex; gap: 0.5rem; align-items: center; position: relative; margin-bottom: 1.5rem; width: 100%; flex-wrap: wrap; }
     .tab-btn {
       cursor: pointer; user-select: none; font-family: var(--font-sans);
       font-size: 0.875rem; font-weight: 600;
@@ -370,7 +370,7 @@
     /* ── RESPONSIVE ── */
     @media (min-width: 768px) {
       .page-inner   { flex-direction: row; gap: 6rem; }
-      .sidebar      { position: sticky; top: 7rem; width: 16rem; flex-shrink: 0; max-height: calc(100vh - 8rem); overflow-y: auto; scrollbar-width: none; }
+      .sidebar      { position: sticky; top: 4rem; width: 16rem; flex-shrink: 0; max-height: calc(100vh - 5rem); overflow-y: auto; scrollbar-width: none; }
       .sidebar::-webkit-scrollbar { display: none; }
       .avatar-wrap  { height: 7.375rem; width: 7.375rem; }
     }

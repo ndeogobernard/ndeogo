@@ -104,8 +104,8 @@ works too, but relative paths and the theme toggle behave better over HTTP.
    |----------|-----------------------------------|--------------------|
    | `gis-`   | Automation                        | `tab-automation`   |
    | `map-`   | Web Applications                  | `tab-webapps`      |
-   | `ds-`    | Analysis                          | `tab-analysis`     |
-   | `db-`    | Geodatabase Design & Spatial SQL  | `tab-geodatabase`  |
+   | `ds-`    | Spatial Analysis                  | `tab-analysis`     |
+   | `db-`    | Geodatabase Design & SQL          | `tab-geodatabase`  |
    | `carto-` | Cartography                       | `tab-cartography`  |
 
 3. **Edit the page contents:** `<title>`, the `description` meta, the canonical and
