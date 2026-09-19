@@ -213,7 +213,7 @@
     ══════════════════════════════════════ */
     .card-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
       gap: 1.25rem;
     }
     .project-card {
@@ -374,18 +374,32 @@
     .photo-item p { font-size: 0.6875rem; color: var(--gray-10); text-align: center; padding: 0 0.5rem; }
     .interests-note { font-size: 0.8125rem; color: var(--gray-10); line-height: 1.7; }
     /* ── RESPONSIVE ── */
-    @media (min-width: 768px) {
-      .page-inner   { flex-direction: row; gap: 6rem; }
+    /* Stacked, the sidebar spans the full width and the right-aligned year
+       chips drift far from the degree they belong to. Cap the reading width. */
+    @media (max-width: 1023px) {
+      .sidebar-meta,
+      #sidebar-education { max-width: 26rem; }
+    }
+
+    /* The GitHub, LinkedIn and email links are 19px tall, under the 24px
+       minimum target size (WCAG 2.2 AA, 2.5.8). Pad them on touch devices
+       only, so the desktop layout is untouched. */
+    @media (hover: none) and (pointer: coarse) {
+      .meta-row a { display: inline-block; padding: 0.375rem 0; }
+      .snav-item  { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+    }
+
+    @media (min-width: 1024px) {
+      .page-inner   { flex-direction: row; gap: 3rem; }
       .sidebar      { position: sticky; top: 4rem; width: 16rem; flex-shrink: 0; max-height: calc(100vh - 5rem); overflow-y: auto; scrollbar-width: none; }
       .sidebar::-webkit-scrollbar { display: none; }
       .avatar-wrap  { height: 7.375rem; width: 7.375rem; }
     }
-    @media (max-width: 900px) {
-      .card-grid { grid-template-columns: repeat(2, 1fr); }
+    @media (min-width: 1280px) {
+      .page-inner { gap: 6rem; }
     }
     @media (max-width: 580px) {
-      .card-grid { grid-template-columns: 1fr; }
-      .exp-item  { grid-template-columns: 1fr; gap: 0.25rem; }
+      .exp-item { grid-template-columns: 1fr; gap: 0.25rem; }
     }
 
 /* ── SIDEBAR: EDUCATION & CREDENTIALS ── */
