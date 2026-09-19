@@ -185,11 +185,24 @@
       height: 2.5rem; min-width: 2.625rem;
       display: inline-flex; align-items: center; justify-content: center;
       border-radius: 9999px; padding: 0.25rem 0.75rem; line-height: 1.5rem;
+      white-space: nowrap; flex-shrink: 0;
       transition: background-color 300ms var(--ease-tab), color 300ms var(--ease-tab);
       background: var(--slate-2); border: 1px solid var(--slate-3); color: var(--gray-12); outline: none;
     }
     .tab-btn:hover:not(.tab-active) { background: var(--slate-3); }
     .tab-btn.tab-active { background: var(--gray-12); color: var(--background); border-color: var(--gray-12); }
+    /* Five category tabs wrap to two rows on desktop, which is fine; on a phone
+       that becomes four or five stacked rows, so scroll them sideways instead. */
+    @media (max-width: 768px) {
+      .tabs-list {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+        margin-bottom: 1.75rem;
+      }
+      .tabs-list::-webkit-scrollbar { display: none; }
+    }
     .tab-panel { display: none; opacity: 0; transition: opacity 0.5s var(--ease-card); }
     .tab-panel.tab-active { display: block; opacity: 1; }
     @starting-style { .tab-panel.tab-active { opacity: 0; } }

@@ -8,7 +8,7 @@ No build step, no dependencies: what is in this repo is what is served.
 ## Layout
 
 ```
-index.html                     Homepage — sidebar, project grid, experience/resume/interests tabs
+index.html                     Homepage — sidebar plus one tab per project category
 404.html                       Shown for any URL that does not exist (self-contained by design)
 projects/<slug>.html           One page per project
 assets/css/site.css            Homepage styles
@@ -100,13 +100,13 @@ works too, but relative paths and the theme toggle behave better over HTTP.
 
 2. **Rename it** to `projects/<slug>.html`, using the existing prefix convention:
 
-   | Prefix   | Category                                  |
-   |----------|-------------------------------------------|
-   | `gis-`   | GIS Programming & Automation              |
-   | `map-`   | Interactive Web Maps & Applications       |
-   | `ds-`    | Geospatial Analysis, Data Science         |
-   | `db-`    | Database Management & Spatial SQL         |
-   | `carto-` | Cartography & Static Maps                 |
+   | Prefix   | Tab                               | Panel id           |
+   |----------|-----------------------------------|--------------------|
+   | `gis-`   | Automation                        | `tab-automation`   |
+   | `map-`   | Web Applications Development      | `tab-webapps`      |
+   | `ds-`    | Spatial Analysis                  | `tab-analysis`     |
+   | `db-`    | Geodatabase Design & Spatial SQL  | `tab-geodatabase`  |
+   | `carto-` | Cartography and Visualization     | `tab-cartography`  |
 
 3. **Edit the page contents:** `<title>`, the `description` meta, the canonical and
    `og:`/`twitter:` URLs and image, the `<h1>`, the summary, the role/context strip, and
@@ -115,8 +115,10 @@ works too, but relative paths and the theme toggle behave better over HTTP.
 4. **Add a cover image** at `assets/<slug>.jpg`. It doubles as the link preview when the
    page is shared, so keep it readable at small sizes.
 
-5. **Add the card to `index.html`** in the right category section — copy a neighbouring
-   card and change the `href`, image, title and one-line description.
+5. **Add the card to `index.html`** inside the matching `<div class="tab-panel">` from
+   the table above — copy a neighbouring card and change the `href`, image, title and
+   one-line description. The card title must match the page's `<h1>` exactly;
+   `check_site.py` enforces this.
 
 6. **Add the page to `sitemap.xml`.**
 

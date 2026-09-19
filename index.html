@@ -16,7 +16,7 @@
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="assets/css/site.css?v=f1b1be92" />
+  <link rel="stylesheet" href="assets/css/site.css?v=18b660e5" />
 
   <link rel="canonical" href="https://ndeogobernard.github.io/ndeogo/" />
   <meta property="og:type" content="website" />
@@ -113,19 +113,21 @@
 <!-- ════════ CONTENT ════════ -->
 <div class="content-area">
 <div class="tabs-list" role="tablist">
-<button class="tab-btn tab-active" data-tab="projects">Projects</button>
+<button class="tab-btn tab-active" data-tab="automation" role="tab" id="tabbtn-automation" aria-controls="tab-automation" aria-selected="true">Automation</button>
+<button class="tab-btn" data-tab="webapps" role="tab" id="tabbtn-webapps" aria-controls="tab-webapps" aria-selected="false">Web Applications Development</button>
+<button class="tab-btn" data-tab="analysis" role="tab" id="tabbtn-analysis" aria-controls="tab-analysis" aria-selected="false">Spatial Analysis</button>
+<button class="tab-btn" data-tab="geodatabase" role="tab" id="tabbtn-geodatabase" aria-controls="tab-geodatabase" aria-selected="false">Geodatabase Design &amp; Spatial SQL</button>
+<button class="tab-btn" data-tab="cartography" role="tab" id="tabbtn-cartography" aria-controls="tab-cartography" aria-selected="false">Cartography and Visualization</button>
 <!-- Temporarily Hidden Tab:
-    <button class="tab-btn" data-tab="experience">Resume</button>
+    <button class="tab-btn" data-tab="experience" role="tab" id="tabbtn-experience" aria-controls="tab-experience" aria-selected="false">Resume</button>
     -->
 <!-- Temporarily Hidden Tab:
-    <button class="tab-btn" data-tab="interests">Photography</button>
+    <button class="tab-btn" data-tab="interests" role="tab" id="tabbtn-interests" aria-controls="tab-interests" aria-selected="false">Photography</button>
     -->
 </div>
 <!-- ── PROJECTS ── -->
-<div class="tab-panel tab-active" id="tab-projects">
-<!-- 1 · GIS Programming & Automation -->
-<section class="project-section" id="cat-gis">
-<div class="cat-heading">GIS Programming &amp; Automation</div>
+<div class="tab-panel tab-active" id="tab-automation" role="tabpanel" aria-labelledby="tabbtn-automation">
+<section class="project-section">
 <div class="card-grid">
 <a class="project-card" href="projects/gis-land-use.html">
 <div class="card-img-wrap">
@@ -174,9 +176,9 @@
 </a>
 </div>
 </section>
-<!-- 2 · Interactive Web Maps & Dashboards -->
-<section class="project-section" id="cat-maps">
-<div class="cat-heading">Interactive Web Maps &amp; Applications Development</div>
+</div>
+<div class="tab-panel" id="tab-webapps" role="tabpanel" aria-labelledby="tabbtn-webapps">
+<section class="project-section">
 <div class="card-grid">
 <a class="project-card" href="projects/map-oklahoma-nevi.html">
 <div class="card-img-wrap">
@@ -216,9 +218,9 @@
 </a>
 </div>
 </section>
-<!-- 4 · Spatial Analysis -->
-<section class="project-section" id="cat-ds">
-<div class="cat-heading">Geospatial Analysis, Data Science &amp; Predictive Analytics</div>
+</div>
+<div class="tab-panel" id="tab-analysis" role="tabpanel" aria-labelledby="tabbtn-analysis">
+<section class="project-section">
 <div class="card-grid">
 <a class="project-card" href="projects/ds-transit-access.html">
 <div class="card-img-wrap">
@@ -267,9 +269,9 @@
 </a>
 </div>
 </section>
-<!-- 5 · Database Management & Spatial SQL -->
-<section class="project-section" id="cat-db">
-<div class="cat-heading">Database Management &amp; Spatial SQL</div>
+</div>
+<div class="tab-panel" id="tab-geodatabase" role="tabpanel" aria-labelledby="tabbtn-geodatabase">
+<section class="project-section">
 <div class="card-grid">
 <a class="project-card" href="projects/db-pedestrian-assets.html">
 <div class="card-img-wrap">
@@ -291,9 +293,9 @@
 </a>
 </div>
 </section>
-<!-- 6 · Cartography & Static Maps -->
-<section class="project-section" id="cat-carto">
-<div class="cat-heading">Cartography &amp; Static Maps</div>
+</div>
+<div class="tab-panel" id="tab-cartography" role="tabpanel" aria-labelledby="tabbtn-cartography">
+<section class="project-section">
 <div class="card-grid">
 <a class="project-card" href="projects/carto-ohio-demographics.html">
 <div class="card-img-wrap">
@@ -463,14 +465,6 @@
 </div>
 </div>
 <!-- Right-side section nav (fixed, outside page-wrapper) -->
-<nav aria-label="Project sections" class="section-nav" id="sectionNav">
-<span class="snav-label">Jump to</span>
-<a class="snav-item" data-target="cat-gis" href="#cat-gis">Automation</a>
-<a class="snav-item" data-target="cat-maps" href="#cat-maps">Web Maps</a>
-<a class="snav-item" data-target="cat-ds" href="#cat-ds">Spatial Data</a>
-<a class="snav-item" data-target="cat-db" href="#cat-db">Databases</a>
-<a class="snav-item" data-target="cat-carto" href="#cat-carto">Cartography</a>
-</nav>
-  <script src="assets/js/site.js?v=9611083f"></script>
+  <script src="assets/js/site.js?v=e51c83cc"></script>
 </body>
 </html>
