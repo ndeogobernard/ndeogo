@@ -153,25 +153,38 @@ def check_asset_stamps(errors):
 
 
 def check_card_titles_match(errors):
-    """A homepage card must carry the same title as the page it opens."""
+    """A homepage card must carry the same title as the page it opens.
+
+    The title link lives inside the <h3>, so match the heading and read the
+    href from within it - searching for the href first and then scanning
+    forward pairs each card with the NEXT card's heading.
+    """
     index = open(os.path.join(ROOT, "index.html"), encoding="utf-8").read()
-    for m in re.finditer(
-        r'href="(projects/[^"]+\.html)".*?<h3 class="card-title">(.*?)</h3>', index, re.S
-    ):
-        rel, card_title = m.group(1), m.group(2).strip()
+    pattern = re.compile(
+        r'<h3 class="card-title">\s*<a[^>]*href="(projects/[^"]+\.html)"[^>]*>(.*?)</a>\s*</h3>',
+        re.S,
+    )
+    seen = 0
+    for m in pattern.finditer(index):
+        seen += 1
+        rel = m.group(1)
+        card_title = re.sub(r"<[^>]+>", "", m.group(2)).strip()
         path = os.path.join(ROOT, rel)
         if not os.path.exists(path):
+            errors.append(f"index.html: card links to {rel}, which does not exist")
             continue
         src = open(path, encoding="utf-8").read()
         h1 = re.search(r"<h1[^>]*>(.*?)</h1>", src, re.S)
         if not h1:
             errors.append(f"{rel}: no <h1>")
             continue
-        page_title = h1.group(1).strip()
+        page_title = re.sub(r"<[^>]+>", "", h1.group(1)).strip()
         if page_title != card_title:
             errors.append(
                 f"{rel}: card says '{card_title}' but the page <h1> says '{page_title}'"
             )
+    if seen == 0:
+        errors.append("index.html: no project cards matched - has the card markup changed?")
 
 
 def check_placeholders(errors, warnings):

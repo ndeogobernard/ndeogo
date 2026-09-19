@@ -120,6 +120,23 @@ works too, but relative paths and the theme toggle behave better over HTTP.
    one-line description. The card title must match the page's `<h1>` exactly;
    `check_site.py` enforces this.
 
+   A card is an `<article>`, not an `<a>`, because anchors cannot nest and each card
+   carries its own direct links. The title link is stretched over the whole card with
+   `.card-main-link::after`, so clicking anywhere still opens the write-up, and the
+   `.card-links` row sits above it on `z-index`. Give each card up to three:
+
+   ```html
+   <div class="card-links">
+     <a class="card-link" href="https://storymaps.arcgis.com/stories/…" target="_blank" rel="noreferrer">…StoryMap</a>
+     <a class="card-link" href="https://github.com/ndeogobernard/…" target="_blank" rel="noreferrer">…GitHub</a>
+     <a class="card-link" href="documentation/<slug>-documentation.md.pdf" target="_blank">…Report</a>
+   </div>
+   ```
+
+   Label the first one **StoryMap** for a `storymaps.arcgis.com` narrative and **Live
+   Map** for an `experience.arcgis.com` web app. Omit any link that does not exist —
+   a dead or empty destination is worse than no button.
+
 6. **Add the page to `sitemap.xml`.**
 
 7. **Run `python tools/check_site.py`** and fix anything it reports.
