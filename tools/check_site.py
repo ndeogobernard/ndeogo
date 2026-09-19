@@ -110,6 +110,26 @@ def check_anchors(errors):
                 errors.append(f"{rel}: link to #{frag}, but no element has that id")
 
 
+def check_section_nav(errors):
+    """The 'Jump to' nav must scroll within the page, never navigate off-site."""
+    for rel in pages():
+        src = strip_comments(open(os.path.join(ROOT, rel), encoding="utf-8").read())
+        for tag in re.findall(r'<a class="snav-item"[^>]*>', src):
+            href = re.search(r'href="([^"]*)"', tag)
+            target = re.search(r'data-target="([^"]*)"', tag)
+            if not href:
+                continue
+            if not href.group(1).startswith("#"):
+                errors.append(
+                    f"{rel}: section-nav item leaves the site -> {href.group(1)[:60]}"
+                )
+            elif target and href.group(1) != "#" + target.group(1):
+                errors.append(
+                    f"{rel}: section-nav {href.group(1)} does not match "
+                    f'data-target="{target.group(1)}"'
+                )
+
+
 def check_placeholders(errors, warnings):
     still_unfinished = set()
     for rel in pages():
@@ -258,6 +278,7 @@ def main() -> int:
 
     check_internal_refs(errors, warnings)
     check_anchors(errors)
+    check_section_nav(errors)
     check_placeholders(errors, warnings)
     check_orphans(warnings)
     check_inlined_assets(warnings)
