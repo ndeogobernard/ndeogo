@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Page not found · Bernard Issifu</title>
+  <meta name="description" content="This page could not be found on Bernard Issifu&#39;s portfolio." />
+  <meta name="robots" content="noindex" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <script>
+    (function () {
+      var saved = localStorage.getItem('theme');
+      var prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+      var initial = saved || (prefersLight ? 'light' : 'dark');
+      if (initial === 'light') document.documentElement.setAttribute('data-theme', 'light');
+    })();
+  </script>
+
+  <style>
+    :root {
+      --background: #000000;
+      --gray-3:  #212629;
+      --gray-6:  #3b4345;
+      --gray-10: #878d8f;
+      --gray-11: #a1a4a5;
+      --gray-12: #f0f0f0;
+      --font-sans:    'Inter', ui-sans-serif, system-ui, sans-serif;
+      --font-display: 'Instrument Sans', 'Inter', sans-serif;
+      --font-mono:    'JetBrains Mono', ui-monospace, monospace;
+    }
+    :root[data-theme="light"] {
+      --background: #ffffff;
+      --gray-3:  #ececec;
+      --gray-6:  #d4d4d4;
+      --gray-10: #6f6f6f;
+      --gray-11: #545454;
+      --gray-12: #1a1a1a;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 16px;
+      background: var(--background);
+      color: var(--gray-12);
+      font-family: var(--font-sans);
+      -webkit-font-smoothing: antialiased;
+    }
+    .wrap { max-width: 460px; text-align: center; }
+    .code {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      letter-spacing: .08em;
+      color: var(--gray-10);
+      margin-bottom: 20px;
+    }
+    h1 {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 6vw, 38px);
+      line-height: 1.15;
+      margin: 0 0 14px;
+      letter-spacing: -.02em;
+    }
+    p {
+      font-size: 15px;
+      line-height: 1.65;
+      color: var(--gray-11);
+      margin: 0 0 30px;
+    }
+    a.btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 20px;
+      border: 1px solid var(--gray-6);
+      border-radius: 8px;
+      color: var(--gray-12);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: background .18s ease, border-color .18s ease;
+    }
+    a.btn:hover { background: var(--gray-3); border-color: var(--gray-10); }
+    a.btn svg { width: 16px; height: 16px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="code">ERROR 404</div>
+    <h1>This page doesn&rsquo;t exist</h1>
+    <p>The link may be out of date, or the page may have been moved or renamed.</p>
+    <a class="btn" href="/ndeogo/">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+      Back to portfolio
+    </a>
+  </div>
+</body>
+</html>
