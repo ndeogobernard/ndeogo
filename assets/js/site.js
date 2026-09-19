@@ -18,19 +18,33 @@
   }
   tick(); setInterval(tick, 1000);
   // ── Tabs ──
-  // Each project category is its own tab; there is no longer a single
-  // long Projects page, so the right-side jump nav and its scroll spy
-  // have been removed along with it.
+  // The tab bar and the right-side nav are two controls over the same state,
+  // so both route through selectTab() and both show the same active item.
+  function selectTab(key) {
+    document.querySelectorAll('.tab-btn').forEach(b => {
+      const on = b.dataset.tab === key;
+      b.classList.toggle('tab-active', on);
+      b.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+    document.querySelectorAll('.tab-panel').forEach(p => {
+      p.classList.toggle('tab-active', p.id === 'tab-' + key);
+    });
+    document.querySelectorAll('.snav-item').forEach(n => {
+      n.classList.toggle('snav-active', n.dataset.target === key);
+    });
+  }
+
   document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.tab-btn').forEach(b => {
-        b.classList.remove('tab-active');
-        b.setAttribute('aria-selected', 'false');
-      });
-      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('tab-active'));
-      btn.classList.add('tab-active');
-      btn.setAttribute('aria-selected', 'true');
-      const panel = document.getElementById('tab-' + btn.dataset.tab);
-      if (panel) panel.classList.add('tab-active');
+    btn.addEventListener('click', () => selectTab(btn.dataset.tab));
+  });
+
+  document.querySelectorAll('.snav-item').forEach(item => {
+    item.addEventListener('click', e => {
+      e.preventDefault();
+      selectTab(item.dataset.target);
     });
   });
+
+  // Allow deep links such as .../ndeogo/#tab-analysis
+  const fromHash = location.hash.replace('#tab-', '');
+  if (fromHash && document.getElementById('tab-' + fromHash)) selectTab(fromHash);

@@ -111,22 +111,28 @@ def check_anchors(errors):
 
 
 def check_section_nav(errors):
-    """The 'Jump to' nav must scroll within the page, never navigate off-site."""
+    """The 'Jump to' nav must stay inside the page and address something real.
+
+    Each item links to a fragment and names a tab in data-target. The href is
+    the panel id (so the link still means something without JavaScript, and
+    supports deep links like /#tab-analysis); data-target is the tab key the
+    script switches to. Both must resolve.
+    """
     for rel in pages():
         src = strip_comments(open(os.path.join(ROOT, rel), encoding="utf-8").read())
-        for tag in re.findall(r'<a class="snav-item"[^>]*>', src):
+        ids = set(re.findall(r'\bid="([^"]+)"', src))
+        # match the anchor whatever else is in its class list
+        for tag in re.findall(r'<a\b[^>]*class="[^"]*\bsnav-item\b[^"]*"[^>]*>', src):
             href = re.search(r'href="([^"]*)"', tag)
             target = re.search(r'data-target="([^"]*)"', tag)
-            if not href:
-                continue
-            if not href.group(1).startswith("#"):
+            if href and not href.group(1).startswith("#"):
                 errors.append(
                     f"{rel}: section-nav item leaves the site -> {href.group(1)[:60]}"
                 )
-            elif target and href.group(1) != "#" + target.group(1):
+            if target and not ({target.group(1), "tab-" + target.group(1)} & ids):
                 errors.append(
-                    f"{rel}: section-nav {href.group(1)} does not match "
-                    f'data-target="{target.group(1)}"'
+                    f'{rel}: section-nav data-target="{target.group(1)}" matches no '
+                    f"element id or tab panel"
                 )
 
 

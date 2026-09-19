@@ -285,16 +285,19 @@
     }
     /* ── RIGHT-SIDE STICKY NAV ── */
     .section-nav {
+      /* Anchored to the right edge of the 80rem content band, not the viewport,
+         so it can never drift over the cards as the window widens. */
       position: fixed;
-      right: 2rem;
+      left: calc(50% + 40rem + 1.25rem);
       top: 50%;
       transform: translateY(-50%);
-      display: none;
+      display: flex;
       flex-direction: column;
       align-items: flex-start;
       gap: 0;
       z-index: 200;
-      min-width: 140px;
+      min-width: 8rem;
+      max-width: 9rem;
     }
     .snav-label {
       font-size: 0.62rem;
@@ -318,7 +321,10 @@
     }
     .snav-item:hover { color: var(--gray-11); border-left-color: var(--gray-8); }
     .snav-item.snav-active { color: var(--gray-12); font-weight: 600; border-left: 2px solid var(--gray-12); }
-    @media (max-width: 1280px) { .section-nav { display: none !important; } }
+    /* The content band is 80rem (1280px) and the rail measures 128px plus a
+       20px gap, so it needs 1576px of viewport to sit clear of the cards and
+       stay on screen. Below that the tab bar already covers navigation. */
+    @media (max-width: 1599px) { .section-nav { display: none !important; } }
     /* ── CATEGORY SECTIONS ── */
     .project-section { margin-bottom: 3.5rem; scroll-margin-top: 6rem; }
     .project-section:last-child { margin-bottom: 0; }
@@ -461,7 +467,8 @@
   text-align: right;
   font-family: var(--font-mono);
   font-size: 0.625rem;
-  color: var(--gray-10);
+  font-weight: 700;
+  color: var(--gray-11);
   background: var(--gray-3);
   border-radius: 0.25rem;
   padding: 0.125rem 0.3rem;
