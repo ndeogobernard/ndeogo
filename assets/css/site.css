@@ -393,7 +393,11 @@
       display: flex;
       flex-wrap: wrap;
       gap: 0.3rem;
-      margin-top: 0.55rem;
+      /* Cards in a grid row are equal height, so pushing the row to the
+         bottom of the body lines the links up across the whole row instead
+         of letting them sit wherever the title and description end. */
+      margin-top: auto;
+      padding-top: 0.6rem;
     }
 
     .card-link {
