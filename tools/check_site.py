@@ -152,39 +152,35 @@ def check_asset_stamps(errors):
         )
 
 
-def check_card_titles_match(errors):
-    """A homepage card must carry the same title as the page it opens.
+def check_cards_do_something(errors, warnings):
+    """Every card must offer the visitor something to click.
 
-    The title link lives inside the <h3>, so match the heading and read the
-    href from within it - searching for the href first and then scanning
-    forward pairs each card with the NEXT card's heading.
+    Cards no longer open a project page - the site is one level deep. A card is
+    useful if it carries link pills, or if it is a gallery card that opens the
+    map viewer. A card with neither is inert: it looks like the others and does
+    nothing at all.
     """
     index = open(os.path.join(ROOT, "index.html"), encoding="utf-8").read()
-    pattern = re.compile(
-        r'<h3 class="card-title">\s*<a[^>]*href="(projects/[^"]+\.html)"[^>]*>(.*?)</a>\s*</h3>',
-        re.S,
+    cards = re.findall(
+        r'<article class="project-card( is-gallery)?">(.*?)</article>', index, re.S
     )
-    seen = 0
-    for m in pattern.finditer(index):
-        seen += 1
-        rel = m.group(1)
-        card_title = re.sub(r"<[^>]+>", "", m.group(2)).strip()
-        path = os.path.join(ROOT, rel)
-        if not os.path.exists(path):
-            errors.append(f"index.html: card links to {rel}, which does not exist")
-            continue
-        src = open(path, encoding="utf-8").read()
-        h1 = re.search(r"<h1[^>]*>(.*?)</h1>", src, re.S)
-        if not h1:
-            errors.append(f"{rel}: no <h1>")
-            continue
-        page_title = re.sub(r"<[^>]+>", "", h1.group(1)).strip()
-        if page_title != card_title:
-            errors.append(
-                f"{rel}: card says '{card_title}' but the page <h1> says '{page_title}'"
+    if not cards:
+        errors.append("index.html: no project cards matched - has the markup changed?")
+        return
+    for is_gallery, block in cards:
+        title = re.search(r'<h3 class="card-title">(.*?)</h3>', block, re.S)
+        name = re.sub(r"<[^>]+>", "", title.group(1)).strip() if title else "(untitled)"
+        if is_gallery:
+            continue  # covered by check_gallery_cards
+        if not re.search(r'class="card-link"', block):
+            warnings.append(
+                f"index.html: card '{name}' has no links and does not open a "
+                f"map - clicking it does nothing"
             )
-    if seen == 0:
-        errors.append("index.html: no project cards matched - has the card markup changed?")
+
+    # the title should no longer be wrapped in a link to a project page
+    for stray in re.findall(r'<h3 class="card-title"><a[^>]*href="projects/[^"]+"', index):
+        errors.append(f"index.html: a card title still links to a project page: {stray[:70]}")
 
 
 def check_placeholders(errors, warnings):
@@ -196,7 +192,13 @@ def check_placeholders(errors, warnings):
             continue
         if _norm(rel) in KNOWN_UNFINISHED:
             still_unfinished.add(_norm(rel))
-            warnings.append(f"{rel}: still unwritten ({len(hits)} placeholder(s)) - linked from index.html")
+            # Placeholder text only matters where a visitor can reach it. These
+            # pages are noindex and nothing links to them, so it is dormant.
+            if 'name="robots" content="noindex"' in src:
+                continue
+            warnings.append(
+                f"{rel}: still unwritten ({len(hits)} placeholder(s)) and reachable"
+            )
         else:
             for pat in hits:
                 errors.append(f"{rel}: unfinished template placeholder -> /{pat}/")
@@ -363,7 +365,7 @@ def main() -> int:
     check_anchors(errors)
     check_section_nav(errors)
     check_asset_stamps(errors)
-    check_card_titles_match(errors)
+    check_cards_do_something(errors, warnings)
     check_placeholders(errors, warnings)
     check_orphans(warnings)
     check_gallery_cards(errors)

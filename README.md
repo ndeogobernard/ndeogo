@@ -8,9 +8,10 @@ No build step, no dependencies: what is in this repo is what is served.
 ## Layout
 
 ```
-index.html                     Homepage — sidebar plus one tab per project category
+index.html                     The site. One level deep: sidebar plus one tab per category
 404.html                       Shown for any URL that does not exist (self-contained by design)
-projects/<slug>.html           One page per project
+projects/<slug>.html           Old per-project write-ups. Nothing links to these any
+                               more and they are noindex; kept for reference only
 assets/css/site.css            Homepage styles
 assets/css/project.css         Styles shared by ALL project pages
 assets/js/site.js              Homepage behaviour (tabs, theme toggle, local clock)
@@ -91,66 +92,44 @@ works too, but relative paths and the theme toggle behave better over HTTP.
 
 ---
 
-## Adding a new project
+## Adding a project
 
-1. **Copy an existing, finished page** that matches the shape of what you are adding —
-   `projects/gis-land-use.html` is a good general starting point, and
-   `projects/map-tennessee-ev.html` is the one to copy if the project has a gallery of
-   full-size visualizations.
+The site is **one level deep**. A card does not open a page — the three links on
+it are the whole thing. Clicking the card itself does nothing, except on
+Cartography where it opens the map viewer.
 
-2. **Rename it** to `projects/<slug>.html`, using the existing prefix convention:
+1. **Add a cover image** at `assets/<slug>.jpg`. It doubles as the link preview.
 
-   | Prefix   | Tab                               | Panel id           |
-   |----------|-----------------------------------|--------------------|
-   | `gis-`   | Automation                        | `tab-automation`   |
-   | `map-`   | Web Applications                  | `tab-webapps`      |
-   | `ds-`    | Spatial Analysis                  | `tab-analysis`     |
-   | `db-`    | Geodatabase Design & SQL          | `tab-geodatabase`  |
-   | `carto-` | Cartography                       | `tab-cartography`  |
+2. **Add a card** to the `card-grid` inside the matching tab panel:
 
-3. **Edit the page contents:** `<title>`, the `description` meta, the canonical and
-   `og:`/`twitter:` URLs and image, the `<h1>`, the summary, the role/context strip, and
-   the Challenge / Solution / Method / Outcome sections.
+   | Prefix   | Tab                       | Panel id           |
+   |----------|---------------------------|--------------------|
+   | `gis-`   | Automation                | `tab-automation`   |
+   | `map-`   | Web Applications          | `tab-webapps`      |
+   | `ds-`    | Spatial Analysis          | `tab-analysis`     |
+   | `db-`    | Geodatabase Design & SQL  | `tab-geodatabase`  |
+   | `carto-` | Cartography               | `tab-cartography`  |
 
-4. **Add a cover image** at `assets/<slug>.jpg`. It doubles as the link preview when the
-   page is shared, so keep it readable at small sizes.
+   Copy a neighbouring card. The title is plain text inside the `<h3>` — do not
+   wrap it in a link; `check_site.py` fails if you do.
 
-5. **Add the card to `index.html`** inside the matching `<div class="tab-panel">` from
-   the table above — copy a neighbouring card and change the `href`, image, title and
-   one-line description. The card title must match the page's `<h1>` exactly;
-   `check_site.py` enforces this.
-
-   A card is an `<article>`, not an `<a>`, because anchors cannot nest and each card
-   carries its own direct links. The title link is stretched over the whole card with
-   `.card-main-link::after`, so clicking anywhere still opens the write-up, and the
-   `.card-links` row sits above it on `z-index`. Give each card up to three:
+3. **Give it its links.** This is the part that matters, because it is all a
+   visitor gets:
 
    ```html
    <div class="card-links">
      <a class="card-link" href="https://storymaps.arcgis.com/stories/…" target="_blank" rel="noreferrer">…StoryMap</a>
      <a class="card-link" href="https://github.com/ndeogobernard/…" target="_blank" rel="noreferrer">…GitHub</a>
-     <a class="card-link" href="documentation/<slug>-documentation.md.pdf" target="_blank">…Report</a>
+     <a class="card-link" href="documentation/<slug>.pdf" target="_blank">…Report</a>
    </div>
    ```
 
-   Label the first one **StoryMap** for a `storymaps.arcgis.com` narrative and **Live
-   Map** for an `experience.arcgis.com` web app. Omit any link that does not exist —
-   a dead or empty destination is worse than no button.
+   Label the first **StoryMap** for a `storymaps.arcgis.com` narrative, or
+   **Live Map** for an `experience.arcgis.com` app. Omit any link that does not
+   exist — a dead destination is worse than no button.
 
-6. **Add the page to `sitemap.xml`.**
-
-7. **Run `python tools/check_site.py`** and fix anything it reports.
-
-### If a section does not apply
-
-Delete the whole `<div class="section-block" id="…">` **and** its matching
-`<a class="snav-item" href="#…">` entry in the right-hand "Jump to" nav. Leaving one
-without the other produces a nav link that scrolls nowhere — the checker catches this.
-
-Never leave placeholder text on a live page. If a project is not written yet, remove its
-card from `index.html` until it is.
-
----
+4. **Run `python tools/check_site.py`.** It warns about a card with no links at
+   all, since such a card looks like the others and does nothing.
 
 ## Cartography: the map gallery
 
