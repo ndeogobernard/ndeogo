@@ -90,3 +90,100 @@
   // Allow deep links such as .../ndeogo/#tab-analysis
   const fromHash = location.hash.replace('#tab-', '');
   if (fromHash && document.getElementById('tab-' + fromHash)) selectTab(fromHash);
+
+  // ── Map viewer for gallery cards ──
+  // Cartography cards hold their maps in a <template class="card-maps">, so the
+  // markup stays out of the flow until needed. One viewer serves every card.
+  (function () {
+    const lb = document.getElementById('lightbox');
+    if (!lb) return;
+    const img = document.getElementById('lbImg');
+    const cap = document.getElementById('lbCaption');
+    const btnClose = document.getElementById('lbClose');
+    const btnPrev = document.getElementById('lbPrev');
+    const btnNext = document.getElementById('lbNext');
+
+    let maps = [];
+    let index = 0;
+    let lastFocused = null;
+
+    function render() {
+      const m = maps[index];
+      if (!m) return;
+      img.src = m.src;
+      img.alt = m.caption || 'Map';
+      cap.textContent = maps.length > 1
+        ? `${m.caption || ''} (${index + 1} of ${maps.length})`.trim()
+        : (m.caption || '');
+      const single = maps.length < 2;
+      btnPrev.hidden = single;
+      btnNext.hidden = single;
+    }
+
+    function open(card) {
+      const tpl = card.querySelector('template.card-maps');
+      maps = tpl
+        ? [...tpl.content.querySelectorAll('a')].map(a => ({
+            src: a.getAttribute('href'),
+            caption: a.dataset.caption || '',
+          }))
+        : [];
+      if (!maps.length) return;          // nothing to show, so do nothing
+      lastFocused = document.activeElement;
+      index = 0;
+      render();
+      lb.hidden = false;
+      // Force a reflow so the opacity transition has a starting frame.
+      // requestAnimationFrame is not guaranteed to run in a backgrounded or
+      // non-painting tab, which left the viewer open but fully transparent.
+      void lb.offsetWidth;
+      lb.classList.add('lb-open');
+      document.body.style.overflow = 'hidden';
+      btnClose.focus();
+    }
+
+    function close() {
+      lb.classList.remove('lb-open');
+      document.body.style.overflow = '';
+      window.setTimeout(() => { lb.hidden = true; img.src = ''; }, 220);
+      if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
+    }
+
+    function step(delta) {
+      if (maps.length < 2) return;
+      index = (index + delta + maps.length) % maps.length;
+      render();
+    }
+
+    document.querySelectorAll('.project-card.is-gallery').forEach(card => {
+      card.addEventListener('click', e => {
+        // let the direct-link pills through if a gallery card ever gains them
+        if (e.target.closest('.card-link')) return;
+        e.preventDefault();
+        open(card);
+      });
+    });
+
+    btnClose.addEventListener('click', close);
+    btnPrev.addEventListener('click', e => { e.stopPropagation(); step(-1); });
+    btnNext.addEventListener('click', e => { e.stopPropagation(); step(1); });
+    // clicking the backdrop closes; clicking the image itself does not
+    lb.addEventListener('click', e => { if (e.target === lb) close(); });
+
+    document.addEventListener('keydown', e => {
+      if (lb.hidden) return;
+      if (e.key === 'Escape') { close(); return; }
+      if (e.key === 'ArrowLeft') { step(-1); return; }
+      if (e.key === 'ArrowRight') { step(1); return; }
+      if (e.key === 'Tab') {
+        // keep focus inside the dialog while it is open
+        const focusable = [btnClose, btnPrev, btnNext].filter(b => !b.hidden);
+        const i = focusable.indexOf(document.activeElement);
+        e.preventDefault();
+        const next = e.shiftKey
+          ? (i <= 0 ? focusable.length - 1 : i - 1)
+          : (i === focusable.length - 1 ? 0 : i + 1);
+        focusable[next].focus();
+      }
+    });
+  })();

@@ -209,8 +209,28 @@ def check_orphans(warnings):
     index = open(os.path.join(ROOT, "index.html"), encoding="utf-8").read()
     for rel in sorted(glob.glob("projects/*.html")):
         name = os.path.basename(rel)
-        if name not in index:
-            warnings.append(f"{rel}: not linked from index.html (orphan page)")
+        if name in index:
+            continue
+        src = open(os.path.join(ROOT, rel), encoding="utf-8").read()
+        if 'name="robots" content="noindex"' in src:
+            continue  # unlinked on purpose, and not indexed either
+        warnings.append(f"{rel}: not linked from index.html (orphan page)")
+
+
+def check_gallery_cards(errors):
+    """A gallery card opens a map viewer, so it must actually have maps."""
+    index = open(os.path.join(ROOT, "index.html"), encoding="utf-8").read()
+    for block in re.findall(
+        r'<article class="project-card is-gallery">.*?</article>', index, re.S
+    ):
+        title = re.search(r'<h3 class="card-title">.*?>([^<]*)<', block, re.S)
+        name = title.group(1).strip() if title else "(untitled)"
+        tpl = re.search(r"<template class=\"card-maps\">(.*?)</template>", block, re.S)
+        if not tpl or not re.search(r'href="[^"]+"', tpl.group(1)):
+            errors.append(
+                f"index.html: gallery card '{name}' has no maps in its "
+                f"<template class=\"card-maps\">, so clicking it would do nothing"
+            )
 
 
 def check_inlined_assets(warnings):
@@ -249,6 +269,12 @@ def check_sitemap(warnings):
     listed = set(re.findall(r"<loc>.*?/ndeogo/(.*?)</loc>", open(sm, encoding="utf-8").read()))
     listed.discard("")
     actual = {os.path.basename(p) for p in glob.glob("projects/*.html")}
+    # pages deliberately kept out of the sitemap carry a noindex
+    actual = {
+        n for n in actual
+        if 'name="robots" content="noindex"'
+        not in open(os.path.join(ROOT, "projects", n), encoding="utf-8").read()
+    }
     listed_projects = {u.split("/")[-1] for u in listed if u.startswith("projects/")}
     for missing in sorted(actual - listed_projects):
         warnings.append(f"sitemap.xml: does not list projects/{missing}")
@@ -340,6 +366,7 @@ def main() -> int:
     check_card_titles_match(errors)
     check_placeholders(errors, warnings)
     check_orphans(warnings)
+    check_gallery_cards(errors)
     check_inlined_assets(warnings)
     check_metadata(errors, warnings)
     check_sitemap(warnings)

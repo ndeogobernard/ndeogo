@@ -16,7 +16,7 @@
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..800;1,14..32,300..800&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="assets/css/site.css?v=86498559" />
+  <link rel="stylesheet" href="assets/css/site.css?v=15a2600e" />
 
   <link rel="canonical" href="https://ndeogobernard.github.io/ndeogo/" />
   <meta property="og:type" content="website" />
@@ -358,32 +358,41 @@
 <div class="tab-panel" id="tab-cartography" role="tabpanel" aria-labelledby="tabbtn-cartography">
 <section class="project-section">
 <div class="card-grid">
-<article class="project-card">
+<article class="project-card is-gallery">
 <div class="card-img-wrap">
 <img alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" src="assets/carto-ohio-demographics.jpg"/><div class="card-placeholder ph-5" style="display:none;"></div>
 </div>
 <div class="card-body">
-<h3 class="card-title"><a class="card-main-link" href="projects/carto-ohio-demographics.html">Ohio Demographic Change Map Series</a></h3>
+<h3 class="card-title"><button class="card-main-link" type="button">Ohio Demographic Change Map Series</button></h3>
 <p class="card-desc">Thematic map series across Ohio communicating regional demographic shifts.</p>
 </div>
+<template class="card-maps">
+<a href="assets/carto-ohio-demographics.jpg" data-caption="Ohio demographic change, thematic series"></a>
+</template>
 </article>
-<article class="project-card">
+<article class="project-card is-gallery">
 <div class="card-img-wrap">
 <img alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" src="assets/carto-crash-risk.jpg"/><div class="card-placeholder ph-6" style="display:none;"></div>
 </div>
 <div class="card-body">
-<h3 class="card-title"><a class="card-main-link" href="projects/carto-crash-risk.html">Crash Hotspot &amp; Roadway Safety Mapping</a></h3>
+<h3 class="card-title"><button class="card-main-link" type="button">Crash Hotspot &amp; Roadway Safety Mapping</button></h3>
 <p class="card-desc">Spatial analysis &amp; cartography linking traffic crash hotspots with surrounding land use.</p>
 </div>
+<template class="card-maps">
+<a href="assets/carto-crash-risk.jpg" data-caption="Crash hotspots against surrounding land use"></a>
+</template>
 </article>
-<article class="project-card">
+<article class="project-card is-gallery">
 <div class="card-img-wrap">
 <img alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" src="assets/carto-hazard-corridors.jpg"/><div class="card-placeholder ph-6" style="display:none;"></div>
 </div>
 <div class="card-body">
-<h3 class="card-title"><a class="card-main-link" href="projects/carto-hazard-corridors.html">Corridor Hazard &amp; Safety Mapping</a></h3>
+<h3 class="card-title"><button class="card-main-link" type="button">Corridor Hazard &amp; Safety Mapping</button></h3>
 <p class="card-desc">Safety analysis mapping high-risk transportation corridors and hazards.</p>
 </div>
+<template class="card-maps">
+<a href="assets/carto-hazard-corridors.jpg" data-caption="High-risk transportation corridors and hazards"></a>
+</template>
 </article>
 </div>
 </section>
@@ -535,6 +544,22 @@
 <a class="snav-item" data-target="geodatabase" href="#tab-geodatabase">Geodatabase</a>
 <a class="snav-item" data-target="cartography" href="#tab-cartography">Cartography</a>
 </nav>
-  <script src="assets/js/site.js?v=94e7d748"></script>
+<!-- Map viewer — shared by every gallery card -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Map viewer" hidden>
+<button class="lb-close" id="lbClose" type="button" aria-label="Close map viewer">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+</button>
+<button class="lb-nav lb-prev" id="lbPrev" type="button" aria-label="Previous map">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"></polyline></svg>
+</button>
+<figure class="lb-figure">
+<img id="lbImg" src="" alt="" />
+<figcaption class="lb-caption" id="lbCaption"></figcaption>
+</figure>
+<button class="lb-nav lb-next" id="lbNext" type="button" aria-label="Next map">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg>
+</button>
+</div>
+  <script src="assets/js/site.js?v=da812905"></script>
 </body>
 </html>

@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://ndeogobernard.github.io/ndeogo/</loc></url>
-  <url><loc>https://ndeogobernard.github.io/ndeogo/projects/carto-crash-risk.html</loc></url>
-  <url><loc>https://ndeogobernard.github.io/ndeogo/projects/carto-hazard-corridors.html</loc></url>
-  <url><loc>https://ndeogobernard.github.io/ndeogo/projects/carto-ohio-demographics.html</loc></url>
   <url><loc>https://ndeogobernard.github.io/ndeogo/projects/db-pedestrian-assets.html</loc></url>
   <url><loc>https://ndeogobernard.github.io/ndeogo/projects/db-wildfire-postgis.html</loc></url>
   <url><loc>https://ndeogobernard.github.io/ndeogo/projects/ds-dasymetric-map.html</loc></url>

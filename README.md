@@ -152,6 +152,47 @@ card from `index.html` until it is.
 
 ---
 
+## Cartography: adding maps to the gallery
+
+Cartography cards do not open a project page. Clicking one opens a full-screen
+map viewer, so the maps themselves are the content.
+
+1. **Put the exports in** `assets/visualizations/carto-<slug>/`, e.g.
+   `assets/visualizations/carto-ohio-demographics/ohio-pop-change-2000-2020.jpg`.
+   Export at the size you want people to actually read — the viewer shows them up
+   to 82% of screen height, so roughly 1600px on the long edge is a good target.
+   Anything under about 1200px will look soft full-screen.
+
+2. **List them in that card's `<template class="card-maps">`** in `index.html`,
+   one line per map, in the order they should be paged through:
+
+   ```html
+   <template class="card-maps">
+     <a href="assets/visualizations/carto-ohio-demographics/pop-change.jpg"
+        data-caption="Population change by county, 2000–2020"></a>
+     <a href="assets/visualizations/carto-ohio-demographics/median-age.jpg"
+        data-caption="Median age shift, 2000–2020"></a>
+   </template>
+   ```
+
+   The `data-caption` shows under the map. With more than one map the viewer
+   adds prev/next arrows, arrow-key paging and an "n of N" counter
+   automatically — there is nothing else to switch on.
+
+3. **Run `python tools/check_site.py`.** It fails if a listed map file is
+   missing, and fails if a gallery card has no maps at all (a card that opens an
+   empty viewer looks broken).
+
+Each card currently lists its existing cover image as a single map. Replace
+those entries as the real exports land.
+
+To make a card behave this way, give the `<article>` the class
+`is-gallery`, make the title a `<button class="card-main-link" type="button">`
+instead of a link, and add the template. The viewer itself is shared —
+`#lightbox` in `index.html`, driven from `assets/js/site.js`.
+
+---
+
 ## Conventions worth keeping
 
 - **One name.** The site, the resume PDF and the ArcGIS StoryMap bylines should all read
