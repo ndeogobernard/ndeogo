@@ -152,46 +152,61 @@ card from `index.html` until it is.
 
 ---
 
-## Cartography: adding maps to the gallery
+## Cartography: the map gallery
 
-Cartography cards do not open a project page. Clicking one opens a full-screen
-map viewer, so the maps themselves are the content.
+The Cartography tab is not a list of projects. It is a wall of maps: **one card
+per map**, the map itself as the thumbnail, and clicking a card opens that map
+full screen. There is no project page behind these cards.
 
-1. **Put the exports in** `assets/visualizations/carto-<slug>/`, e.g.
-   `assets/visualizations/carto-ohio-demographics/ohio-pop-change-2000-2020.jpg`.
-   Export at the size you want people to actually read — the viewer shows them up
-   to 82% of screen height, so roughly 1600px on the long edge is a good target.
-   Anything under about 1200px will look soft full-screen.
+The other four tabs are unaffected — their cards still open project write-ups.
 
-2. **List them in that card's `<template class="card-maps">`** in `index.html`,
-   one line per map, in the order they should be paged through:
+### Adding a map
+
+1. **Put the export in** `assets/visualizations/<project-slug>/`. The maps shown
+   today come from the DOT project folders, since those are maps drawn for those
+   programmes; a map with no project of its own can live in its own folder.
+
+   Export at the size you want people to read. The viewer shows maps up to 82% of
+   screen height, so roughly 1600px on the long edge is a sensible floor —
+   anything under about 1200px looks soft full screen.
+
+2. **Add a card** to the `card-grid` inside `<div class="tab-panel"
+   id="tab-cartography">`, copying a neighbour:
 
    ```html
-   <template class="card-maps">
-     <a href="assets/visualizations/carto-ohio-demographics/pop-change.jpg"
-        data-caption="Population change by county, 2000–2020"></a>
-     <a href="assets/visualizations/carto-ohio-demographics/median-age.jpg"
-        data-caption="Median age shift, 2000–2020"></a>
-   </template>
+   <article class="project-card is-gallery">
+     <div class="card-img-wrap">
+       <img alt="" loading="lazy" src="assets/visualizations/SLUG/FILE.png"/>
+       <div class="card-placeholder ph-3" style="display:none;"></div>
+     </div>
+     <div class="card-body">
+       <h3 class="card-title"><button class="card-main-link" type="button">Map title</button></h3>
+       <p class="card-desc">Client · Programme</p>
+     </div>
+     <template class="card-maps">
+       <a href="assets/visualizations/SLUG/FILE.png" data-caption="Map title — client"></a>
+     </template>
+   </article>
    ```
 
-   The `data-caption` shows under the map. With more than one map the viewer
-   adds prev/next arrows, arrow-key paging and an "n of N" counter
-   automatically — there is nothing else to switch on.
+   The thumbnail and the template point at the same file: the card shows the map
+   cropped to the card, the viewer shows it whole.
 
-3. **Run `python tools/check_site.py`.** It fails if a listed map file is
-   missing, and fails if a gallery card has no maps at all (a card that opens an
-   empty viewer looks broken).
+3. **Run `python tools/check_site.py`.** It fails if the file is missing, and
+   fails if a gallery card has no map at all — a card that opens an empty viewer
+   looks broken.
 
-Each card currently lists its existing cover image as a single map. Replace
-those entries as the real exports land.
+### Several maps on one card
 
-To make a card behave this way, give the `<article>` the class
-`is-gallery`, make the title a `<button class="card-main-link" type="button">`
-instead of a link, and add the template. The viewer itself is shared —
-`#lightbox` in `index.html`, driven from `assets/js/site.js`.
+List more than one `<a>` in the template and the viewer gains prev/next arrows,
+arrow-key paging and an "n of N" counter automatically. Nothing else to enable.
 
----
+### Why these cards are <article> and <button>
+
+Anchors cannot nest, and the title link is stretched across the whole card so
+clicking anywhere works. A gallery card does not navigate, so its title is a
+`<button type="button">` rather than a link. The viewer is shared — `#lightbox`
+in `index.html`, driven from `assets/js/site.js`.
 
 ## Conventions worth keeping
 
