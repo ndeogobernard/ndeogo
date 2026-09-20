@@ -152,16 +152,10 @@ card from `index.html` until it is.
 
 ---
 
-## Gallery cards: adding maps to the viewer
+## Cartography: adding maps to the gallery
 
-A gallery card opens a full-screen map viewer instead of navigating, so the maps
-themselves are the content. Six cards work this way: the three Cartography cards
-and the three DOT portals (Oklahoma, Tennessee, Mississippi), whose maps used to
-sit unseen at the bottom of their project pages.
-
-Where a gallery card still has a write-up worth reading, keep a **Write-up** pill
-in its `.card-links` row pointing at the project page — the card itself no longer
-goes there. Clicks on any pill are ignored by the viewer, so both work.
+Cartography cards do not open a project page. Clicking one opens a full-screen
+map viewer, so the maps themselves are the content.
 
 1. **Put the exports in** `assets/visualizations/carto-<slug>/`, e.g.
    `assets/visualizations/carto-ohio-demographics/ohio-pop-change-2000-2020.jpg`.
@@ -189,9 +183,8 @@ goes there. Clicks on any pill are ignored by the viewer, so both work.
    missing, and fails if a gallery card has no maps at all (a card that opens an
    empty viewer looks broken).
 
-The three Cartography cards currently list their existing cover image as a single
-map. Replace those entries as the real exports land. The DOT cards already point
-at their real visualization exports.
+Each card currently lists its existing cover image as a single map. Replace
+those entries as the real exports land.
 
 To make a card behave this way, give the `<article>` the class
 `is-gallery`, make the title a `<button class="card-main-link" type="button">`
