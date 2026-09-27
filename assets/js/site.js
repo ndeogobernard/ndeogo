@@ -94,6 +94,9 @@
   // ── Map viewer for gallery cards ──
   // Cartography cards hold their maps in a <template class="card-maps">, so the
   // markup stays out of the flow until needed. One viewer serves every card.
+  // Opt-in (data-gallery-view="grid"): the card first opens a grid of all its
+  // maps; a map in the grid opens the viewer at that map, and closing the viewer
+  // returns to the grid. Cards without the attribute open the viewer directly.
   (function () {
     const lb = document.getElementById('lightbox');
     if (!lb) return;
@@ -102,10 +105,27 @@
     const btnClose = document.getElementById('lbClose');
     const btnPrev = document.getElementById('lbPrev');
     const btnNext = document.getElementById('lbNext');
+    const grid = document.getElementById('mapGrid');
+    const gridList = grid ? grid.querySelector('.mg-list') : null;
+    const gridTitle = grid ? grid.querySelector('.mg-title') : null;
+    const gridClose = grid ? grid.querySelector('.mg-close') : null;
 
     let maps = [];
     let index = 0;
     let lastFocused = null;
+    let gridOpener = null;
+
+    function mapsOf(card) {
+      const tpl = card.querySelector('template.card-maps');
+      return tpl
+        ? [...tpl.content.querySelectorAll('a')].map(a => ({
+            src: a.getAttribute('href'),
+            thumb: a.dataset.thumb || a.getAttribute('href'),
+            title: a.dataset.title || '',
+            caption: a.dataset.caption || '',
+          }))
+        : [];
+    }
 
     function render() {
       const m = maps[index];
@@ -120,33 +140,39 @@
       btnNext.hidden = single;
     }
 
-    function open(card) {
-      const tpl = card.querySelector('template.card-maps');
-      maps = tpl
-        ? [...tpl.content.querySelectorAll('a')].map(a => ({
-            src: a.getAttribute('href'),
-            caption: a.dataset.caption || '',
-          }))
-        : [];
-      if (!maps.length) return;          // nothing to show, so do nothing
-      lastFocused = document.activeElement;
-      index = 0;
-      render();
-      lb.hidden = false;
+    function show(el, cls) {
+      el.hidden = false;
       // Force a reflow so the opacity transition has a starting frame.
       // requestAnimationFrame is not guaranteed to run in a backgrounded or
       // non-painting tab, which left the viewer open but fully transparent.
-      void lb.offsetWidth;
-      lb.classList.add('lb-open');
+      void el.offsetWidth;
+      el.classList.add(cls);
+    }
+
+    function openAt(list, i, returnTo) {
+      maps = list;
+      index = i;
+      lastFocused = returnTo || document.activeElement;
+      render();
+      show(lb, 'lb-open');
       document.body.style.overflow = 'hidden';
       btnClose.focus();
     }
 
+    function open(card) {
+      const list = mapsOf(card);
+      if (!list.length) return;          // nothing to show, so do nothing
+      openAt(list, 0, document.activeElement);
+    }
+
     function close() {
       lb.classList.remove('lb-open');
-      document.body.style.overflow = '';
+      if (!grid || grid.hidden) document.body.style.overflow = '';
       window.setTimeout(() => { lb.hidden = true; img.src = ''; }, 220);
-      if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
+      // back in the grid, focus the card of the map shown last
+      const inGrid = grid && !grid.hidden ? gridCards()[index] : null;
+      const target = inGrid || lastFocused;
+      if (target && typeof target.focus === 'function') target.focus();
     }
 
     function step(delta) {
@@ -155,12 +181,60 @@
       render();
     }
 
+    function gridCards() {
+      return gridList ? [...gridList.querySelectorAll('.mg-card')] : [];
+    }
+
+    function openGrid(card) {
+      const list = mapsOf(card);
+      if (!list.length) return;
+      if (!grid) { open(card); return; }
+      gridOpener = document.activeElement;
+      const t = card.querySelector('.card-title');
+      gridTitle.textContent = t ? t.textContent.trim() : 'Map series';
+      gridList.textContent = '';
+      list.forEach((m, i) => {
+        const li = document.createElement('li');
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'mg-card';
+        b.setAttribute('aria-label', `Open map ${i + 1} of ${list.length}: ${m.title || m.caption}`);
+        const head = document.createElement('span');
+        head.className = 'mg-head';
+        head.textContent = m.title || `Map ${i + 1}`;
+        const th = document.createElement('img');
+        th.src = m.thumb;
+        th.alt = '';
+        th.loading = 'lazy';
+        b.append(head, th);
+        b.addEventListener('click', () => openAt(list, i, b));
+        li.append(b);
+        gridList.append(li);
+      });
+      show(grid, 'mg-open');
+      document.body.style.overflow = 'hidden';
+      gridClose.focus();
+    }
+
+    function closeGrid() {
+      grid.classList.remove('mg-open');
+      document.body.style.overflow = '';
+      window.setTimeout(() => { grid.hidden = true; gridList.textContent = ''; }, 220);
+      if (gridOpener && typeof gridOpener.focus === 'function') gridOpener.focus();
+    }
+
+    function gridColumns() {
+      const cols = getComputedStyle(gridList).gridTemplateColumns.split(' ').filter(Boolean);
+      return Math.max(1, cols.length);
+    }
+
     document.querySelectorAll('.project-card.is-gallery').forEach(card => {
       card.addEventListener('click', e => {
         // let the direct-link pills through if a gallery card ever gains them
         if (e.target.closest('.card-link')) return;
         e.preventDefault();
-        open(card);
+        if (card.dataset.galleryView === 'grid') openGrid(card);
+        else open(card);
       });
     });
 
@@ -169,21 +243,40 @@
     btnNext.addEventListener('click', e => { e.stopPropagation(); step(1); });
     // clicking the backdrop closes; clicking the image itself does not
     lb.addEventListener('click', e => { if (e.target === lb) close(); });
+    if (grid) {
+      gridClose.addEventListener('click', closeGrid);
+      grid.addEventListener('click', e => { if (e.target === grid) closeGrid(); });
+    }
+
+    function trap(e, focusable) {
+      const i = focusable.indexOf(document.activeElement);
+      e.preventDefault();
+      const next = e.shiftKey
+        ? (i <= 0 ? focusable.length - 1 : i - 1)
+        : (i === focusable.length - 1 ? 0 : i + 1);
+      focusable[next].focus();
+    }
 
     document.addEventListener('keydown', e => {
-      if (lb.hidden) return;
-      if (e.key === 'Escape') { close(); return; }
-      if (e.key === 'ArrowLeft') { step(-1); return; }
-      if (e.key === 'ArrowRight') { step(1); return; }
-      if (e.key === 'Tab') {
+      if (!lb.hidden) {
+        if (e.key === 'Escape') { close(); return; }
+        if (e.key === 'ArrowLeft') { step(-1); return; }
+        if (e.key === 'ArrowRight') { step(1); return; }
         // keep focus inside the dialog while it is open
-        const focusable = [btnClose, btnPrev, btnNext].filter(b => !b.hidden);
-        const i = focusable.indexOf(document.activeElement);
+        if (e.key === 'Tab') trap(e, [btnClose, btnPrev, btnNext].filter(b => !b.hidden));
+        return;
+      }
+      if (!grid || grid.hidden) return;
+      if (e.key === 'Escape') { closeGrid(); return; }
+      const cards = gridCards();
+      if (e.key === 'Tab') { trap(e, [gridClose, ...cards]); return; }
+      const i = cards.indexOf(document.activeElement);
+      if (i < 0) return;
+      const moves = { ArrowRight: 1, ArrowLeft: -1, ArrowDown: gridColumns(), ArrowUp: -gridColumns() };
+      if (e.key in moves) {
         e.preventDefault();
-        const next = e.shiftKey
-          ? (i <= 0 ? focusable.length - 1 : i - 1)
-          : (i === focusable.length - 1 ? 0 : i + 1);
-        focusable[next].focus();
+        const j = Math.min(cards.length - 1, Math.max(0, i + moves[e.key]));
+        cards[j].focus();
       }
     });
   })();

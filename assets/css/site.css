@@ -471,6 +471,73 @@
       .lb-close, .lb-nav { width: 2.75rem; height: 2.75rem; }
     }
 
+    /* ── MAP SERIES GRID (opt-in: data-gallery-view="grid") ── */
+    .map-grid {
+      position: fixed; inset: 0; z-index: 999;
+      background: rgba(0, 0, 0, 0.88);
+      overflow-y: auto;
+      padding: 2rem;
+      opacity: 0;
+      transition: opacity 0.22s ease;
+    }
+    .map-grid[hidden] { display: none; }
+    .map-grid.mg-open { opacity: 1; }
+    .mg-panel {
+      max-width: 1400px; margin: 0 auto;
+      background: #16181a;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 0.75rem;
+      padding: 1.25rem 1.5rem 1.75rem;
+    }
+    .mg-top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; }
+    .mg-title { margin: 0; color: #f0f0f0; font-size: 1.125rem; font-weight: 600; }
+    .mg-close {
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      width: 2.5rem; height: 2.5rem;
+      border-radius: 9999px;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      background: rgba(255, 255, 255, 0.08);
+      color: #f0f0f0;
+      cursor: pointer;
+    }
+    .mg-close:hover { background: rgba(255, 255, 255, 0.18); border-color: rgba(255, 255, 255, 0.4); }
+    .mg-close:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+    .mg-list {
+      list-style: none; margin: 0; padding: 0;
+      display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem;
+    }
+    .mg-card {
+      display: flex; flex-direction: column; width: 100%;
+      padding: 0; margin: 0;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 0.5rem;
+      overflow: hidden;
+      background: #0f1112;
+      cursor: zoom-in;
+      text-align: left;
+      font: inherit;
+      transition: border-color 0.15s ease, transform 0.15s ease;
+    }
+    .mg-card:hover { border-color: rgba(255, 255, 255, 0.4); transform: translateY(-1px); }
+    .mg-card:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+    .mg-head {
+      display: block;
+      padding: 0.55rem 0.75rem;
+      background: #23272a;
+      color: #e8e8e8;
+      font-size: 0.8125rem; font-weight: 600; line-height: 1.3;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      min-height: calc(2 * 1.3em + 1.1rem);  /* two-line titles keep the grid aligned */
+    }
+    .mg-card img { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; background: #fff; }
+    @media (max-width: 1024px) { .mg-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 640px) {
+      .map-grid { padding: 0.75rem; }
+      .mg-panel { padding: 1rem; }
+      .mg-list { grid-template-columns: 1fr; }
+    }
+
     /* ── CARD DIRECT LINKS ── */
     /* The card is an <article>, not an <a>, because anchors cannot nest. The
        title link is stretched over the whole card so clicking anywhere still
