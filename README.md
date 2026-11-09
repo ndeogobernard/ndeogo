@@ -104,10 +104,10 @@ Cartography where it opens the map viewer.
 
    | Prefix   | Tab                       | Panel id           |
    |----------|---------------------------|--------------------|
-   | `gis-`   | Automation                | `tab-automation`   |
+   | `gis-`   | GIS Automation            | `tab-automation`   |
    | `map-`   | Web Applications          | `tab-webapps`      |
    | `ds-`    | Spatial Analysis          | `tab-analysis`     |
-   | `db-`    | Geodatabase Design & SQL  | `tab-geodatabase`  |
+   | `db-`    | Database Design           | `tab-geodatabase`  |
    | `carto-` | Cartography               | `tab-cartography`  |
    | `ml-`    | Data Science & ML         | `tab-datascience`  |
 
@@ -133,6 +133,10 @@ Cartography where it opens the map viewer.
    all, since such a card looks like the others and does nothing.
 
 ## Cartography: the map gallery
+
+> **Currently hidden from the live site.** The Cartography tab button, its panel and its "Jump to"
+> link are wrapped in `<!-- Temporarily Hidden ... -->` comments in `index.html`. To bring the tab back,
+> remove those three comment wrappers; nothing else needs to change.
 
 The Cartography tab is not a list of projects. It is a wall of maps: **one card
 per map**, the map itself as the thumbnail, and clicking a card opens that map
