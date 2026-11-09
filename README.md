@@ -109,6 +109,7 @@ Cartography where it opens the map viewer.
    | `ds-`    | Spatial Analysis          | `tab-analysis`     |
    | `db-`    | Geodatabase Design & SQL  | `tab-geodatabase`  |
    | `carto-` | Cartography               | `tab-cartography`  |
+   | `ml-`    | Data Science & ML         | `tab-datascience`  |
 
    Copy a neighbouring card. The title is plain text inside the `<h3>` — do not
    wrap it in a link; `check_site.py` fails if you do.
